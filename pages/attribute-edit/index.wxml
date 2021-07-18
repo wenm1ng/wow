@@ -1,0 +1,76 @@
+<form bindsubmit="formSubmit">
+    <view class="main">
+        <view class="top-title">角色属性信息</view>
+        <view class="form-content">
+            <view class="form-item">
+                <view class="left"><text class="red-text">*</text>力量</view>
+                <input class="right-input" placeholder="“力量”数值" name="power" value="{{form.power}}" type="number" bindinput="handleInputNumber" data-category="power"/>
+            </view>
+            <view class="form-item">
+                <view class="left"><text class="red-text">*</text>敏捷</view>
+                <input class="right-input" placeholder="“敏捷”数值" name="agile" value="{{form.agile}}" type="number" bindinput="handleInputNumber" data-category="agile"/>
+            </view>
+            <!--<view class="form-item">
+                <text class="left">成员性别</text>
+                <view class="sex-box">
+                    <radio-group name="sex" bindchange="changeSex">
+                        <radio class="radio-item" name="" value="1" checked="checked" color="#DBB975">
+                            男
+                        </radio>
+                        <radio class="radio-item" name="" value="2" checked="" color="#DBB975">女</radio>
+                    </radio-group>
+                </view>
+            </view>-->
+            <view class="form-item">
+                <view class="left"><text class="red-text">*</text>智力</view>
+                <input class="right-input" placeholder="“智力”数值" name="intelligence" value="{{form.intelligence}}" type="number" bindinput="handleInputNumber" data-category="intelligence"/>
+                <!--<view class="info_more">
+                    <image class="more" src="/images/common/more_gray.png" />
+                </view>-->
+                   
+            </view>
+            <view class="form-item">
+                <view class="left"><text class="red-text">*</text>精神</view>
+                <input class="right-input" placeholder="“精神”数值" name="spirit" value="{{form.spirit}}" type="number" bindinput="handleInputNumber" data-category="spirit"/>
+            </view>
+            <view class="form-item">
+                <view class="left"><text class="red-text">*</text>伤害</view>
+                <input class="right-input" placeholder="最小“伤害”" name="min_hurt" value="{{form.min_hurt}}" type="number" bindinput="handleInputNumber" data-category="min_hurt"/> <view class="left">-</view>
+                <input class="right-input" placeholder="最大“伤害”" name="max_hurt" value="{{form.max_hurt}}" type="number" bindinput="handleInputNumber" data-category="max_hurt"/>
+            </view>
+            <view class="form-item">
+                <view class="left"><text class="red-text">*</text>强度</view>
+                <input class="right-input" placeholder="“强度”数值" name="strength" value="{{form.strength}}" type="number" bindinput="handleInputNumber" data-category="strength"/>
+            </view>
+            <view class="form-item">
+                <view class="left"><text class="red-text">*</text>暴击率</view>
+                <input class="right-input" placeholder="“暴击率”数值" name="critical" value="{{form.critical}}" type="number" bindinput="handleInputNumber" data-category="critical"/>
+            </view>
+            <view class="form-item">
+                <view class="left"><text class="red-text">*</text>命中等级</view>
+                <input class="right-input" placeholder="“命中等级”数值" name="hit" value="{{form.hit}}" type="number" bindinput="handleInputNumber" data-category="hit"/>
+            </view>
+            <view class="form-item">
+                <view class="left"><text class="red-text">*</text>精准</view>
+                <input class="right-input" placeholder="“精准”数值" name="accurate" value="{{form.accurate}}" type="number" bindinput="handleInputNumber" data-category="accurate"/>
+            </view>
+            <view class="form-item">
+                <view class="left">速度</view>
+                <input class="right-input" placeholder="“速度”数值" name="speed" value="{{form.speed}}" type="number" bindinput="handleInputNumber" data-category="speed"/>
+            </view>
+            <view class="form-item">
+                <view class="left">耐力</view>
+                <input class="right-input" placeholder="“耐力”数值" name="endurance" value="{{form.endurance}}" type="number" bindinput="handleInputNumber" data-category="endurance"/>
+            </view>
+            <view class="form-item">
+                <view class="left">护甲</view>
+                <input class="right-input" placeholder="“护甲”数值" name="armor" value="{{form.armor}}" type="number" bindinput="handleInputNumber" data-category="armor"/>
+            </view>
+        </view>
+    </view>
+    <view class="bottom">
+        <button class="save-btn" form-type="submit">
+            保存
+        </button>
+    </view>
+</form>

@@ -1,0 +1,34 @@
+<!--pages/select-occupation/index.wxml-->
+<view class="view view-first" data-occupation="zs" bindtap="nextPage">
+    <image class='btnImg' src='../../images/bg/zs.png'></image>战士
+</view>
+<view class="view view-first" data-occupation="fs" bindtap="nextPage">
+    <image class='btnImg' src='../../images/bg/fs.png'></image>法师
+</view>
+<view class="view view-first" data-occupation="ms" bindtap="nextPage">
+    <image class='btnImg' src='../../images/bg/ms.png'></image>牧师
+</view>
+<view class="view" data-occupation="sq" bindtap="nextPage">
+    <image class='btnImg' src='../../images/bg/sq.png'></image>圣骑士
+</view>
+<view class="view" data-occupation="xd" bindtap="nextPage">
+    <image class='btnImg' src='../../images/bg/xd.png'></image>德鲁伊
+</view>
+<view class="view" data-occupation="ss" bindtap="nextPage">
+    <image class='btnImg' src='../../images/bg/ss.png'></image>术士
+</view>
+<view class="view" data-occupation="lr" bindtap="nextPage">
+    <image class='btnImg' src='../../images/bg/lr.png'></image>猎人
+</view>
+<view class="view" data-occupation="dz" bindtap="nextPage">
+    <image class='btnImg' src='../../images/bg/dz.png'></image>盗贼
+</view>
+<view class="view" data-occupation="sm" bindtap="nextPage">
+    <image class='btnImg' src='../../images/bg/sm.png'></image>萨满
+</view>
+<view class="view" data-occupation="ws" bindtap="nextPage">
+    <image class='btnImg' src='../../images/bg/ws.png'></image>武师
+</view>
+<view class="view" data-occupation="dk" bindtap="nextPage">
+    <image class='btnImg' src='../../images/bg/dk.png'></image>死亡骑士
+</view>

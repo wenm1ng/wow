@@ -1,0 +1,22 @@
+{
+  "name": "july_client",
+  "version": "0.0.1",
+  "description": "A WeChat Mini-Program for SaaS social platform.",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YYJeffrey/july_client.git"
+  },
+  "author": "Jeffrey",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/YYJeffrey/july_client/issues"
+  },
+  "homepage": "https://github.com/YYJeffrey/july_client#readme",
+  "dependencies": {
+    "lin-ui": "^0.7.6"
+  }
+}

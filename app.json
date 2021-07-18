@@ -1,0 +1,78 @@
+{
+  "pages": [
+    "pages/topic/index",
+    "pages/hole/index",
+    "pages/stake-man-entry/index",
+    "pages/attribute-edit/index",
+    "pages/select-occupation/index",
+    "pages/select-skill/index",
+    "pages/profile/index",
+    "pages/topic-detail/index",
+    "pages/topic-edit/index",
+    "pages/hole-detail/index",
+    "pages/chat-room/index",
+    "pages/user-edit/index",
+    "pages/visiting-card/index",
+    "pages/message/index",
+    "pages/images-cropper/index",
+    "pages/following/index",
+    "pages/follower/index",
+    "pages/auth/index",
+    "pages/setting/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "魔兽世界打木桩助手",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f7f7f7"
+  },
+  "tabBar": {
+    "backgroundColor": "#f7f7f7",
+    "color": "#8a8a8a",
+    "selectedColor": "#337559",
+    "list": [
+      {
+        "pagePath": "pages/topic/index",
+        "text": "主页",
+        "iconPath": "images/icon_tab/topic.png",
+        "selectedIconPath": "images/icon_tab/topic_hl.png"
+      },
+      {
+        "pagePath": "pages/select-occupation/index",
+        "text": "打木桩",
+        "iconPath": "images/icon_tab/hole.png",
+        "selectedIconPath": "images/icon_tab/hole_hl.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "images/icon_tab/profile.png",
+        "selectedIconPath": "images/icon_tab/profile_hl.png"
+      }
+    ]
+  },
+  "usingComponents": {
+    "l-tag": "./miniprogram_npm/lin-ui/tag/index",
+    "l-icon": "./miniprogram_npm/lin-ui/icon/index",
+    "l-button": "./miniprogram_npm/lin-ui/button/index",
+    "l-radio": "./miniprogram_npm/lin-ui/radio/index",
+    "l-radio-group": "./miniprogram_npm/lin-ui/radio-group/index",
+    "l-popup": "./miniprogram_npm/lin-ui/popup/index",
+    "l-message": "./miniprogram_npm/lin-ui/message/index",
+    "l-dialog": "./miniprogram_npm/lin-ui/dialog/index",
+    "l-action-sheet": "./miniprogram_npm/lin-ui/action-sheet/index",
+    "l-loadmore": "./miniprogram_npm/lin-ui/loadmore/index",
+    "l-image-picker": "./miniprogram_npm/lin-ui/image-picker/index",
+    "l-status-show": "./miniprogram_npm/lin-ui/status-show/index",
+    "l-tabs": "./components/tabs/index",
+    "l-tabpanel": "./components/tabpanel/index",
+    "l-card": "./components/card/index",
+    "l-list": "./components/list/index",
+    "l-input": "./components/input/index",
+    "l-textarea": "./components/textarea/index",
+    "nothing": "./components/nothing/index"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

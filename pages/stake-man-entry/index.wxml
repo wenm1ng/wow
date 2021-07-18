@@ -1,0 +1,10 @@
+<button class='btn2'>
+<image class='btnImg' src='../../images/logo/logo_wow.png'></image>
+</button>
+<button class='btn1' bindtap="attributeEdit">
+    <view>输入装备属性</view>
+</button>
+
+<button class='btn1'>
+    <view>选择特定装备（开发中。。）</view>
+</button>
