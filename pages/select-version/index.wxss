@@ -12,8 +12,8 @@
 }
 
 .btnImg {
-  width: 178rpx;
-  height: 188rpx;
+  width: 500rpx;
+  height: 300rpx;
 }
 
 .btn1::after {
@@ -31,12 +31,14 @@
 
 .view{
   float:left;
-  margin-left:50rpx;
-  margin-top:150rpx;
+  margin-left:120rpx;
+  margin-top:60rpx;
   cursor:pointer;
   text-align:center;
+  padding-top: 0%;
 }
 
 .view-first{
-  margin-top:100rpx;
+  margin-top:auto;
+  padding-top: 0%;
 }

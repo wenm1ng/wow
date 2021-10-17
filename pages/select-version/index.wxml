@@ -1,0 +1,5 @@
+<!--pages/select-version/index.wxml-->
+<view class="view {{item.version == 1 ? 'view-first' : ''}}" wx:for="{{version_list}}"  wx:key="item" data-version="{{item.version}}" bindtap="nextPage" >
+    <image class='btnImg' src='../../images/bg/{{item.version}}.png' style="height:{{item.version == 1 ? 320 : item.version == 2 ? 250 : item.version == 3 ? 240 : 240}}rpx"></image>
+    <view style="{{item.version == 1 ? 'margin-top:-45rpx' : item.version == 2 ? 'margin-top:-15rpx' : ''}}">{{item.name}}</view>
+</view>

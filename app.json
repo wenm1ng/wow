@@ -5,6 +5,7 @@
     "pages/stake-man-entry/index",
     "pages/attribute-edit/index",
     "pages/select-occupation/index",
+    "pages/select-version/index",
     "pages/select-skill/index",
     "pages/profile/index",
     "pages/topic-detail/index",
@@ -18,7 +19,9 @@
     "pages/following/index",
     "pages/follower/index",
     "pages/auth/index",
-    "pages/setting/index"
+    "pages/setting/index",
+    "pages/select-talent",
+    "pages/select-talent/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -39,7 +42,7 @@
         "selectedIconPath": "images/icon_tab/topic_hl.png"
       },
       {
-        "pagePath": "pages/select-occupation/index",
+        "pagePath": "pages/select-version/index",
         "text": "打木桩",
         "iconPath": "images/icon_tab/hole.png",
         "selectedIconPath": "images/icon_tab/hole_hl.png"
