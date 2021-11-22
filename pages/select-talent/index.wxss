@@ -1,1 +1,4 @@
 /* pages/select-talent/index.wxss */
+.bg {
+    background: var(--bg) no-repeat fixed top;
+}
