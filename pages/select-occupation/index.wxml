@@ -1,5 +1,5 @@
 <!--pages/select-occupation/index.wxml-->
 <view class="view {{item.sort <= 3 ? 'view-first' : ''}}" wx:for="{{occupation_list}}"  wx:key="item" data-occupation="{{item.occupation}}" bindtap="nextPage">
-    <image class='btnImg' src='../../images/bg/{{item.occupation}}.png'></image>{{item.name}}
+    <image class='btnImg' src='{{item.image_url}}'></image>{{item.name}}
 </view>
 

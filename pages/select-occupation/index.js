@@ -10,14 +10,15 @@ Page({
    * 页面的初始数据
    */
   data: {
-    occupation_list:[] //版本列表
+    occupation_list:[], //版本列表
+    version:0
   },
 
   //选好职业后下一个页面
   nextPage(e){
     let occupation = e.currentTarget.dataset.occupation;
     wx.navigateTo({
-      url: "/pages/select-skill/index?occupation=" + occupation
+      url: "/pages/select-skill/index?occupation=" + occupation + "&version=" + this.version
     })
   },
 
@@ -25,27 +26,42 @@ Page({
    * 生命周期函数--监听页面加载
    */
    onLoad: function (options) {
+    this.version = options.version;
     this.getOccupationList(options.version)
+  },
+
+  cacheImage(oc){
+    var path = app.getCacheImage('oc:'+oc);
+    if(!path){
+      path = app.cacheImage(api.imageBgUrl + oc + '.png','oc:'+oc);
+    }
+    return path;
   },
 
   getOccupationList(version) {
     version = parseInt(version);
+    console.log(version);
     const url = api.occupationAPI+'get-occupation-list'
     const data = {'version':version}
     var that = this
 
     if(app.globalData.occupation_list){
+      this.setData({
+        occupation_list: []
+      })
       for(var index in app.globalData.occupation_list){
         if(index != version){
           continue;
         }
-        console.log(app.globalData.occupation_list[index])
-        this.setData({
-          occupation_list: app.globalData.occupation_list[index]
-        })
+        console.log(index);
+        if(app.globalData.occupation_list[index] !== undefined){
+          this.setData({
+            occupation_list: app.globalData.occupation_list[index]
+          })
+        }
       }
       console.log(this.data.occupation_list)
-      if(!this.data.occupation_list){
+      if(this.data.occupation_list.length == 0){
         this.curlOccupationList(url,data)
       }
     }else{
@@ -57,7 +73,12 @@ Page({
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code == 200) {
         var version = parseInt(data.version);
-        app.globalData.occupation_list = [];
+        if(!app.globalData.occupation_list){
+          app.globalData.occupation_list = [];
+        }
+        for(var index in res.data.data){
+          res.data.data[index].image_url = this.cacheImage(res.data.data[index].occupation);
+        }
         app.globalData.occupation_list[version] = res.data.data;
         this.setData({
           occupation_list: res.data.data

@@ -20,7 +20,6 @@
     "pages/follower/index",
     "pages/auth/index",
     "pages/setting/index",
-    "pages/select-talent",
     "pages/select-talent/index"
   ],
   "window": {

@@ -39,6 +39,16 @@ Page({
     }else{
       wxutil.request.get(url, data).then((res) => {
         if (res.data.code == 200) {
+          for(var index in res.data.data){
+            var val = res.data.data[index]
+            console.log(api.imageBgUrl);
+            var path = app.getCacheImage('versions:'+val.version);
+            if(!path){
+              path = app.cacheImage(api.imageBgUrl + val.version + '.png','versions:'+val.version);
+            }
+            res.data.data[index].image_url = path;
+            console.log(res.data.data);
+          }
           app.globalData.version_list = res.data.data
           this.setData({
             version_list: res.data.data
