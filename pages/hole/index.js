@@ -6,14 +6,40 @@ const pageSize = 16 // 每页显示条数
 
 Page({
   data: {
-    holes: [],
+    holes: [
+        {
+            'poster':'https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png',
+            'title':'test',
+            'id':1
+        },
+        {
+            'poster':'https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png',
+            'title':'test',
+            'id':2
+        },
+        {
+            'poster':'https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png',
+            'title':'test',
+            'id':3
+        },
+        {
+            'poster':'https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png',
+            'title':'test',
+            'id':4
+        },
+        {
+            'poster':'https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png',
+            'title':'test',
+            'id':5
+        }
+    ],
     page: 1,
     loading: false,
     isEnd: false // 是否到底
   },
 
   onLoad() {
-    this.getHoles()
+    // this.getHoles()
   },
 
   /**

@@ -7,7 +7,20 @@ const pageSize = 16 // 每页显示条数
 Page({
   data: {
     labels: [],
-    topics: [],
+    topics: [
+      {
+          'user': {
+              'nick_name': '文明',
+              'avatar': 'https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'
+          },
+          'create_time':'ffff',
+          'content': '你说你想要逃',
+          'images':['https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png','https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'],
+          'id':1,
+          'has_comment':1,
+          'comment_count':2
+      }
+  ],
     actionList: [],
     page: 1,
     labelId: -1,
@@ -24,9 +37,9 @@ Page({
 
   onLoad() {
     this.getScrollHeight()
-    // this.getLabels()
+    this.getLabels()
     this.getUserId()
-    // this.getTopics()
+    this.getTopics()
   },
 
   onShow() {

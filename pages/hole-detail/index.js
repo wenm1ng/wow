@@ -25,6 +25,9 @@ Page({
         this.setData({
           hole: res.data.data
         })
+        this.setData({
+          ['hole.state']: true
+        })
       }
     })
   },

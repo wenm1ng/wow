@@ -20,7 +20,8 @@
     "pages/follower/index",
     "pages/auth/index",
     "pages/setting/index",
-    "pages/select-talent/index"
+    "pages/select-talent/index",
+    "pages/wa/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -41,7 +42,7 @@
         "selectedIconPath": "images/icon_tab/topic_hl.png"
       },
       {
-        "pagePath": "pages/select-version/index",
+        "pagePath": "pages/wa/index",
         "text": "打木桩",
         "iconPath": "images/icon_tab/hole.png",
         "selectedIconPath": "images/icon_tab/hole_hl.png"

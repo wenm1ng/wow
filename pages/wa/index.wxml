@@ -1,0 +1,24 @@
+<l-search-bar l-class="wa-search" placeholder="搜索" show-cancel="{{false}}"></l-search-bar>
+<view class="wa-big-image">
+    <image class='btnImg' src='http://wenming.online/public/uploads/20220602/adaf5e467f30cd9d73a2c372a970e818.png'></image>
+</view>
+<view class="wa-left-tab">
+    <view class="wa-tab-text-left whiteBackground">叶落初冬</view>
+    <view class="wa-tab-text-left">羽凡</view>
+    <view class="wa-tab-text-left">11</view>
+    <view class="wa-tab-text-left">11</view>
+    <view class="wa-tab-text-left">11</view>
+    <view class="wa-tab-text-left"> </view>
+    <view class="wa-tab-text-left"> </view>
+    <view class="wa-tab-text-left"> </view>
+</view>
+
+<scroll-view class="wa-right-tab">
+    <view class="wa-left">
+        <image src="http://wenming.online/public/uploads/20220602/6d48286c8a947ffa3419f7ebd8a050a6.jpg" class="wa-icon-image"/>
+        <view class="wa-tab-text-right">法师</view>
+    </view>
+    <view class="wa-tab-text-right-blue">╋火焰</view>
+    <view class="wa-tab-text-right-blue">╋冰霜</view>
+    <view class="wa-tab-text-right-blue">╋奥数</view>
+</scroll-view>

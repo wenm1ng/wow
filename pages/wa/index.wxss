@@ -1,0 +1,70 @@
+  .wa-left-tab {
+    float:left;
+    display: block;
+    /* padding: 20rpx; */
+    font-size: 30rpx;
+    background-color: rgb(229,229,229);
+    width: 25%;
+    height:600rpx;
+    color:black;
+    text-align: center;
+  }
+
+  .wa-right-tab {
+    float: right;
+    display: block;
+    /* padding: 20rpx; */
+    font-size: 37rpx;
+    background-color: rgb(229, 229, 229);
+    width: 70%;
+    height:150rpx;
+    color:black;
+    margin-top:30rpx;
+    border-radius: 8px;
+    overflow: auto;
+  }
+
+  .wa-tab-text-left{
+    margin:auto;
+    height:100rpx;
+    line-height: 100rpx;
+    display: block;
+  }
+  .wa-tab-text-right{
+    float:left;
+    margin-left:20rpx;
+    margin-top:10rpx;
+  }
+
+  .wa-tab-text-right-blue{
+    float:left;
+    margin-left:20rpx;
+    color:rgb(58, 123, 221);
+    font-size:30rpx;
+  }
+
+  .wa-search{
+      border-style: solid !important;
+      border-color: #bebbbb !important;
+      border-width:3rpx !important;
+      border-radius:0px !important;
+  }
+  .wa-search .cancle{
+      display:none !important;
+  }
+  .btnImg{
+      height:300rpx;
+  }
+  .whiteBackground{
+      background-color: #F7F7F7;
+  }
+  .wa-icon-image{
+      height:70rpx;
+      width:70rpx;
+      float:left;
+  }
+  .wa-left{
+      float:left;
+      width:100%;
+      margin:10rpx 0 10rpx 10rpx;
+  }
