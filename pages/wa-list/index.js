@@ -10,7 +10,7 @@ Page({
     topics: [
       {
           'user': {
-              'nick_name': '文明',
+              'nick_name': '法师三系技能监视',
               'avatar': 'https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'
           },
           'create_time':'ffff',
@@ -19,95 +19,11 @@ Page({
           'id':1,
           'has_comment':1,
           'comment_count':2
-      },
-      {
-        'user': {
-            'nick_name': '文明',
-            'avatar': 'https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'
-        },
-        'create_time':'ffff',
-        'content': '你说你想要逃',
-        'images':['https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png','https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'],
-        'id':1,
-        'has_comment':1,
-        'comment_count':2
-      },
-      {
-          'user': {
-              'nick_name': '文明',
-              'avatar': 'https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'
-          },
-          'create_time':'ffff',
-          'content': '你说你想要逃',
-          'images':['https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png','https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'],
-          'id':1,
-          'has_comment':1,
-          'comment_count':2
-      },
-      {
-        'user': {
-            'nick_name': '文明',
-            'avatar': 'https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'
-        },
-        'create_time':'ffff',
-        'content': '你说你想要逃',
-        'images':['https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png','https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'],
-        'id':1,
-        'has_comment':1,
-        'comment_count':2
-      },
-      {
-        'user': {
-            'nick_name': '文明',
-            'avatar': 'https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'
-        },
-        'create_time':'ffff',
-        'content': '你说你想要逃',
-        'images':['https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png','https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'],
-        'id':1,
-        'has_comment':1,
-        'comment_count':2
-      },
-      {
-        'user': {
-            'nick_name': '文明',
-            'avatar': 'https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'
-        },
-        'create_time':'ffff',
-        'content': '你说你想要逃',
-        'images':['https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png','https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'],
-        'id':1,
-        'has_comment':1,
-        'comment_count':2
-      },
-      {
-          'user': {
-              'nick_name': '文明',
-              'avatar': 'https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'
-          },
-          'create_time':'ffff',
-          'content': '你说你想要逃',
-          'images':['https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png','https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'],
-          'id':1,
-          'has_comment':1,
-          'comment_count':2
-      },
-      {
-        'user': {
-            'nick_name': '文明',
-            'avatar': 'https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'
-        },
-        'create_time':'ffff',
-        'content': '你说你想要逃',
-        'images':['https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png','https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'],
-        'id':1,
-        'has_comment':1,
-        'comment_count':2
       }
     ],
     actionList: [],
     page: 1,
-    labelId: -1,
+    labelId: '全部',
     userId: -1,
     topicIndex: -1, // 点击的话题的下标
     height: 1206, // 话题区高度
@@ -115,17 +31,57 @@ Page({
     showAction: false, // 是否显示操作菜单
     isEnd: false, // 是否到底
     inRequest: false, // 在请求中
-    loading: true, // 是否正在加载
+    loading: false, // 是否正在加载
     toTag: null, // 滚动到标签
+    version: 1,
+    talentName : '',
+    type:1,
+    ttId:0,
+    wa_list:[],
   },
 
-  onLoad() {
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad(options) {
+    this.setData({
+      version: options.version,
+      talentName: options.talentName,
+      type:options.type,
+      ttId:options.ttId,
+      occupation:options.occupation,
+    })
     this.getScrollHeight()
+    this.getWaList()
     this.getLabels()
-    this.getUserId()
+    // this.getUserId()
     // this.getTopics()
   },
 
+  getWaList(){
+    const that = this
+    const url = api.waAPI+'get-wa-list?version='+ this.data.version + '&talent_name='+ this.data.talentName + '&type=' + this.data.type + '&tt_id=' + this.data.ttId + 
+    '&oc=' + this.data.occupation + '&page=' + this.data.page
+    const data = {}
+    wxutil.request.get(url, data).then((res) => {
+      if (res.data.code == 200) {
+        for(var index in res.data.data){
+          var val = res.data.data[index]
+        }
+        console.log(res.data.data);
+        this.setData({
+          wa_list: res.data.data
+        })
+      }
+    })
+  },
+  // /**
+  //  * 生命周期函数--监听页面加载
+  //  */
+  //  onLoad: function (options) {
+  //   this.getTalentList(options.version, options.oc)
+  //   this.getTalentTreeList(options.version)
+  // },
   onShow() {
     const labelId = wxutil.getStorage("labelId")
     // 由于wx.switchTab()的传参限制，故用缓存获取标签参数
@@ -170,19 +126,18 @@ Page({
    * 获取标签
    */
   getLabels() {
-    const url = api.labelAPI
+    const url = api.waAPI + 'get-wa-label'
     const data = {
-      app_id: app.globalData.appId
+      version:this.data.version,
+      tt_id:this.data.ttId,
+      oc:this.data.occupation
     }
 
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code == 200) {
-        let labels = [{
-          id: -1,
-          name: "全部"
-        }]
+        let labels = ['全部']
         this.setData({
-          labels: labels.concat(res.data.data)
+          labels: labels.concat(res.data.data.labels)
         })
       }
     })
@@ -287,19 +242,19 @@ Page({
    */
   onTagTap(event) {
     const labelId = this.data.labelId
+    this.setData({
+      talentName:labelId
+    })
     const currLabelId = event.currentTarget.dataset.label
 
-    // if (labelId == currLabelId) {
-    //   this.getTopics(1, -1)
-    //   this.setData({
-    //     labelId: -1
-    //   })
-    // } else {
-    //   this.getTopics(1, currLabelId)
-    //   this.setData({
-    //     labelId: currLabelId,
-    //   })
-    // }
+    if (labelId == currLabelId) {
+      this.getWaList()
+    } else {
+      this.getWaList()
+      this.setData({
+        labelId: currLabelId,
+      })
+    }
 
     // 如果显示下拉区则滚动Tag
     if (this.data.showPopup) {
@@ -314,15 +269,15 @@ Page({
    */
   onFlodTap(event) {
     const index = event.target.dataset.index
-    let topics = this.data.topics
+    let wa_list = this.data.wa_list
 
     if (topics[index].flod) {
-      topics[index].flod = false
+      wa_list[index].flod = false
     } else {
-      topics[index].flod = true
+      wa_list[index].flod = true
     }
     this.setData({
-      topics: topics
+      wa_list: wa_list
     })
   },
 

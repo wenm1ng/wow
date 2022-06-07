@@ -1,7 +1,7 @@
 {
   "pages": [
+    "pages/wa/index",
     "pages/topic/index",
-    "pages/hole/index",
     "pages/stake-man-entry/index",
     "pages/attribute-edit/index",
     "pages/select-occupation/index",
@@ -21,7 +21,7 @@
     "pages/auth/index",
     "pages/setting/index",
     "pages/select-talent/index",
-    "pages/wa/index"
+    "pages/wa-list/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

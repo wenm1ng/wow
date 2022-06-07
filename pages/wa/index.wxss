@@ -12,16 +12,36 @@
 
   .wa-right-tab {
     float: right;
+    /* flex: 1;
+    overflow: hidden;
+    overflow-y:scroll;
+    position: fixed;
+    left:300rpx; */
     display: block;
     /* padding: 20rpx; */
     font-size: 37rpx;
     background-color: rgb(229, 229, 229);
-    width: 70%;
+    width: 90%;
     height:150rpx;
     color:black;
     margin-top:30rpx;
     border-radius: 8px;
+  }
+
+  .wa-right{
     overflow: auto;
+    height:600rpx;
+  }
+
+  .text-title{
+      font-size: 38rpx;
+      /* color:#A0A0A0; */
+      margin:23rpx 0 20rpx 0;
+  }
+
+  .text-title > text {
+      margin-left:22rpx;
+      margin-right:20rpx;
   }
 
   .wa-tab-text-left{
@@ -53,7 +73,8 @@
       display:none !important;
   }
   .btnImg{
-      height:300rpx;
+      height:310rpx;
+      margin-top:7rpx;
   }
   .whiteBackground{
       background-color: #F7F7F7;
