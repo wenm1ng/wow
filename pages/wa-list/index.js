@@ -66,11 +66,10 @@ Page({
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code == 200) {
         for(var index in res.data.data){
-          var val = res.data.data[index]
+          var val = res.data.data['list'][index]
         }
-        console.log(res.data.data);
         this.setData({
-          wa_list: res.data.data
+          wa_list: res.data.data['list']
         })
       }
     })
@@ -271,7 +270,7 @@ Page({
     const index = event.target.dataset.index
     let wa_list = this.data.wa_list
 
-    if (topics[index].flod) {
+    if (wa_list[index].flod) {
       wa_list[index].flod = false
     } else {
       wa_list[index].flod = true

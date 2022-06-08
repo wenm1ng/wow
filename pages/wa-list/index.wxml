@@ -30,8 +30,8 @@
 		wx:for="{{wa_list}}" l-img-class="l-img" wx:key="item" wx:for-index="cardIndex" title="{{item.title}}" describe="{{item.update_at}} 由 {{item.user_name}} 上传"
 		bind:linavatar="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}"
 		bind:lintitle="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}" data-user-id="{{item.user.id}}">
-		<view class="{{item.description.length >= 200 && item.flod ? 'content-close' : 'avater-content'}}"
-			data-id="{{item.id}}" bindtap="gotoDetail">{{item.content}}</view>
+		<view class="{{item.description.length >= 200 && !item.flod ? 'content-close' : 'avater-content'}}"
+			data-id="{{item.id}}" bindtap="gotoDetail">{{item.description}}</view>
 		<view wx:if="{{item.description.length >= 200}}" data-index="{{cardIndex}}" class="text-flod" bindtap="onFlodTap">
 			{{item.flod ? '收起' : '全文'}}</view>
 
