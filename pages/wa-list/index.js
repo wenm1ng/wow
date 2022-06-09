@@ -31,7 +31,7 @@ Page({
     showAction: false, // 是否显示操作菜单
     isEnd: false, // 是否到底
     inRequest: false, // 在请求中
-    loading: false, // 是否正在加载
+    loading: true, // 是否正在加载
     toTag: null, // 滚动到标签
     version: 1,
     talentName : '',
@@ -61,15 +61,27 @@ Page({
   getWaList(){
     const that = this
     const url = api.waAPI+'get-wa-list?version='+ this.data.version + '&talent_name='+ this.data.talentName + '&type=' + this.data.type + '&tt_id=' + this.data.ttId + 
-    '&oc=' + this.data.occupation + '&page=' + this.data.page
+    '&oc=' + this.data.occupation + '&page=' + this.data.page + '&pageSize=' + pageSize
     const data = {}
+    const page = this.data.page
+
+    if ((this.data.isEnd && page != 1) || this.data.inRequest) {
+      return
+    }
+
+    this.setData({
+      inRequest: true
+    })
+
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code == 200) {
-        for(var index in res.data.data){
-          var val = res.data.data['list'][index]
-        }
+        const wa_list = res.data.data['list']
         this.setData({
-          wa_list: res.data.data['list']
+          page: (wa_list.length == 0 && page != 1) ? page - 1 : page,
+          loading: false,
+          inRequest: false,
+          isEnd: ((wa_list.length < pageSize) || (wa_list.length == 0 && page != 1)) ? true : false,
+          wa_list: page == 1 ? wa_list : this.data.wa_list.concat(wa_list)
         })
       }
     })
@@ -154,49 +166,17 @@ Page({
   },
 
   /**
-   * 获取话题
-   */
-  getTopics(page = 1, labelId = -1, size = pageSize) {
-    const url = api.topicAPI
-    let data = {
-      app_id: app.globalData.appId,
-      size: size,
-      page: page
-    }
-
-    if (labelId != -1) {
-      data["label_id"] = labelId
-    }
-
-    if ((this.data.isEnd && page != 1) || this.data.inRequest) {
-      return
-    }
-
-    this.setData({
-      inRequest: true
-    })
-
-    wxutil.request.get(url, data).then((res) => {
-      if (res.data.code == 200) {
-        const topics = res.data.data
-        this.setData({
-          page: (topics.length == 0 && page != 1) ? page - 1 : page,
-          loading: false,
-          inRequest: false,
-          isEnd: ((topics.length < pageSize) || (topics.length == 0 && page != 1)) ? true : false,
-          topics: page == 1 ? topics : this.data.topics.concat(topics)
-        })
-      }
-    })
-  },
-
-  /**
    * 图片预览
    */
   previewImage(event) {
     const index = event.currentTarget.dataset.index
     const current = event.currentTarget.dataset.src
-    const urls = this.data.topics[index].images
+    
+    const urls = [];
+    for(var key in this.data.wa_list[index].images){
+      var val = this.data.wa_list[index].images[key]['image_url']
+      urls.push(val)
+    }
 
     wx.previewImage({
       current: current,
@@ -208,13 +188,7 @@ Page({
    * 下拉刷新
    */
   scrollToUpper() {
-    const labelId = this.data.labelId
-
-    // if (labelId == -1) {
-    //   this.getTopics()
-    // } else {
-    //   this.getTopics(1, labelId)
-    // }
+    this.getWaList()
     // 振动交互
     wx.vibrateShort()
   },
@@ -223,17 +197,14 @@ Page({
    * 触底加载
    */
   scrollToLower() {
-    const labelId = this.data.labelId
     const page = this.data.page
-
+    console.log('wenming')
     this.setData({
-      loading: true
+      loading: true,
+      page:page + 1
     })
-    // if (labelId == -1) {
-    //   this.getTopics(page + 1)
-    // } else {
-    //   this.getTopics(page + 1, labelId)
-    // }
+    
+    this.getWaList()
   },
 
   /**
@@ -429,39 +400,46 @@ Page({
    * 点赞或取消点赞
    */
   onStarTap(event) {
-    const index = event.currentTarget.dataset.index
-    let topics = this.data.topics
+    if (app.globalData.userDetail) {
+      const index = event.currentTarget.dataset.index
+      let wa_list = this.data.wa_list
 
-    const url = api.starAPI
-    const data = {
-      topic_id: topics[index].id
-    }
-
-    wxutil.request.post(url, data).then((res) => {
-      if (res.data.code == 200) {
-        const hasStar = topics[index].has_star
-        topics[index].has_star = !topics[index].has_star
-
-        if (hasStar) {
-          topics[index].star_count--
-        } else {
-          topics[index].star_count++
-        }
-
-        this.setData({
-          topics: topics
-        })
+      const url = api.userAPI + 'likes'
+      const data = {
+        link_id: wa_list[index].id,
+        type:2
       }
-    })
+
+      wxutil.request.post(url, data).then((res) => {
+        if (res.data.code == 200) {
+          const hasLikes = wa_list[index].has_likes
+          wa_list[index].has_likes = !wa_list[index].has_likes
+
+          if (hasLikes) {
+            wa_list[index].likes_count--
+          } else {
+            wa_list[index].likes_count++
+          }
+
+          this.setData({
+            wa_list: wa_list
+          })
+        }
+      })
+    } else {
+      wx.navigateTo({
+        url: "/pages/auth/index"
+      })
+    }
   },
 
   /**
    * 跳转话题详情页
    */
   gotoDetail(event) {
-    const topicId = event.currentTarget.dataset.id
+    const waId = event.currentTarget.dataset.id
     wx.navigateTo({
-      url: "/pages/topic-detail/index?topicId=" + topicId
+      url: "/pages/wa-detail/index?id=" + waId
     })
   },
 

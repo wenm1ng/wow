@@ -21,7 +21,8 @@
     "pages/auth/index",
     "pages/setting/index",
     "pages/select-talent/index",
-    "pages/wa-list/index"
+    "pages/wa-list/index",
+    "pages/wa-detail/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

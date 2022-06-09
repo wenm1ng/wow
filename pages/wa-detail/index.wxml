@@ -1,0 +1,109 @@
+<!-- pages/wa_info-detail/index.wxml -->
+
+<!-- 动态详情 -->
+<l-card wx:if="{{wa_info.id}}" type="avatar" l-class="card"
+	l-title-class="{{wa_info.user_id != -1 ? 'nick-name' : 'nick-name-anon'}}" image="{{wa_info.avatar_url}}"
+	title="{{wa_info.title}}" describe="{{wa_info.update_at}} 由 {{wa_info.user_name}} 上传"
+	bind:linavatar="{{wa_info.user.id != -1 ? 'gotoVisitingCard' : ''}}"
+	bind:lintitle="{{wa_info.user.id != -1 ? 'gotoVisitingCard' : ''}}" data-user-id="{{wa_info.user_id}}">
+	<view class="avater-content">{{wa_info.description}}</view>
+	<view class="posters">
+		<block wx:if="{{wa_info.images.length == 1}}">
+			<image class="column-one" src="{{wa_info.images[0].image_url}}" mode="widthFix" bindtap="previewImage"
+				data-src="{{wa_info.images[0].image_url}}" lazy-load />
+		</block>
+		<block wx:elif="{{wa_info.images.length == 2 || wa_info.images.length == 4}}">
+			<image class="column-two" wx:for="{{wa_info.images}}" wx:key="item" src="{{item.image_url}}" mode="aspectFill"
+				bindtap="previewImage" data-src="{{item.image_url}}" lazy-load />
+		</block>
+		<block wx:else>
+			<image wx:for="{{wa_info.images}}" wx:key="item" src="{{item.image_url}}" mode="aspectFill" bindtap="previewImage"
+				data-src="{{item.image_url}}" lazy-load />
+		</block>
+	</view>
+
+	<view class="label-box" wx:if="{{wa_info.label}}">
+		<!-- <l-tag wx:for="{{wa_info.label}}" wx:key="item" l-class="tag" shape="circle" bg-color="#337559" font-color="#337559"
+			plain bind:lintap="gotowa_info" data-label="{{item}}">#{{item}}</l-tag> -->
+            <l-tag l-class="tag" shape="circle" bg-color="#337559" font-color="#337559"
+			plain bind:lintap="gotowa_info" data-label="{{wa_info.label}}">#{{wa_info.label}}</l-tag>
+	</view>
+
+	<view class="avater-share-container">
+		<view class="like-container" bindtap="onCommentTap">
+			<l-icon name="comment" color="{{wa_info.has_comment ? '#d81e05' : '#666'}}" size="28" />
+			<view class="{{wa_info.has_comment ? 'has-text' : ''}} number">{{wa_info.comment_count}}</view>
+		</view>
+		<view class="like-container" bindtap="onStarTap">
+			<l-icon name="like" color="{{wa_info.is_like ? '#d81e05' : '#666'}}" size="28" />
+			<view class="{{wa_info.is_like ? 'has-text' : ''}} number">{{wa_info.likes_count}}</view>
+		</view>
+		<view class="like-container">
+			<l-icon name="eye" color="#666" size="28" />
+			<view class="number">{{wa_info.read_num}}</view>
+		</view>
+	</view>
+	<l-icon l-class="ellipsis" slot="more" name="ellipsis" color="#777" size="32" bindtap="onMoreTap" />
+</l-card>
+
+<!-- 收藏 -->
+<view wx:if="{{waInfo.id}}" class="star-box" wx:if="{{waInfo.likes_num.length > 0}}">
+	<view class="star-content">
+		<image wx:for="{{waInfo.likes_num}}" wx:key="item" class="avatar" src="{{item.user.avatar}}" data-user-id="{{item.user.id}}"
+			bindtap="gotoVisitingCard" />
+	</view>
+	<view class="star-icon-box">
+		收藏
+		<l-icon l-class="star-icon" name="like" size="28" color="#777" />
+	</view>
+</view>
+
+<!-- 评论 -->
+<view wx:if="{{wa_info.id}}" class="comment-box" wx:if="{{comments.length > 0}}">
+	<view class="comment" wx:for="{{comments}}" wx:key="item" data-index="{{index}}" bindtap="onCommentItemTap">
+		<image class="avatar" src="{{item.avatar_url}}" data-user-id="{{item.user_id}}" catchtap="gotoVisitingCard" />
+		<view class="comment-right {{index == comments.length - 1 && isEnd ? 'non-border' : ''}}">
+			<view class="comment-top">
+				<view class="nick-name" data-user-id="{{item.user_id}}" catchtap="gotoVisitingCard">{{item.user_name}}
+				</view>
+				<view class="time">{{item.create_at}}</view>
+			</view>
+			<view class="comment-bottom">
+				<view class="content">
+					<text wx:if="{{item.reply_user.id}}">回复</text>
+					<text wx:if="{{item.reply_user.id}}" class="nick-name">{{item.reply_user.nick_name}}: </text>{{item.content}}
+				</view>
+				<view class="delete-box" wx:if="{{userId == item.user.id}}">
+					<view class="delete-text" data-id="{{item.id}}" catchtap="deleteComment">删除</view>
+				</view>
+			</view>
+		</view>
+	</view>
+	<view class="more" wx:if="{{!isEnd}}" bindtap="getMoreComments">
+		<text>展开更多评论</text>
+		<view class="more-icon">
+			<l-icon name="down" color="#337559" size="22" />
+		</view>
+	</view>
+</view>
+
+<!-- 评论编辑区 -->
+<view wx:if="{{wa_info.id}}" class="comment-edit">
+	<l-input hide-label maxlength="150" width="600" focus="{{focus}}" placeholder="{{placeholder}}" value="{{comment}}"
+		bind:lininput="inputComment" />
+	<l-button shape="circle" size="mini" bg-color="#337559" width="125" height="60" bind:lintap="onCommntBtnTap">评论
+	</l-button>
+</view>
+
+<!-- nothing -->
+<nothing wx:if="{{!wa_info.id}}" pic="../../images/icon_nothing/pic_wa_info.png" tip="该话题消失了" />
+
+<!-- 操作菜单 -->
+<l-action-sheet show-cancel open-api="{{false}}" item-list="{{actionList}}" show="{{showAction}}"
+	bind:linitemtap="onActionItemtap" bind:lincancel="onCancelSheetTap" />
+
+<!-- 消息提示 -->
+<l-message />
+
+<!-- 消息对话框 -->
+<l-dialog />

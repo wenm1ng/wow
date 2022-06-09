@@ -271,7 +271,7 @@ Page({
   scrollToLower() {
     const labelId = this.data.labelId
     const page = this.data.page
-
+    console.log('wenming')
     this.setData({
       loading: true
     })

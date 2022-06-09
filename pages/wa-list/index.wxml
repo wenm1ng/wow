@@ -24,7 +24,7 @@
 </l-popup>
 
 <!-- 动态内容 -->
-<scroll-view scroll-y enable-back-to-top lower-threshold="-35" class="topic-scroll" bindscrolltoupper="scrollToUpper"
+<scroll-view scroll-y enable-back-to-top lower-threshold="5" class="topic-scroll" bindscrolltoupper="scrollToUpper"
 	bindscrolltolower="scrollToLower" style="height:{{height}}rpx">
 	<l-card type="avatar" l-class="card" l-title-class="card-title-anon"
 		wx:for="{{wa_list}}" l-img-class="l-img" wx:key="item" wx:for-index="cardIndex" title="{{item.title}}" describe="{{item.update_at}} 由 {{item.user_name}} 上传"
@@ -56,12 +56,12 @@
 				<view class="{{item.has_comment ? 'has-text' : ''}} number">{{item.comment_count}}</view>
 			</view>
 			<view class="like-container" data-index="{{cardIndex}}" bindtap="onStarTap">
-				<l-icon name="like" color="{{item.has_star ? '#d81e05' : '#666'}}" size="28" />
-				<view class="{{item.has_star ? 'has-text' : ''}} number">{{item.star_count}}</view>
+				<l-icon name="like" color="{{item.has_likes ? '#d81e05' : '#666'}}" size="28" />
+				<view class="{{item.has_likes ? 'has-text' : ''}} number">{{item.likes_count}}</view>
 			</view>
 			<view class="like-container" data-id="{{item.id}}" bindtap="gotoDetail">
 				<l-icon name="eye" color="#666" size="28" />
-				<view class="number">{{item.click_count}}</view>
+				<view class="number">{{item.read_num}}</view>
 			</view>
 		</view>
 		<l-icon l-class="ellipsis" slot="more" name="ellipsis" color="#777" size="32" data-index="{{cardIndex}}"
