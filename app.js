@@ -100,7 +100,7 @@ App({
    * Token无效跳转授权页
    */
   gotoAuthPage(res) {
-    if (res.data.message == "Token Is Invalid") {
+    if (res.data.code == 50002) {
       wx.navigateTo({
         url: "/pages/auth/index",
       })

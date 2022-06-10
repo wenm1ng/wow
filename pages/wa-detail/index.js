@@ -15,6 +15,7 @@ Page({
     page: 1,
     comment: null,
     commentId: null,
+    reply_user_id:null,
     commentTemplateId: null, // 评论模板ID
     focus: false, // 获取焦点
     showAction: false, // 是否显示操作菜单
@@ -99,7 +100,11 @@ Page({
    * 获取收藏
    */
   getStars(waId) {
-    const url = api.starAPI + "topic/" + waId + "/"
+    const url = api.userAPI + 'likes'
+      const data = {
+        link_id: waId,
+        type:2
+      }
 
     wxutil.request.get(url).then((res) => {
       if (res.data.code == 200) {
@@ -301,29 +306,28 @@ Page({
    * 点赞或取消点赞
    */
   onStarTap(event) {
-    let topic = this.data.topic
+    let wa_info = this.data.wa_info
 
-    const url = api.starAPI
+    const url = api.waAPI
     const data = {
-      topic_id: topic.id
+      link_id: wa_info.id,
+      type:2
     }
 
     wxutil.request.post(url, data).then((res) => {
       if (res.data.code == 200) {
-        // 重新获取收藏列表
-        this.getStars(topic.id)
 
-        const hasStar = topic.has_star
-        topic.has_star = !topic.has_star
+        const is_like = wa_info.is_like
+        wa_info.is_like = !wa_info.is_like
 
-        if (hasStar) {
-          topic.star_count--
+        if (is_like) {
+          wa_info.likes_count--
         } else {
-          topic.star_count++
+          wa_info.likes_count++
         }
 
         this.setData({
-          topic: topic
+          wa_info: wa_info
         })
       }
     })
@@ -338,6 +342,14 @@ Page({
     })
   },
 
+  
+  //点击回复input获取焦点
+  onClickReply(e){  
+      setTimeout(function(){  
+          this.data.focus = true;
+      },500)  
+  },
+
   /**
    * 点击评论列表
    */
@@ -346,7 +358,8 @@ Page({
     this.setData({
       focus: true,
       commentId: this.data.comments[index].id,
-      placeholder: "@" + this.data.comments[index].user.nick_name
+      placeholder: "@" + this.data.comments[index].user_name,
+      reply_user_id:this.data.comments[index].userid,
     })
   },
 
@@ -365,6 +378,12 @@ Page({
    * 发送评论
    */
   onCommntBtnTap() {
+    if (!app.globalData.userDetail) {
+      wx.navigateTo({
+        url: "/pages/auth/index"
+      })
+    }
+
     const comment = this.data.comment
     if (!wxutil.isNotNull(comment)) {
       wx.lin.showMessage({
@@ -374,26 +393,26 @@ Page({
       return
     }
 
-    // 授权模板消息
-    const templateId = this.data.commentTemplateId
     const that = this
 
     wx.requestSubscribeMessage({
-      tmplIds: [templateId],
       complete() {
         // 发送评论
-        const url = api.commentAPI
-        let topic = that.data.topic
-        const waId = topic.id
+        const url = api.waAPI + 'to-comment'
+        let wa_info = that.data.wa_info
+        const waId = wa_info.id
         let data = {
           content: comment,
-          topic_id: waId
+          wa_id: waId,
+
         }
 
         if (that.data.commentId) {
           data["comment_id"] = that.data.commentId
         }
-
+        if(that.data.reply_user_id){
+          data["reply_user_id"] = that.data.reply_user_id
+        }
         wxutil.request.post(url, data).then((res) => {
           if (res.data.code == 200) {
             wx.lin.showMessage({
@@ -408,11 +427,11 @@ Page({
               })
             }, 1000)
 
-            topic.has_comment = true
-            topic.comment_count++
-
+            wa_info.has_comment = true
+            wa_info.comment_count++
+            console.log(this.data.comments)
             that.setData({
-              topic: topic,
+              wa_info: wa_info,
               comment: null,
               commentId: null,
               placeholder: "评论点什么吧..."

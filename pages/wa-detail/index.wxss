@@ -147,6 +147,7 @@ page {
 .comment-box {
   width: 100%;
   background: #fff;
+  height:100%;
 }
 
 .comment-box .comment {

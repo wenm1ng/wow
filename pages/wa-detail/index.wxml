@@ -47,7 +47,7 @@
 </l-card>
 
 <!-- 收藏 -->
-<view wx:if="{{waInfo.id}}" class="star-box" wx:if="{{waInfo.likes_num.length > 0}}">
+<!-- <view wx:if="{{waInfo.id}}" class="star-box" wx:if="{{waInfo.likes_num.length > 0}}">
 	<view class="star-content">
 		<image wx:for="{{waInfo.likes_num}}" wx:key="item" class="avatar" src="{{item.user.avatar}}" data-user-id="{{item.user.id}}"
 			bindtap="gotoVisitingCard" />
@@ -56,11 +56,10 @@
 		收藏
 		<l-icon l-class="star-icon" name="like" size="28" color="#777" />
 	</view>
-</view>
-
+</view> -->
 <!-- 评论 -->
 <view wx:if="{{wa_info.id}}" class="comment-box" wx:if="{{comments.length > 0}}">
-	<view class="comment" wx:for="{{comments}}" wx:key="item" data-index="{{index}}" bindtap="onCommentItemTap">
+	<view class="comment" wx:for="{{comments}}" wx:key="item">
 		<image class="avatar" src="{{item.avatar_url}}" data-user-id="{{item.user_id}}" catchtap="gotoVisitingCard" />
 		<view class="comment-right {{index == comments.length - 1 && isEnd ? 'non-border' : ''}}">
 			<view class="comment-top">
@@ -70,11 +69,14 @@
 			</view>
 			<view class="comment-bottom">
 				<view class="content">
-					<text wx:if="{{item.reply_user.id}}">回复</text>
-					<text wx:if="{{item.reply_user.id}}" class="nick-name">{{item.reply_user.nick_name}}: </text>{{item.content}}
+					<text wx:if="{{item.reply_user_id}}">回复</text>
+					<text class="nick-name">{{item.reply_user_name}}: </text>{{item.content}}
 				</view>
-				<view class="delete-box" wx:if="{{userId == item.user.id}}">
+				<view class="delete-box" wx:if="{{userId == item.user_id}}">
 					<view class="delete-text" data-id="{{item.id}}" catchtap="deleteComment">删除</view>
+				</view>
+				<view class="delete-box" wx:if="{{userId != item.user_id}}">
+					<view class="delete-text" data-id="{{item.id}}" data-index="{{index}}" data-index="{item.user_id}" bindtap="onCommentItemTap">回复</view>
 				</view>
 			</view>
 		</view>
@@ -96,7 +98,7 @@
 </view>
 
 <!-- nothing -->
-<nothing wx:if="{{!wa_info.id}}" pic="../../images/icon_nothing/pic_wa_info.png" tip="该话题消失了" />
+<nothing wx:if="{{!wa_info.id}}" pic="../../images/icon_nothing/pic_topic.png" tip="该wa消失了" />
 
 <!-- 操作菜单 -->
 <l-action-sheet show-cancel open-api="{{false}}" item-list="{{actionList}}" show="{{showAction}}"
