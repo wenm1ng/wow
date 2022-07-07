@@ -19,7 +19,8 @@ Page({
     commentTemplateId: null, // 评论模板ID
     focus: false, // 获取焦点
     showAction: false, // 是否显示操作菜单
-    isEnd: false // 是否到底
+    isEnd: false, // 是否到底onStarTap
+    isShowWa: false //是否弹出wa字符串复制
   },
 
   onLoad(options) {
@@ -54,6 +55,15 @@ Page({
           // this.getTemplateId()
         }
       }
+    })
+  },
+
+  /**
+   * 弹出wa字符串复制层
+   */
+  popWa(){
+    this.setData({
+      isShowWa:true
     })
   },
 
@@ -140,7 +150,7 @@ Page({
    */
   getMoreComments() {
     const page = this.data.page
-    const waId = this.data.topic.id
+    const waId = this.data.wa_info.id
     this.getComments(waId, page + 1)
   },
 
@@ -149,7 +159,12 @@ Page({
    */
   previewImage(event) {
     const current = event.currentTarget.dataset.src
-    const urls = this.data.topic.images
+
+    const urls = [];
+    for(var key in this.data.wa_info.images){
+      var val = this.data.wa_info.images[key]['image_url']
+      urls.push(val)
+    }
 
     wx.previewImage({
       current: current,
@@ -306,9 +321,14 @@ Page({
    * 点赞或取消点赞
    */
   onStarTap(event) {
+    if (!app.globalData.userDetail) {
+      wx.navigateTo({
+        url: "/pages/auth/index"
+      })
+    }
     let wa_info = this.data.wa_info
 
-    const url = api.waAPI
+    const url = api.userAPI + 'likes';
     const data = {
       link_id: wa_info.id,
       type:2
@@ -342,12 +362,12 @@ Page({
     })
   },
 
-  
+
   //点击回复input获取焦点
-  onClickReply(e){  
-      setTimeout(function(){  
+  onClickReply(e){
+      setTimeout(function(){
           this.data.focus = true;
-      },500)  
+      },500)
   },
 
   /**
@@ -359,7 +379,7 @@ Page({
       focus: true,
       commentId: this.data.comments[index].id,
       placeholder: "@" + this.data.comments[index].user_name,
-      reply_user_id:this.data.comments[index].userid,
+      reply_user_id:this.data.comments[index].user_id,
     })
   },
 

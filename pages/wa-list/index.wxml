@@ -51,7 +51,7 @@
 		</view>
 
 		<view class="avater-share-container">
-			<view class="like-container" data-id="{{item.id}}" bindtap="onCommentTap">
+			<view class="like-container" data-id="{{item.id}}" bindtap="gotoDetail">
 				<l-icon name="comment" color="{{item.has_comment ? '#d81e05' : '#666'}}" size="28" />
 				<view class="{{item.has_comment ? 'has-text' : ''}} number">{{item.comment_count}}</view>
 			</view>

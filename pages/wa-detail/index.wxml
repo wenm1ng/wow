@@ -1,11 +1,35 @@
 <!-- pages/wa_info-detail/index.wxml -->
 
+<!-- wa字符串复制 -->
+<!--<l-popup show="{{true}}" animation="show" contentAlign="center" locked="{{true}}" bind:lintap="onDialogTap" l-bg-class="l-bg-class" z-index="{{zIndex}}">-->
+<!--	<view class="dialog-container l-class" style="margin-bottom:{{distance}}px">-->
+<!--		<view class="dialog-title l-title-class" style="color:{{titleColor}}">fdsfdsfdsfdsf</view>-->
+<!--		<view class="dialog-content l-content-class" style="color:{{contentColor}}">-->
+<!--			<slot/>-->
+<!--			fdsfdsfdsfdsfdsf-->
+<!--		</view>-->
+<!--		<view class="dialog-btn-group">-->
+<!--			<view class="dialog-btn-cancel l-cancel-class" style="color: {{cancelColor}}" catchtap="onCancelTap" hover-class="{{isHover?'group-hover':''}}" wx:if="{{type==='confirm'}}">{{cancelText}}</view>-->
+<!--			<view class="dialog-btn-confirm l-confirm-class" style="color: {{confirmColor}}" hover-class="{{isHover?'group-hover':''}}" catchtap="onConfirmTap">{{confirmText}}</view>-->
+<!--		</view>-->
+<!--	</view>-->
+<!--</l-popup>-->
+<l-popup show="{{isShowWa}}" content-align="center" >
+	<view>
+		<text>pc端：复制后ctrl+c；移动端：长按黏贴</text>
+		<l-button size="large" bg-color="#337559" bindtap="copyWaStr" style="margin-bottom: 10rpx">复制字符串</l-button>
+		<text>收藏后再也不怕找不到我了噢~</text>
+		<l-button size="large" bg-color="#337559" bindtap="onStarTap">收藏字符串</l-button>
+	</view>
+</l-popup>
+
 <!-- 动态详情 -->
 <l-card wx:if="{{wa_info.id}}" type="avatar" l-class="card"
 	l-title-class="{{wa_info.user_id != -1 ? 'nick-name' : 'nick-name-anon'}}" image="{{wa_info.avatar_url}}"
 	title="{{wa_info.title}}" describe="{{wa_info.update_at}} 由 {{wa_info.user_name}} 上传"
 	bind:linavatar="{{wa_info.user.id != -1 ? 'gotoVisitingCard' : ''}}"
 	bind:lintitle="{{wa_info.user.id != -1 ? 'gotoVisitingCard' : ''}}" data-user-id="{{wa_info.user_id}}">
+	<l-button size="long" bindtap="popWa">获取字符串</l-button>
 	<view class="avater-content">{{wa_info.description}}</view>
 	<view class="posters">
 		<block wx:if="{{wa_info.images.length == 1}}">
@@ -76,7 +100,7 @@
 					<view class="delete-text" data-id="{{item.id}}" catchtap="deleteComment">删除</view>
 				</view>
 				<view class="delete-box" wx:if="{{userId != item.user_id}}">
-					<view class="delete-text" data-id="{{item.id}}" data-index="{{index}}" data-index="{item.user_id}" bindtap="onCommentItemTap">回复</view>
+					<view class="delete-text" data-id="{{item.id}}" data-index="{{index}}" bindtap="onCommentItemTap">回复</view>
 				</view>
 			</view>
 		</view>
