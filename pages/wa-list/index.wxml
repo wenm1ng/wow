@@ -36,15 +36,16 @@
 			{{item.flod ? '收起' : '全文'}}</view>
 
 		<view class="posters" data-id="{{item.id}}" bindtap="gotoDetail">
-			<block wx:if="{{item.images.length == 1}}">
-				<image class="column-one" wx:for="{{item.images}}" wx:key="item" src="{{item.image_url}}" mode="widthFix"
-					catchtap="previewImage" data-src="{{item.image_url}}" data-index="{{cardIndex}}" lazy-load />
-			</block>
-			<block wx:elif="{{item.images.length == 2 || item.images.length == 4}}">
-				<image class="column-two" wx:for="{{item.images}}" wx:key="item" src="{{item.image_url}}" mode="aspectFill"
-					catchtap="previewImage" data-src="{{item.image_url}}" data-index="{{cardIndex}}" lazy-load />
-			</block>
-			<block wx:else>
+<!--			<block wx:if="{{item.images.length == 1}}">-->
+<!--				<image class="column-one" wx:for="{{item.images}}" wx:key="item" src="{{item.image_url}}" mode="widthFix"-->
+<!--					catchtap="previewImage" data-src="{{item.image_url}}" data-index="{{cardIndex}}" lazy-load />-->
+<!--			</block>-->
+<!--			<block wx:elif="{{item.images.length == 2 || item.images.length == 4}}">-->
+<!--				<image class="column-three" wx:for="{{item.images}}" wx:key="item" src="{{item.image_url}}" mode="aspectFill"-->
+<!--					catchtap="previewImage" data-src="{{item.image_url}}" data-index="{{cardIndex}}" lazy-load />-->
+<!--			</block>-->
+<!--			<block wx:else>-->
+			<block>
 				<image wx:for="{{item.images}}" wx:key="item" src="{{item.image_url}}" mode="aspectFill" catchtap="previewImage"
 					data-src="{{item.image_url}}" data-index="{{cardIndex}}" lazy-load />
 			</block>

@@ -66,7 +66,32 @@ Page({
       isShowWa:true
     })
   },
-
+  /**
+   * 复制wa字符串
+   */
+  copyWaStr(){
+    // wx.setClipboardData({
+    //   data: 'data',
+    //   success (res) {
+    //     wx.getClipboardData({
+    //       success (res) {
+    //         console.log(res.data) // data
+    //       }
+    //     })
+    //   }
+    // })
+    wx.setClipboardData({
+      data:this.data.wa_info.wa_content,//要复制的数据
+      success (res) {
+        console.log(res)
+        wx.showToast({
+          title: '复制成功',
+          icon: 'success',
+          duration: 2000//持续的时间
+        })
+      }
+    })
+  },
   /**
    * 获取评论
    */
@@ -317,6 +342,41 @@ Page({
     }
   },
 
+  /**
+   * 收藏wa
+   * @param event
+   */
+  onFavoritesTap(event){
+    if (!app.globalData.userDetail) {
+      wx.navigateTo({
+        url: "/pages/auth/index"
+      })
+    }
+    // let isWa = event.currentTarget.dataset.iswa
+    let wa_info = this.data.wa_info
+
+    const url = api.userAPI + 'favorites/add';
+    const data = {
+      link_id: wa_info.id,
+      type:1
+    }
+
+    wxutil.request.post(url, data).then((res) => {
+      if (res.data.code === 200) {
+        wx.showToast({
+          title: '已收藏',
+          icon: 'success',
+          duration: 2000//持续的时间
+        })
+      }else{
+        wx.showToast({
+          title: '收藏失败！',
+          icon: 'success',
+          duration: 2000//持续的时间
+        })
+      }
+    })
+  },
   /**
    * 点赞或取消点赞
    */
