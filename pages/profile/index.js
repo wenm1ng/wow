@@ -9,7 +9,7 @@ Page({
     user: {},
     topics: [],
     comments: [],
-    stars: [],
+    wa_list: [],
     pageTopic: 1,
     pageComment: 1,
     pageStar: 1,
@@ -21,33 +21,97 @@ Page({
     isEndStar: false, // 收藏是否到底
     isEndComment: false, // 评论是否到底
     loading: false,
-    messageBrief: null
+    messageBrief: null,
+    inRequest: false,
+    userId: 0
   },
 
   onLoad() {
     this.getTabsTop()
+    //获取wa收藏信息
+    // this.getWaFavoritesList(this.data.pageStar)
     // 轮询获取消息概要
     // setInterval(this.getMessageBrief(), 5000)
   },
 
-  onShow() {
-    this.getUser()
-
-    const userId = this.data.user.id
-    if (!userId) {
-      // 数据初始化
-      this.setData({
-        topics: [],
-        comments: [],
-        stars: [],
-        pageTopic: 1,
-        pageComment: 1,
-        pageStar: 1,
-        isEndTopic: false,
-        isEndStar: false,
-        isEndComment: false
+  /**
+   * 获取收藏wa列表
+   */
+  getWaFavoritesList(page = 1){
+    if (!app.globalData.userDetail) {
+      wx.navigateTo({
+        url: "/pages/auth/index"
       })
     }
+    this.setData({
+      userId: app.globalData.userDetail.id
+    })
+    const data = {}
+    const url = api.waAPI+'get-wa-favorites-list?page='+ page + '&pageSize='+ pageSize;
+
+
+    if ((this.data.isEndStar && page !== 1) || this.data.inRequest) {
+      return
+    }
+
+    this.setData({
+      inRequest: true
+    })
+
+    wxutil.request.get(url, data).then((res) => {
+      if (res.data.code === 200) {
+        const wa_list = res.data.data['list']
+        this.setData({
+          page: (wa_list.length === 0 && page !== 1) ? page - 1 : page,
+          loading: false,
+          inRequest: false,
+          isEndStar: ((wa_list.length < pageSize) || (wa_list.length === 0 && page !== 1)),
+          wa_list: page === 1 ? wa_list : this.data.wa_list.concat(wa_list)
+        })
+      }
+    })
+  },
+
+  /**
+   * 获取用户评论
+   */
+  getComments(page = 1) {
+    if (!app.globalData.userDetail) {
+      wx.navigateTo({
+        url: "/pages/auth/index"
+      })
+    }
+
+    const url = api.waAPI + 'get-comment-all'
+    const pageComment = page
+    let data = {
+      pageSize: pageSize,
+      page: page
+    }
+
+    if (this.data.isEndComment && pageComment !== 1 || this.data.inRequest) {
+      return
+    }
+
+    this.setData({
+      inRequest: true
+    })
+
+    wxutil.request.get(url, data).then((res) => {
+      if (res.data.code === 200) {
+        const comments = res.data.data
+        this.setData({
+          pageComment: (comments.length === 0 && pageComment !== 1) ? pageComment - 1 : pageComment,
+          loading: false,
+          isEndComment: ((comments.length < pageSize) || (comments.length === 0 && pageComment !== 1)),
+          comments: pageComment === 1 ? comments : this.data.comments.concat(comments)
+        })
+      }
+    })
+  },
+
+  onShow() {
+      this.getUser()
   },
 
   /**
@@ -67,56 +131,13 @@ Page({
    * 获取用户信息
    */
   getUser() {
-    const userInfo = wxutil.getStorage("userInfo")
-    let userDetail = app.globalData.userDetail
-
-    // 使用userInfo作为用户信息
-    if (userInfo && !userDetail) {
-      this.setData({
-        user: userInfo,
-        isAuth: false
-      })
-    }
-
-    // 授权用户使用userDetail作为用户信息
-    if (userDetail) {
-      const userId = userDetail.id
-      const url = api.userAPI + userId + "/"
-
-      wxutil.request.get(url).then((res) => {
-        if (res.data.code == 200) {
-          // 更新缓存
-          const user = res.data.data
-          userDetail = Object.assign(userDetail, user)
-          wxutil.setStorage("userDetail", userDetail)
-          app.globalData.userDetail = userDetail
-
-          this.setData({
-            isAuth: true,
-            user: userDetail
-          })
-
-          const tabIndex = this.data.tabIndex
-          if (tabIndex == 0) {
-            this.getTopics(userId)
-          }
-          if (tabIndex == 1) {
-            this.getComments(userId)
-          }
-          if (tabIndex == 2) {
-            this.getStars(userId)
-          }
-        }
-      })
-    }
-
-    // 两种用户信息都没有
-    if (!userInfo && !userDetail) {
-      this.setData({
-        user: {},
-        isAuth: false
-      })
-    }
+      const tabIndex = this.data.tabIndex
+      if (tabIndex === 1) {
+        this.getComments()
+      }
+      if (tabIndex === 0) {
+        this.getWaFavoritesList()
+      }
   },
 
   /**
@@ -141,60 +162,6 @@ Page({
           loading: false,
           isEndTopic: ((topics.length < pageSize) || (topics.length == 0 && pageTopic != 1)) ? true : false,
           topics: pageTopic == 1 ? topics : this.data.topics.concat(topics)
-        })
-      }
-    })
-  },
-
-  /**
-   * 获取用户收藏
-   */
-  getStars(userId, pageStar = 1, size = pageSize) {
-    const url = api.starAPI + "user/" + userId + "/"
-    let data = {
-      size: size,
-      page: pageStar
-    }
-
-    if (this.data.isEndStar && pageStar != 1) {
-      return
-    }
-
-    wxutil.request.get(url, data).then((res) => {
-      if (res.data.code == 200) {
-        const stars = res.data.data
-        this.setData({
-          pageStar: (stars.length == 0 && pageStar != 1) ? pageStar - 1 : pageStar,
-          loading: false,
-          isEndStar: ((stars.length < pageSize) || (stars.length == 0 && pageStar != 1)) ? true : false,
-          stars: pageStar == 1 ? stars : this.data.stars.concat(stars)
-        })
-      }
-    })
-  },
-
-  /**
-   * 获取用户评论
-   */
-  getComments(userId, pageComment = 1, size = pageSize) {
-    const url = api.commentAPI + "user/" + userId + "/"
-    let data = {
-      size: size,
-      page: pageComment
-    }
-
-    if (this.data.isEndComment && pageComment != 1) {
-      return
-    }
-
-    wxutil.request.get(url, data).then((res) => {
-      if (res.data.code == 200) {
-        const comments = res.data.data
-        this.setData({
-          pageComment: (comments.length == 0 && pageComment != 1) ? pageComment - 1 : pageComment,
-          loading: false,
-          isEndComment: ((comments.length < pageSize) || (comments.length == 0 && pageComment != 1)) ? true : false,
-          comments: pageComment == 1 ? comments : this.data.comments.concat(comments)
         })
       }
     })
@@ -237,21 +204,15 @@ Page({
    */
   changeTabs(event) {
     const tabIndex = event.detail.currentIndex
-    const userId = this.data.user.id
     this.setData({
       tabIndex: tabIndex
     })
 
-    if (userId) {
-      if (tabIndex == 0) {
-        this.getTopics(userId)
-      }
-      if (tabIndex == 1) {
-        this.getComments(userId)
-      }
-      if (tabIndex == 2) {
-        this.getStars(userId)
-      }
+    if (tabIndex === 0) {
+      this.getWaFavoritesList(this.data.pageStar);
+    }
+    if (tabIndex === 1) {
+      this.getComments(this.data.pageComment)
     }
   },
 
@@ -294,10 +255,10 @@ Page({
   /**
    * 跳转话题详情页
    */
-  gotoTopicDetail(event) {
-    const topicId = event.currentTarget.dataset.id
+  gotoWaDetail(event) {
+    const waId = event.currentTarget.dataset.id
     wx.navigateTo({
-      url: "/pages/topic-detail/index?topicId=" + topicId
+      url: "/pages/wa-detail/index?id=" + waId
     })
   },
 
@@ -396,22 +357,17 @@ Page({
    */
   onReachBottom() {
     const tabIndex = this.data.tabIndex
-    const userId = this.data.user.id
 
     this.setData({
       loading: true
     })
-    if (tabIndex == 0) {
-      const page = this.data.pageTopic
-      this.getTopics(userId, page + 1)
-    }
-    if (tabIndex == 1) {
+    if (tabIndex === 1) {
       const page = this.data.pageComment
-      this.getComments(userId, page + 1)
+      this.getComments(page + 1)
     }
-    if (tabIndex == 2) {
+    if (tabIndex === 0) {
       const page = this.data.pageStar
-      this.getStars(userId, page + 1)
+      this.getWaFavoritesList(page + 1)
     }
   },
 
@@ -488,19 +444,20 @@ Page({
     wx.lin.showDialog({
       type: "confirm",
       title: "提示",
-      content: "确定要取消收藏该话题？",
+      content: "确定要取消收藏该wa？",
       success: (res) => {
         if (res.confirm) {
-          const topicId = event.currentTarget.dataset.id
-          const url = api.starAPI
+          const waId = event.currentTarget.dataset.id
+          const url = api.userAPI + 'favorites/cancel'
 
           const data = {
-            topic_id: topicId
+            link_id: waId,
+            type: 1
           }
 
           wxutil.request.post(url, data).then((res) => {
-            if (res.data.code == 200) {
-              this.getStars(this.data.user.id)
+            if (res.data.code === 200) {
+              this.getWaFavoritesList()
 
               wx.lin.showMessage({
                 type: "success",

@@ -4,6 +4,10 @@ page {
   padding-bottom: 88rpx;
 }
 
+#version view{
+  margin:0 0 0 40rpx;
+}
+
 .card {
   width: 100% !important;
   margin-bottom: 20rpx !important;

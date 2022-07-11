@@ -210,7 +210,7 @@ Page({
       color: "#666"
     }]
 
-    if (this.data.userId == this.data.topic.user.id) {
+    if (this.data.userId == this.data.wa_info.user_id) {
       actionList.push({
         name: "删除",
         color: "#d81e05"
@@ -288,7 +288,7 @@ Page({
     wx.lin.showDialog({
       type: "confirm",
       title: "提示",
-      content: "确定要举报该话题？",
+      content: "确定要举报该wa？",
       success: (res) => {
         if (res.confirm) {
           const waId = this.data.topic.id

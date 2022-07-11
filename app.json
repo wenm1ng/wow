@@ -22,12 +22,15 @@
     "pages/setting/index",
     "pages/select-talent/index",
     "pages/wa-list/index",
-    "pages/wa-detail/index"
+    "pages/wa-detail/index",
+    "pages/user-favorites/index",
+    "pages/help/index",
+    "pages/preparing/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "魔兽世界打木桩助手",
+    "navigationBarTitleText": "魔兽世界wa助手",
     "navigationBarTextStyle": "black",
     "backgroundColor": "#f7f7f7"
   },
@@ -37,16 +40,16 @@
     "selectedColor": "#337559",
     "list": [
       {
-        "pagePath": "pages/topic/index",
-        "text": "主页",
-        "iconPath": "images/icon_tab/topic.png",
-        "selectedIconPath": "images/icon_tab/topic_hl.png"
-      },
-      {
         "pagePath": "pages/wa/index",
-        "text": "打木桩",
+        "text": "首页",
         "iconPath": "images/icon_tab/hole.png",
         "selectedIconPath": "images/icon_tab/hole_hl.png"
+      },
+      {
+        "pagePath": "pages/preparing/index",
+        "text": "帮帮忙",
+        "iconPath": "images/icon_tab/topic.png",
+        "selectedIconPath": "images/icon_tab/topic_hl.png"
       },
       {
         "pagePath": "pages/profile/index",

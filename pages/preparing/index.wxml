@@ -1,0 +1,11 @@
+<!--pages/following/index.wxml -->
+
+        <!-- nothing -->
+<nothing pic="../../images/icon_nothing/pic_hole.png" tip="敬请期待" />
+
+
+        <!-- 操作菜单 -->
+<l-action-sheet l-title-class="action-title" />
+
+        <!-- 消息提示 -->
+<l-message />

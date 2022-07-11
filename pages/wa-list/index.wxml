@@ -73,9 +73,9 @@
 </scroll-view>
 
 <!-- 编辑按钮 -->
-<view class="btn-edit" bindtap="onEditTap">
-	<l-icon name="edit" color="#fff" size="30" />
-</view>
+<!--<view class="btn-edit" bindtap="onEditTap">-->
+<!--	<l-icon name="edit" color="#fff" size="30" />-->
+<!--</view>-->
 
 <!-- nothing -->
 <nothing wx:if="{{topics.length == 0}}" pic="../../images/icon_nothing/pic_topic.png" tip="暂时没有话题" />

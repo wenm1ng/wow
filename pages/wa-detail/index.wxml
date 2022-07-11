@@ -16,9 +16,13 @@
 <!--</l-popup>-->
 <l-popup show="{{isShowWa}}" content-align="center" >
 	<view class='mask-content'>
-		<text>pc端：复制后ctrl+c；移动端：长按黏贴</text>
-		<l-button size="large" bg-color="#337559" bindtap="copyWaStr" style="margin-bottom: 10rpx">复制字符串</l-button>
-		<text>收藏后再也不怕找不到我了噢~</text>
+		<view>
+			<text style="color:white;">pc端：复制后ctrl+c；移动端：长按黏贴</text>
+		</view>
+		<l-button size="large" bg-color="#337559" bindtap="copyWaStr" style="margin-bottom: 20rpx">复制字符串</l-button>
+		<view>
+			<text style="color:white;">收藏后再也不怕找不到我了噢~</text>
+		</view>
 		<l-button size="large" bg-color="#337559" data-iswa="1" bindtap="onFavoritesTap">收藏字符串</l-button>
 	</view>
 </l-popup>
@@ -27,9 +31,9 @@
 <l-card wx:if="{{wa_info.id}}" type="avatar" l-class="card"
 	l-title-class="{{wa_info.user_id != -1 ? 'nick-name' : 'nick-name-anon'}}" image="{{wa_info.avatar_url}}"
 	title="{{wa_info.title}}" describe="{{wa_info.update_at}} 由 {{wa_info.user_name}} 上传"
-	bind:linavatar="{{wa_info.user.id != -1 ? 'gotoVisitingCard' : ''}}"
-	bind:lintitle="{{wa_info.user.id != -1 ? 'gotoVisitingCard' : ''}}" data-user-id="{{wa_info.user_id}}">
-	<l-button size="long" bindtap="popWa">获取字符串</l-button>
+	bind:linavatar="{{wa_info.user_id != 0 ? 'gotoVisitingCard' : ''}}"
+	bind:lintitle="{{wa_info.user_id != 0 ? 'gotoVisitingCard' : ''}}" data-user-id="{{wa_info.user_id}}">
+	<l-button size="long" bg-color="#337559" bindtap="popWa">获取字符串</l-button>
 	<view class="avater-content">{{wa_info.description}}</view>
 	<view class="posters">
 		<block wx:if="{{wa_info.images.length == 1}}">
@@ -46,35 +50,7 @@
 		</block>
 	</view>
 
-	<view wx:if="{{wa_info.history_version}}" class="comment-box"">
-		<view class="comment" wx:for="{{wa_info.history_version}}" wx:key="item">
-			<view class="comment-right {{index == wa_info.history_version.length - 1 && isEnd ? 'non-border' : ''}}">
-				<view class="comment-top">
-					<view class="nick-name" data-user-id="{{item.user_id}}" catchtap="gotoVisitingCard">{{item.user_name}}
-					</view>
-					<view class="time">{{item.create_at}}</view>
-				</view>
-				<view class="comment-bottom">
-					<view class="content">
-						<text wx:if="{{item.reply_user_id}}">回复</text>
-						<text class="nick-name">{{item.reply_user_name}}: </text>{{item.content}}
-					</view>
-					<view class="delete-box" wx:if="{{userId == item.user_id}}">
-						<view class="delete-text" data-id="{{item.id}}" catchtap="deleteComment">删除</view>
-					</view>
-					<view class="delete-box" wx:if="{{userId != item.user_id}}">
-						<view class="delete-text" data-id="{{item.id}}" data-index="{{index}}" bindtap="onCommentItemTap">回复</view>
-					</view>
-				</view>
-			</view>
-		</view>
-		<view class="more" wx:if="{{!isEnd}}" bindtap="getMoreComments">
-			<text>展开更多评论</text>
-			<view class="more-icon">
-				<l-icon name="down" color="#337559" size="22" />
-			</view>
-		</view>
-	</view>
+
 
 	<view class="label-box" wx:if="{{wa_info.label}}">
 		<!-- <l-tag wx:for="{{wa_info.label}}" wx:key="item" l-class="tag" shape="circle" bg-color="#337559" font-color="#337559"
@@ -99,7 +75,6 @@
 	</view>
 	<l-icon l-class="ellipsis" slot="more" name="ellipsis" color="#777" size="32" bindtap="onMoreTap" />
 </l-card>
-
 <!-- 收藏 -->
 <!-- <view wx:if="{{waInfo.id}}" class="star-box" wx:if="{{waInfo.likes_num.length > 0}}">
 	<view class="star-content">
@@ -111,6 +86,44 @@
 		<l-icon l-class="star-icon" name="like" size="28" color="#777" />
 	</view>
 </view> -->
+<!--历史版本-->
+<view wx:if="{{wa_info.history_version}}">
+	<view class="comment" id="version" wx:for="{{wa_info.history_version}}" wx:key="item">
+		<view class="comment-bottom">
+			<view class="content">
+				版本
+			</view>
+			<view class="content">
+				修改时间
+			</view>
+			<view class="content" style="margin-right: -50rpx">
+				字符串
+			</view>
+		</view>
+		<view class="comment-bottom">
+			<view class="content">
+				{{item.version_number}}
+			</view>
+			<view class="content" style="font-size: 9px;">
+				{{item.create_at}}
+			</view>
+			<view class="content">
+				<view class="delete-text" data-wa="{{item.wa_content}}" bindtap="copyWaStr">获取</view>
+			</view>
+		</view>
+	</view>
+</view>
+<!--<view wx:if="{{wa_info.history_version}}" class="comment-box" wx:if="{{comments.length > 0}}">-->
+<!--	<view class="comment" wx:for="{{comments}}" wx:key="item">-->
+<!--		<view class="comment-right {{index == comments.length - 1 && isEnd ? 'non-border' : ''}}">-->
+<!--			<view class="comment-bottom">-->
+<!--				<view class="content">-->
+<!--					{{item.content}}-->
+<!--				</view>-->
+<!--			</view>-->
+<!--		</view>-->
+<!--	</view>-->
+<!--</view>-->
 <!-- 评论 -->
 <view wx:if="{{wa_info.id}}" class="comment-box" wx:if="{{comments.length > 0}}">
 	<view class="comment" wx:for="{{comments}}" wx:key="item">
