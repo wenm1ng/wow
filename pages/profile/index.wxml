@@ -1,5 +1,4 @@
 <!-- pages/profile/index.wxml -->
-
 <view class="{{tabsFixed ? 'header-fixed' : ''}}">
 	<!-- 封面 -->
 	<image class="poster" src="{{user.poster ? user.poster : 'https://img.yejiefeng.com/poster/default.jpg'}}"
@@ -41,10 +40,10 @@
 </view>
 
 <!-- 消息提示 -->
-<view wx:if="{{messageBrief}}" class="message-box" bindtap="gotoMessage">
-	<image class="message-avatar" src="{{messageBrief.avatar}}" />
-	<text class="message-tip">{{messageBrief.count}}条新动态</text>
-</view>
+<!--<view wx:if="{{messageBrief}}" class="message-box" bindtap="gotoMessage">-->
+<!--	<image class="message-avatar" src="{{messageBrief.avatar}}" />-->
+<!--	<text class="message-tip">{{messageBrief.count}}条新动态</text>-->
+<!--</view>-->
 
 <!-- 我的动态 -->
 <l-tabs id="tabs" animated animated-for-line active-color="#337559"
@@ -84,8 +83,10 @@
 <!--	"comment_count": 0,-->
 <!--	"has_likes": 0,-->
 <!--	"has_comment": 0-->
-	<l-tabpanel tab="收藏" key="star" slot="star">
-		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
+<!--	<scroll-view scroll-y enable-back-to-top lower-threshold="5" class="topic-scroll"-->
+<!--					 bindscrolltolower="scrollToLower" style="height:100vh">-->
+	<l-tabpanel tab="收藏" key="star" slot="star" bindscrolltolower="scrollToLower">
+		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content" bindscrolltolower="scrollToLower">
 			<nothing wx:if="{{wa_list.length === 0}}" pic="../../images/icon_nothing/pic_star.png" tip="您还没有收藏wa"
 					 nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
 			<l-card data-id="{{item.id}}" bindtap="gotoWaDetail" wx:for="{{wa_list}}" wx:key="item" l-class="card"
@@ -97,12 +98,17 @@
 				<view class="card-content">
 					{{item.description}}
 				</view>
-				<text class="delete-text delete-star-text" data-id="{{item.id}}" catchtap="deleteStar">取消收藏</text>
+				<view>
+					<text class="delete-text delete-star-text" data-id="{{item.id}}" catchtap="deleteStar">取消收藏</text>
+					<text class="reads-text">{{item.read_num}}浏览</text>
+					<text class="reads-text">{{item.likes_count}}点赞</text>
+				</view>
 			</l-card>
 			<l-loadmore wx:if="{{!isEndStar}}" show="{{loading}}" line l-class="loading" />
 			<l-loadmore show="{{isEndStar && pageStar !== 1}}" line type="end" />
 		</view>
 	</l-tabpanel>
+<!--	</scroll-view>-->
 	<l-tabpanel tab="评论" key="comment" slot="comment">
 		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
 			<nothing wx:if="{{comments.length === 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="您还没有发表评论"
@@ -132,7 +138,7 @@
 </l-tabs>
 
 <!-- 消息提示 -->
-<!--<l-message />-->
+<l-message />
 
 <!-- 消息对话框 -->
 <l-dialog />

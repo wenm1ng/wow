@@ -2,8 +2,7 @@
 const app = getApp()
 const api = app.api
 const wxutil = app.wxutil
-const pageSize = 16 // 每页显示条数
-
+const pageSize = 10 // 每页显示条数
 Page({
   data: {
     user: {},
@@ -23,7 +22,8 @@ Page({
     loading: false,
     messageBrief: null,
     inRequest: false,
-    userId: 0
+    userId: 0,
+    height: 200
   },
 
   onLoad() {
@@ -43,9 +43,6 @@ Page({
         url: "/pages/auth/index"
       })
     }
-    this.setData({
-      userId: app.globalData.userDetail.id
-    })
     const data = {}
     const url = api.waAPI+'get-wa-favorites-list?page='+ page + '&pageSize='+ pageSize;
 
@@ -53,9 +50,16 @@ Page({
     if ((this.data.isEndStar && page !== 1) || this.data.inRequest) {
       return
     }
-
+    //判断是否有加页数
+    if(page > this.data.pageStar){
+      this.setData({
+        height: this.data.height + 100
+      })
+      this.setPageStyle()
+    }
     this.setData({
-      inRequest: true
+      inRequest: true,
+      pageStar: page
     })
 
     wxutil.request.get(url, data).then((res) => {
@@ -207,7 +211,6 @@ Page({
     this.setData({
       tabIndex: tabIndex
     })
-
     if (tabIndex === 0) {
       this.getWaFavoritesList(this.data.pageStar);
     }
@@ -357,7 +360,7 @@ Page({
    */
   onReachBottom() {
     const tabIndex = this.data.tabIndex
-
+    console.log(tabIndex)
     this.setData({
       loading: true
     })
@@ -370,7 +373,19 @@ Page({
       this.getWaFavoritesList(page + 1)
     }
   },
-
+  setPageStyle(){
+    wx.setPageStyle({
+      style: {
+        height: this.data.height + '%'
+      },
+      success(e) {
+        console.log(e)
+      },
+      fail(e) {
+        console.log(e)
+      }
+    })
+  },
   /**
    * 删除话题
    */
@@ -476,14 +491,12 @@ Page({
   },
 
   onPageScroll(event) {
+    // console.log(event.scrollTop)
     if (event.scrollTop >= this.data.tabsTop) {
-      this.setData({
-        tabsFixed: true
-      })
-    } else {
-      this.setData({
-        tabsFixed: false
-      })
+      // this.setData({
+      //   tabsFixed: true
+      // })
+      // this.onReachBottom()
     }
   },
 

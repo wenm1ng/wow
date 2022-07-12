@@ -32,7 +32,8 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "魔兽世界wa助手",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#f7f7f7"
+    "backgroundColor": "#f7f7f7",
+    "onReachBottomDistance": 50
   },
   "tabBar": {
     "backgroundColor": "#f7f7f7",
