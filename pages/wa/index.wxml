@@ -1,5 +1,5 @@
 <view class="page">
-    <l-search-bar l-class="wa-search" placeholder="搜索" show-cancel="{{false}}"></l-search-bar>
+    <l-search-bar l-class="wa-search" placeholder="搜索" show-cancel="{{false}}" bind:linconfirm="doSearch"></l-search-bar>
     <view class="wa-big-image">
         <image class='btnImg' src='http://wenming.online/public/uploads/20220602/adaf5e467f30cd9d73a2c372a970e818.png'></image>
     </view>

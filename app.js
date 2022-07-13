@@ -47,7 +47,7 @@ App({
           fs.saveFile({
             tempFilePath: res.tempFilePath, // 传入一个临时文件路径
             success(res) {
-              console.log('图片缓存成功', res.savedFilePath) // res.savedFilePath 为一个本地缓存文件路径  
+              console.log('图片缓存成功', res.savedFilePath) // res.savedFilePath 为一个本地缓存文件路径
               // 此时图片本地缓存已经完成，res.savedFilePath为本地存储的路径。
               //小程序的本地文件路径标准： {{协议名}}://文件路径
               //协议名在 iOS/Android 客户端为 "wxfile"，在开发者工具上为 "http"，
@@ -82,7 +82,7 @@ App({
     if (path != null) {
       return path;
     }else {
-      return null; 
+      return null;
     }
   },
   /**
@@ -105,5 +105,29 @@ App({
         url: "/pages/auth/index",
       })
     }
+  },
+  /**
+   * 删除数组某一下标
+   * @param arr
+   * @param obj
+   * @returns {*}
+   */
+  arrRemoveObj(arr, obj){
+    let len = arr.length;
+    for (let i = 0; i < len; i++) {
+      if (arr[i] === obj) {
+        if (i === 0) {
+          arr.shift();
+          return arr;
+        } else if (i === len - 1) {
+          arr.pop();
+          return arr;
+        } else {
+          arr.splice(i, 1);
+          return arr;
+        }
+      }
+    }
   }
+
 })

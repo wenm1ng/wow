@@ -7,10 +7,12 @@
 	<!-- 个人信息 -->
 	<view class="header">
 		<view class="user-box">
-			<view wx:if="{{!user.avatar}}" class="avatar-box">
-				<open-data class="avatar" type="userAvatarUrl"></open-data>
-			</view>
-			<image wx:else class="avatar" src="{{user.avatar}}" bindtap="changeAvatar" mode="aspectFill" />
+<!--			<view wx:if="{{!user.avatar}}" class="avatar-box">-->
+<!--				<open-data class="avatar" type="userAvatarUrl"></open-data>-->
+<!--			</view>-->
+			<image wx:if="{{!user.avatarUrl}}" class="avatar" src="../../images/icon_tab/profile.png" bindtap="changeAvatar" mode="aspectFill" />
+<!--			<l-avatar wx:if="{{!user.avatar}}" size="80" icon="user" />-->
+			<image wx:else class="avatar" src="{{user.avatarUrl}}" bindtap="changeAvatar" mode="aspectFill" />
 			<view wx:if="{{user.gender && user.gender != 0}}" class="gender-box {{user.gender == 1 ? 'male' : 'female'}}">
 				<image class="gender-icon"
 					src="../../images/icon_gender/{{user.gender == 1 ? 'icon_male' : 'icon_female'}}.png" />
@@ -23,17 +25,18 @@
 				</navigator>
 			</view>
 		</view>
-		<text wx:if="{{user.nick_name}}" class="nick-name">{{tabsFixed ? '' : user.nick_name}}</text>
-		<open-data wx:else class="nick-name" type="userNickName"></open-data>
-		<text class="signature">{{user.signature ? user.signature : '这家伙很懒，什么都没有留下'}}</text>
+		<text wx:if="{{user.nickName}}" class="nick-name">{{tabsFixed ? '' : user.nickName}}</text>
+		<text wx:else class="nick-name" bindtap="gotoAuth">点击登录</text>
+<!--		<open-data wx:else class="nick-name" type="userNickName"></open-data>-->
+<!--		<text class="signature">{{user.signature ? user.signature : '这家伙很懒，什么都没有留下'}}</text>-->
 		<view class="follow-box">
-			<view class="follow follower" bindtap="gotoFollower">
-				<text class="num">{{user.follower ? user.follower : '0'}}</text>
-				<text class="text">关注我的</text>
+			<view class="follow follower">
+				<text class="num">{{favoritesNum}}</text>
+				<text class="text">收藏</text>
 			</view>
-			<view class="follow following" bindtap="gotoFollowing">
-				<text class="num">{{user.following ? user.following : '0'}}</text>
-				<text class="text">我关注的</text>
+			<view class="follow following">
+				<text class="num">{{commentNum}}</text>
+				<text class="text">评论</text>
 			</view>
 		</view>
 	</view>
@@ -99,7 +102,7 @@
 					{{item.description}}
 				</view>
 				<view>
-					<text class="delete-text delete-star-text" data-id="{{item.id}}" catchtap="deleteStar">取消收藏</text>
+					<text class="delete-text delete-star-text" data-id="{{item.id}}" data-index="{{index}}" catchtap="deleteStar">取消收藏</text>
 					<text class="reads-text">{{item.read_num}}浏览</text>
 					<text class="reads-text">{{item.likes_count}}点赞</text>
 				</view>
@@ -118,16 +121,16 @@
 				title="{{item.create_at}}">
 				<view class="comment-top">
 					<view class="card-content">{{item.content}}</view>
-					<view class="delete-text" data-id="{{item.id}}" catchtap="deleteComment">删除</view>
+					<view class="delete-text" data-id="{{item.id}}" data-index="{{index}}" catchtap="deleteComment">删除</view>
 				</view>
-				<view class="comment-topic">
-					<image src="{{item.avatar_url}}"
-						class="{{item.avatar_url ? 'card-img comment-image' : 'card-img-none'}}" mode="aspectFill" />
+				<view class="comment-topic" wx:if="{{item.reply_user_id !== 0}}">
+					<image src="{{item.reply_avatar_url ? item.reply_avatar_url : item.avatar_url}}"
+						class="{{item.reply_avatar_url ? 'card-img comment-image' : 'card-img-none'}}" mode="aspectFill" />
 					<view class="comment-right">
 						<text class="{{'tab-nick-name'}}"
 							catchtap="{{''}}"
 							data-user-id="{{item.reply_user_id}}">{{item.reply_user_name}}</text>
-						<text class="card-content">{{item.content}}</text>
+						<text class="card-content">{{item.reply_content}}</text>
 					</view>
 				</view>
 			</l-card>

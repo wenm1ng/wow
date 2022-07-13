@@ -2,7 +2,7 @@
 const app = getApp()
 const api = app.api
 const wxutil = app.wxutil
-const pageSize = 16 // 每页显示条数
+const pageSize = 7 // 每页显示条数
 
 Page({
   data: {
@@ -95,12 +95,11 @@ Page({
   /**
    * 获取评论
    */
-  getComments(waId) {
+  getComments(waId, page = 1) {
     const url = api.waAPI + "get-comment"
-    const page = this.data.page
     let data = {
       pageSize: pageSize,
-      page: this.data.page,
+      page: page,
       id: waId
     }
 
@@ -110,7 +109,7 @@ Page({
 
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code == 200) {
-        const comments = res.data.data
+        const comments = res.data.data.list
         this.setData({
           page: (comments.length == 0 && page != 1) ? page - 1 : page,
           isEnd: ((comments.length < pageSize) || (comments.length == 0 && page != 1)) ? true : false,

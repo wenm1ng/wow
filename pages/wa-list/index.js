@@ -37,6 +37,7 @@ Page({
     talentName : '',
     type:1,
     ttId:0,
+    searchValue:'',
     wa_list:[],
   },
 
@@ -45,11 +46,12 @@ Page({
    */
   onLoad(options) {
     this.setData({
-      version: options.version,
-      talentName: options.talentName,
-      type:options.type,
-      ttId:options.ttId,
-      occupation:options.occupation,
+      version: options.version ? options.version : 1,
+      talentName: options.talentName ? options.talentName : '',
+      type:options.type ? options.type : 1,
+      ttId:options.ttId ? options.ttId : 0,
+      occupation:options.occupation ? options.occupation : '',
+      searchValue: options.searchValue ? options.searchValue : ''
     })
     this.getScrollHeight()
     this.getWaList()
@@ -60,9 +62,11 @@ Page({
 
   getWaList(){
     const that = this
-    const url = api.waAPI+'get-wa-list?version='+ this.data.version + '&talent_name='+ this.data.talentName + '&type=' + this.data.type + '&tt_id=' + this.data.ttId + 
+    const url = api.waAPI+'get-wa-list?version='+ this.data.version + '&talent_name='+ this.data.talentName + '&type=' + this.data.type + '&tt_id=' + this.data.ttId +
     '&oc=' + this.data.occupation + '&page=' + this.data.page + '&pageSize=' + pageSize
-    const data = {}
+    const data = {
+      search_value: this.data.searchValue
+    }
     const page = this.data.page
 
     if ((this.data.isEnd && page != 1) || this.data.inRequest) {
@@ -137,6 +141,9 @@ Page({
    * 获取标签
    */
   getLabels() {
+    if(this.data.searchValue !== ''){
+      return
+    }
     const url = api.waAPI + 'get-wa-label'
     const data = {
       version:this.data.version,
@@ -171,7 +178,7 @@ Page({
   previewImage(event) {
     const index = event.currentTarget.dataset.index
     const current = event.currentTarget.dataset.src
-    
+
     const urls = [];
     for(var key in this.data.wa_list[index].images){
       var val = this.data.wa_list[index].images[key]['image_url']
@@ -203,7 +210,7 @@ Page({
       loading: true,
       page:page + 1
     })
-    
+
     this.getWaList()
   },
 

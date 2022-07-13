@@ -17,10 +17,11 @@ Page({
   },
   //选好wa信息后下一个页面
   nextPage(e){
-    let ocName = e.currentTarget.dataset.oc_name;
-    let type = e.currentTarget.dataset.type;
-    let ttId = e.currentTarget.dataset.tt_id;
-    let occupation = e.currentTarget.dataset.occupation;
+    let ocName = e.currentTarget.dataset.oc_name ? e.currentTarget.dataset.oc_name : '';
+    let type = e.currentTarget.dataset.type ? e.currentTarget.dataset.type : '';
+    let ttId = e.currentTarget.dataset.tt_id ? e.currentTarget.dataset.tt_id : '';
+    console.log(ttId)
+    let occupation = e.currentTarget.dataset.occupation ? e.currentTarget.dataset.occupation : '';
     wx.navigateTo({
       url: "/pages/wa-list/index?talentName=" + ocName + "&type="+ type + "&version=" + this.data.version + "&ttId=" + ttId + "&occupation=" + occupation
     })
@@ -29,9 +30,26 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    
+
     this.getVersionList();
     this.getTabList();
+  },
+
+  /**
+   * 搜索
+   */
+  doSearch(e){
+    if(e.detail.value === ''){
+      wx.showToast({
+        title: '内容不能为空!',
+        icon: 'error',
+        duration: 2000//持续的时间
+      })
+      return
+    }
+    wx.navigateTo({
+      url: "/pages/wa-list/index?searchValue=" + e.detail.value
+    })
   },
 
   //获取watab列表
@@ -42,7 +60,7 @@ Page({
       version: version,
       checkVersion: index
     })
-    
+
     this.getTabList();
   },
 
@@ -52,16 +70,10 @@ Page({
     })
   },
   getTabList(){
-    const that = this
     const url = api.waAPI+'get-tab-list?version='+ this.data.version
     const data = {}
-    console.log(url)
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code == 200) {
-        for(var index in res.data.data){
-          var val = res.data.data[index]
-          console.log(res.data.data);
-        }
         this.setData({
           tab_list: res.data.data
         })

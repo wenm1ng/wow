@@ -3,6 +3,7 @@ const app = getApp()
 const api = app.api
 const wxutil = app.wxutil
 const pageSize = 10 // 每页显示条数
+const pageSizeComment = 7 //评论列表每页条数
 Page({
   data: {
     user: {},
@@ -23,26 +24,61 @@ Page({
     messageBrief: null,
     inRequest: false,
     userId: 0,
-    height: 200
+    heightComment: 200,
+    heightFavorites: 200,
+    commentNum: 0,
+    favoritesNum: 0,
   },
 
   onLoad() {
     this.getTabsTop()
+
+    // this.checkAuth()
     //获取wa收藏信息
     // this.getWaFavoritesList(this.data.pageStar)
     // 轮询获取消息概要
     // setInterval(this.getMessageBrief(), 5000)
   },
+  /**
+   * 设置用户信息
+   */
+  setUser(){
+    if (app.globalData.userDetail){
+      this.setData({
+        user: app.globalData.userDetail
+      })
+    }
+  },
+  /**
+   * 获取用户收藏、评论数
+   */
+  getNum(){
+    const url = api.userAPI + 'get-num';
+    wxutil.request.get(url).then((res) => {
+      if (res.data.code === 200) {
+        this.setData({
+          commentNum: res.data.data.comment_num,
+          favoritesNum: res.data.data.favorites_num
+        })
+      }
+    })
+  },
 
   /**
-   * 获取收藏wa列表
+   * 验证是否登录
    */
-  getWaFavoritesList(page = 1){
+  checkAuth(){
     if (!app.globalData.userDetail) {
       wx.navigateTo({
         url: "/pages/auth/index"
       })
     }
+  },
+  /**
+   * 获取收藏wa列表
+   */
+  getWaFavoritesList(page = 1){
+    // this.checkAuth()
     const data = {}
     const url = api.waAPI+'get-wa-favorites-list?page='+ page + '&pageSize='+ pageSize;
 
@@ -50,29 +86,35 @@ Page({
     if ((this.data.isEndStar && page !== 1) || this.data.inRequest) {
       return
     }
-    //判断是否有加页数
-    if(page > this.data.pageStar){
-      this.setData({
-        height: this.data.height + 100
-      })
-      this.setPageStyle()
-    }
     this.setData({
       inRequest: true,
-      pageStar: page
     })
 
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code === 200) {
         const wa_list = res.data.data['list']
+        //判断是否有加页数
+        if(page > this.data.pageStar){
+          this.setData({
+            heightFavorites: this.data.heightFavorites + 18*wa_list.length
+          })
+          this.setPageStyleFavorites()
+        }else if(page === 1){
+          this.setData({
+            heightFavorites: 200
+          })
+          this.setPageStyleFavorites()
+        }
         this.setData({
-          page: (wa_list.length === 0 && page !== 1) ? page - 1 : page,
-          loading: false,
-          inRequest: false,
+          pageStar: (wa_list.length === 0 && page !== 1) ? page - 1 : page,
           isEndStar: ((wa_list.length < pageSize) || (wa_list.length === 0 && page !== 1)),
-          wa_list: page === 1 ? wa_list : this.data.wa_list.concat(wa_list)
+          wa_list: page === 1 ? wa_list : this.data.wa_list.concat(wa_list),
         })
       }
+      this.setData({
+        loading: false,
+        inRequest: false,
+      })
     })
   },
 
@@ -80,42 +122,57 @@ Page({
    * 获取用户评论
    */
   getComments(page = 1) {
-    if (!app.globalData.userDetail) {
-      wx.navigateTo({
-        url: "/pages/auth/index"
-      })
-    }
-
+    // this.checkAuth()
     const url = api.waAPI + 'get-comment-all'
     const pageComment = page
     let data = {
-      pageSize: pageSize,
+      pageSize: pageSizeComment,
       page: page
     }
 
-    if (this.data.isEndComment && pageComment !== 1 || this.data.inRequest) {
+    if ((this.data.isEndComment && pageComment !== 1) || this.data.inRequest) {
       return
     }
 
     this.setData({
-      inRequest: true
+      inRequest: true,
+      pageStar: pageComment
     })
 
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code === 200) {
-        const comments = res.data.data
+        const comments = res.data.data.list
+        //判断是否有加页数
+        if(page > this.data.pageComment){
+          this.setData({
+            heightComment: this.data.heightComment + 25*comments.length,
+          })
+          this.setPageStyleComment()
+        }else if(page === 1){
+          this.setData({
+            heightComment: 200
+          })
+          this.setPageStyleComment()
+        }
         this.setData({
           pageComment: (comments.length === 0 && pageComment !== 1) ? pageComment - 1 : pageComment,
-          loading: false,
-          isEndComment: ((comments.length < pageSize) || (comments.length === 0 && pageComment !== 1)),
-          comments: pageComment === 1 ? comments : this.data.comments.concat(comments)
+          isEndComment: ((comments.length < pageSizeComment) || (comments.length === 0 && pageComment !== 1)),
+          comments: pageComment === 1 ? comments : this.data.comments.concat(comments),
         })
       }
+      this.setData({
+        loading: false,
+        inRequest: false,
+      })
+
     })
   },
 
   onShow() {
-      this.getUser()
+    this.setUser()
+    console.log(this.data.user)
+    this.getNum()
+    this.getUser()
   },
 
   /**
@@ -136,6 +193,7 @@ Page({
    */
   getUser() {
       const tabIndex = this.data.tabIndex
+      console.log(tabIndex + '--进入user')
       if (tabIndex === 1) {
         this.getComments()
       }
@@ -212,9 +270,11 @@ Page({
       tabIndex: tabIndex
     })
     if (tabIndex === 0) {
+      this.setPageStyleFavorites()
       this.getWaFavoritesList(this.data.pageStar);
     }
     if (tabIndex === 1) {
+      this.setPageStyleComment()
       this.getComments(this.data.pageComment)
     }
   },
@@ -360,7 +420,7 @@ Page({
    */
   onReachBottom() {
     const tabIndex = this.data.tabIndex
-    console.log(tabIndex)
+    console.log('进入底部')
     this.setData({
       loading: true
     })
@@ -373,10 +433,10 @@ Page({
       this.getWaFavoritesList(page + 1)
     }
   },
-  setPageStyle(){
+  setPageStyleFavorites(){
     wx.setPageStyle({
       style: {
-        height: this.data.height + '%'
+        height: this.data.heightFavorites + '%'
       },
       success(e) {
         console.log(e)
@@ -386,35 +446,16 @@ Page({
       }
     })
   },
-  /**
-   * 删除话题
-   */
-  deleteTopic(event) {
-    wx.lin.showDialog({
-      type: "confirm",
-      title: "提示",
-      content: "确定要删除该话题？",
-      success: (res) => {
-        if (res.confirm) {
-          const topicId = event.currentTarget.dataset.id
-          const url = api.topicAPI + topicId + "/"
-
-          wxutil.request.delete(url).then((res) => {
-            if (res.data.code == 200) {
-              this.getTopics(this.data.user.id)
-
-              wx.lin.showMessage({
-                type: "success",
-                content: "删除成功！"
-              })
-            } else {
-              wx.lin.showMessage({
-                type: "error",
-                content: "删除失败！"
-              })
-            }
-          })
-        }
+  setPageStyleComment(){
+    wx.setPageStyle({
+      style: {
+        height: this.data.heightComment + '%'
+      },
+      success(e) {
+        console.log(e)
+      },
+      fail(e) {
+        console.log(e)
       }
     })
   },
@@ -430,12 +471,19 @@ Page({
       success: (res) => {
         if (res.confirm) {
           const commentId = event.currentTarget.dataset.id
-          const url = api.commentAPI + commentId + "/"
-
-          wxutil.request.delete(url).then((res) => {
-            if (res.data.code == 200) {
-              this.getComments(this.data.user.id)
-
+          const index = event.currentTarget.dataset.index
+          const url = api.waAPI + 'del-comment'
+          const data = {
+            'id' : commentId
+          }
+          const comments = this.data.comments
+          wxutil.request.post(url, data).then((res) => {
+            if (res.data.code === 200) {
+              app.arrRemoveObj(comments, comments[index])
+              this.setData({
+                comments: comments,
+                commentNum: this.data.commentNum - 1
+              })
               wx.lin.showMessage({
                 type: "success",
                 content: "删除成功！"
@@ -463,6 +511,7 @@ Page({
       success: (res) => {
         if (res.confirm) {
           const waId = event.currentTarget.dataset.id
+          const index = event.currentTarget.dataset.index
           const url = api.userAPI + 'favorites/cancel'
 
           const data = {
@@ -470,9 +519,14 @@ Page({
             type: 1
           }
 
+          const wa_list  = this.data.wa_list
           wxutil.request.post(url, data).then((res) => {
             if (res.data.code === 200) {
-              this.getWaFavoritesList()
+              app.arrRemoveObj(wa_list, wa_list[index])
+              this.setData({
+                wa_list: wa_list,
+                favoritesNum: this.data.favoritesNum - 1
+              })
 
               wx.lin.showMessage({
                 type: "success",

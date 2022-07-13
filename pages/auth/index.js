@@ -38,6 +38,13 @@ Page({
             type: "success",
             content: "授权成功！",
             success() {
+              // let pages = getCurrentPages();
+              // let prevPage = pages[pages.length - 2];
+              // let lastPage = prevPage.route
+              // if(lastPage === 'pages/profile/index'){
+              //   prevPage.getUser();
+              //   prevPage.getNum();
+              // }
               wx.navigateBack()
             }
           })
