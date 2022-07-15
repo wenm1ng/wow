@@ -68,6 +68,10 @@
 			<l-icon name="like" color="{{wa_info.is_like ? '#d81e05' : '#666'}}" size="28" />
 			<view class="{{wa_info.is_like ? 'has-text' : ''}} number">{{wa_info.likes_count}}</view>
 		</view>
+		<view class="like-container" bindtap="onFavoritesTap">
+			<l-icon name="favor" color="{{wa_info.is_favorites ? '#d81e05' : '#666'}}" size="28" />
+			<view class="{{wa_info.is_favorites ? 'has-text' : ''}} number">{{wa_info.favor_count}}</view>
+		</view>
 		<view class="like-container">
 			<l-icon name="eye" color="#666" size="28" />
 			<view class="number">{{wa_info.read_num}}</view>
