@@ -7,7 +7,31 @@
   height: 365rpx;
   z-index: -2;
 }
+.ii{
 
+  display: none;
+
+  background: #f00;
+
+  border-radius: 50%;
+
+  width: 20px;
+
+  height: 20px;
+
+  top: 5px;
+
+  right: 0px;
+
+  position: absolute;
+
+  text-align: center;
+
+  color: #FFF;
+
+  z-index: 99999;
+
+}
 .header {
   background: #fff;
   border-radius: 20rpx 20rpx 0 0;

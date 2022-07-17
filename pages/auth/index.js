@@ -45,6 +45,8 @@ Page({
               //   prevPage.getUser();
               //   prevPage.getNum();
               // }
+              //将消息未读数量显示
+              app.showMessageNum()
               wx.navigateBack()
             }
           })

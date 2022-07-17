@@ -28,11 +28,11 @@ Page({
     heightFavorites: 200,
     commentNum: 0,
     favoritesNum: 0,
+    noRead:'' //未读消息
   },
 
   onLoad() {
     this.getTabsTop()
-
     // this.checkAuth()
     //获取wa收藏信息
     // this.getWaFavoritesList(this.data.pageStar)
@@ -159,6 +159,23 @@ Page({
           isEndComment: ((comments.length < pageSizeComment) || (comments.length === 0 && pageComment !== 1)),
           comments: pageComment === 1 ? comments : this.data.comments.concat(comments),
         })
+        if(res.data.data.reduce_read_num !== ''){
+          if(app.globalData.noRead - res.data.data.reduce_read_num <= 0){
+            app.globalData.noRead = ''
+            this.setData({
+              noRead: ''
+            })
+          }else{
+            app.globalData.noRead = (parseInt(app.globalData.noRead) - res.data.data.reduce_read_num).toString()
+            this.setData({
+              noRead: '(' + app.globalData.noRead + '未读)'
+            })
+          }
+          wx.setTabBarBadge({
+            index: 2,
+            text: app.globalData.noRead
+          })
+        }
       }
       this.setData({
         loading: false,
@@ -173,6 +190,11 @@ Page({
     console.log(this.data.user)
     this.getNum()
     this.getUser()
+    if(app.globalData.noRead !== ''){
+      this.setData({
+        noRead: '(' + app.globalData.noRead + '未读)'
+      })
+    }
   },
 
   /**

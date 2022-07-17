@@ -115,6 +115,17 @@ Page({
           isEnd: ((comments.length < pageSize) || (comments.length == 0 && page != 1)) ? true : false,
           comments: page == 1 ? comments : this.data.comments.concat(comments)
         })
+        if(res.data.data.reduce_read_num !== ''){
+          if(app.globalData.noRead - res.data.data.reduce_read_num <= 0){
+            app.globalData.noRead = ''
+          }else{
+            app.globalData.noRead = (parseInt(app.globalData.noRead) - res.data.data.reduce_read_num).toString()
+          }
+        }
+        wx.setTabBarBadge({
+          index: 2,
+          text: app.globalData.noRead
+        })
       }
     })
   },

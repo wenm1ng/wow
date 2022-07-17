@@ -112,7 +112,7 @@
 		</view>
 	</l-tabpanel>
 <!--	</scroll-view>-->
-	<l-tabpanel tab="评论" key="comment" slot="comment">
+	<l-tabpanel tab="评论{{noRead}}" key="comment" slot="comment">
 		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
 			<nothing wx:if="{{comments.length === 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="您还没有发表评论"
 				nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />

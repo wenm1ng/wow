@@ -16,6 +16,7 @@ App({
   onLaunch() {
     this.getUserDetail()
     wxutil.autoUpdate()
+    this.showMessageNum()
   },
 
   /**
@@ -96,6 +97,45 @@ App({
     return header
   },
 
+  //默认显示tarBar新消息数量
+  showMessageNum(){
+    if(this.globalData.userDetail){
+      const url = api.userAPI + 'get-message';
+      let head = {
+        'content-type': 'application/json'
+      }
+      const appHeader = this.getHeader()
+      const header = {}
+      head = Object.assign(head, appHeader)
+      wx.showNavigationBarLoading()
+      let res = new Promise((resolve, reject) => {
+        wx.request({
+          url: url,
+          data: {},
+          header: Object.assign(head, header),
+          method: 'POST',
+          success(res) {
+            resolve(res)
+          },
+          fail() {
+            reject('request failed')
+          },
+          complete() {
+            wx.hideNavigationBarLoading()
+          }
+        })
+      })
+      res.then((res) => {
+        if (res.data.code === 200 && res.data.data > 0) {
+          this.globalData.noRead = res.data.data
+          wx.setTabBarBadge({
+            index: 2,
+            text: res.data.data
+          })
+        }
+      })
+    }
+  },
   /**
    * Token无效跳转授权页
    */
