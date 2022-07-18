@@ -118,14 +118,18 @@ Page({
         if(res.data.data.reduce_read_num !== ''){
           if(app.globalData.noRead - res.data.data.reduce_read_num <= 0){
             app.globalData.noRead = ''
+            wx.removeTabBarBadge({
+              index: 2
+            })
           }else{
             app.globalData.noRead = (parseInt(app.globalData.noRead) - res.data.data.reduce_read_num).toString()
+            wx.setTabBarBadge({
+              index: 2,
+              text: app.globalData.noRead
+            })
           }
         }
-        wx.setTabBarBadge({
-          index: 2,
-          text: app.globalData.noRead
-        })
+
       }
     })
   },
@@ -572,9 +576,9 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: this.data.topic.content,
-      imageUrl: this.data.topic.images ? this.data.topic.images[0] : '',
-      path: "/pages/topic-detail/index?waId=" + this.data.topic.id
+      title: this.data.wa_info.title,
+      imageUrl: this.data.wa_info.images[0].image_url ? this.data.wa_info.images[0].image_url : '',
+      path: "/pages/wa-detail/index?id=" + this.data.wa_info.id
     }
   }
 })

@@ -1,8 +1,8 @@
 <!-- pages/profile/index.wxml -->
 <view class="{{tabsFixed ? 'header-fixed' : ''}}">
 	<!-- 封面 -->
-	<image class="poster" src="{{user.poster ? user.poster : 'https://img.yejiefeng.com/poster/default.jpg'}}"
-		mode="aspectFill" bindtap="changePoster" />
+	<image class="poster" src="http://wenming.online/public/uploads/bg/zyc.jpg"
+		mode="aspectFill"/>
 
 	<!-- 个人信息 -->
 	<view class="header">

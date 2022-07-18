@@ -98,25 +98,25 @@ Page({
   //   this.getTalentTreeList(options.version)
   // },
   onShow() {
-    const labelId = wxutil.getStorage("labelId")
-    // 由于wx.switchTab()的传参限制，故用缓存获取标签参数
-
-    if (!wxutil.getStorage("refreshTopics")) {
-      if (labelId) {
-        wx.removeStorageSync("labelId")
-        this.setData({
-          labelId: labelId,
-          toTag: "tag_" + labelId
-        })
-        // this.getTopics(1, labelId)
-      }
-    } else {
-      wx.removeStorageSync("refreshTopics")
-      this.setData({
-        labelId: -1
-      })
-      // this.getTopics()
-    }
+    // const labelId = wxutil.getStorage("labelId")
+    // // 由于wx.switchTab()的传参限制，故用缓存获取标签参数
+    //
+    // if (!wxutil.getStorage("refreshTopics")) {
+    //   if (labelId) {
+    //     wx.removeStorageSync("labelId")
+    //     this.setData({
+    //       labelId: labelId,
+    //       toTag: "tag_" + labelId
+    //     })
+    //     // this.getTopics(1, labelId)
+    //   }
+    // } else {
+    //   wx.removeStorageSync("refreshTopics")
+    //   this.setData({
+    //     labelId: -1
+    //   })
+    //   // this.getTopics()
+    // }
   },
 
   /**
@@ -218,27 +218,12 @@ Page({
    * 标签切换
    */
   onTagTap(event) {
-    const labelId = this.data.labelId
-    this.setData({
-      talentName:labelId
-    })
     const currLabelId = event.currentTarget.dataset.label
-
-    if (labelId == currLabelId) {
-      this.getWaList()
-    } else {
-      this.getWaList()
-      this.setData({
-        labelId: currLabelId,
-      })
-    }
-
-    // 如果显示下拉区则滚动Tag
-    if (this.data.showPopup) {
-      this.setData({
-        toTag: "tag_" + currLabelId
-      })
-    }
+    this.setData({
+      talentName: currLabelId,
+      labelId: currLabelId
+    })
+    this.getWaList()
   },
 
   /**

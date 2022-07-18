@@ -128,10 +128,16 @@ App({
       res.then((res) => {
         if (res.data.code === 200 && res.data.data > 0) {
           this.globalData.noRead = res.data.data
-          wx.setTabBarBadge({
-            index: 2,
-            text: res.data.data
-          })
+          if(res.data.data === ''){
+            wx.removeTabBarBadge({
+              index: 2,
+            })
+          }else{
+            wx.setTabBarBadge({
+              index: 2,
+              text: res.data.data
+            })
+          }
         }
       })
     }

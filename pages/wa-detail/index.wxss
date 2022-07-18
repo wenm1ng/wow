@@ -16,6 +16,15 @@ page {
   box-shadow: none !important;
 }
 
+.card-img{
+  width:0 !important;
+  height:0 !important;
+}
+
+.margin-lefts{
+  margin-left:20rpx
+}
+
 .nick-name {
   color: #337559 !important;
   font-weight: bold;

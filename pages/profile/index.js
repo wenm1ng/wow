@@ -89,7 +89,11 @@ Page({
     this.setData({
       inRequest: true,
     })
-
+    wx.showToast({
+      title: '加载中...',
+      icon: 'loading',
+      duration: 1500
+    })
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code === 200) {
         const wa_list = res.data.data['list']
@@ -115,6 +119,8 @@ Page({
         loading: false,
         inRequest: false,
       })
+      wx.hideLoading()
+
     })
   },
 
@@ -138,7 +144,11 @@ Page({
       inRequest: true,
       pageStar: pageComment
     })
-
+    wx.showToast({
+      title: '加载中...',
+      icon: 'loading',
+      duration: 1500
+    })
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code === 200) {
         const comments = res.data.data.list
@@ -171,10 +181,16 @@ Page({
               noRead: '(' + app.globalData.noRead + '未读)'
             })
           }
-          wx.setTabBarBadge({
-            index: 2,
-            text: app.globalData.noRead
-          })
+          if(this.data.noRead === ''){
+            wx.removeTabBarBadge({
+              index: 2,
+            })
+          }else{
+            wx.setTabBarBadge({
+              index: 2,
+              text: app.globalData.noRead
+            })
+          }
         }
       }
       this.setData({
@@ -182,6 +198,7 @@ Page({
         inRequest: false,
       })
 
+      wx.hideLoading()
     })
   },
 
@@ -190,7 +207,7 @@ Page({
     console.log(this.data.user)
     this.getNum()
     this.getUser()
-    if(app.globalData.noRead !== ''){
+    if(app.globalData.noRead !== '' && app.globalData.noRead !== undefined){
       this.setData({
         noRead: '(' + app.globalData.noRead + '未读)'
       })

@@ -22,10 +22,11 @@
     font-size: 37rpx;
     background-color: rgb(229, 229, 229);
     width: 90%;
-    height:150rpx;
+    /*height:260rpx;*/
     color:black;
     margin-top:30rpx;
-    border-radius: 8px;
+      padding: 20rpx;
+      border-radius: 8px;
   }
 
   .wa-right{
