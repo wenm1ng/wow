@@ -53,6 +53,9 @@ Page({
    * 获取用户收藏、评论数
    */
   getNum(){
+    if(!this.checkAuth()){
+      return;
+    }
     const url = api.userAPI + 'get-num';
     wxutil.request.get(url).then((res) => {
       if (res.data.code === 200) {
@@ -69,16 +72,18 @@ Page({
    */
   checkAuth(){
     if (!app.globalData.userDetail) {
-      wx.navigateTo({
-        url: "/pages/auth/index"
-      })
+      return false
     }
+    return true
   },
   /**
    * 获取收藏wa列表
    */
   getWaFavoritesList(page = 1){
     // this.checkAuth()
+    if(!this.checkAuth()){
+      return;
+    }
     const data = {}
     const url = api.waAPI+'get-wa-favorites-list?page='+ page + '&pageSize='+ pageSize;
 
@@ -128,7 +133,9 @@ Page({
    * 获取用户评论
    */
   getComments(page = 1) {
-    // this.checkAuth()
+    if(!this.checkAuth()){
+      return;
+    }
     const url = api.waAPI + 'get-comment-all'
     const pageComment = page
     let data = {
@@ -204,7 +211,6 @@ Page({
 
   onShow() {
     this.setUser()
-    console.log(this.data.user)
     this.getNum()
     this.getUser()
     if(app.globalData.noRead !== '' && app.globalData.noRead !== undefined){

@@ -59,7 +59,13 @@
 					data-src="{{item.image_url}}" data-index="{{cardIndex}}" lazy-load />
 			</block>
 		</view>
-
+<!--		label-box-->
+		<view class="popup" wx:if="{{item.tips}}">
+			<!-- <l-tag wx:for="{{wa_info.label}}" wx:key="item" l-class="tag" shape="circle" bg-color="#337559" font-color="#337559"
+				plain bind:lintap="gotowa_info" data-label="{{item}}">#{{item}}</l-tag> -->
+			<l-tag l-class="tag" wx:for="{{item.tips}}" wx:for-item="item2" shape="circle" bg-color="#337559" font-color="#337559"
+				   plain="true" data-label="{{item2}}">#{{item2}}</l-tag>
+		</view>
 		<view class="avater-share-container">
 			<view class="like-container" data-id="{{item.id}}" bindtap="gotoDetail">
 				<l-icon name="comment" color="{{item.has_comment ? '#d81e05' : '#666'}}" size="28" />

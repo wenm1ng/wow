@@ -60,7 +60,7 @@ Page({
     // this.getTopics()
   },
 
-  getWaList(){
+  getWaList(isSearch = 0){
     const that = this
     const url = api.waAPI+'get-wa-list?version='+ this.data.version + '&talent_name='+ this.data.talentName + '&type=' + this.data.type + '&tt_id=' + this.data.ttId +
     '&oc=' + this.data.occupation + '&page=' + this.data.page + '&pageSize=' + pageSize
@@ -69,7 +69,7 @@ Page({
     }
     const page = this.data.page
 
-    if ((this.data.isEnd && page != 1) || this.data.inRequest) {
+    if ((this.data.isEnd && page !== 1 && isSearch === 0) || this.data.inRequest) {
       return
     }
 
@@ -223,7 +223,7 @@ Page({
       talentName: currLabelId,
       labelId: currLabelId
     })
-    this.getWaList()
+    this.getWaList(1)
   },
 
   /**

@@ -59,7 +59,7 @@
 		<!-- <l-tag wx:for="{{wa_info.label}}" wx:key="item" l-class="tag" shape="circle" bg-color="#337559" font-color="#337559"
 			plain bind:lintap="gotowa_info" data-label="{{item}}">#{{item}}</l-tag> -->
             <l-tag l-class="tag" shape="circle" bg-color="#337559" font-color="#337559"
-			plain bind:lintap="gotowa_info" data-label="{{wa_info.label}}">#{{wa_info.label}}</l-tag>
+			plain bind:lintap="gotowa_info" data-label="{{wa_info.tips}}">#{{wa_info.tips}}</l-tag>
 	</view>
 
 	<view class="avater-share-container">
