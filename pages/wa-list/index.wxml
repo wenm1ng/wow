@@ -12,6 +12,11 @@
 			   font-color="#fff" bind:lintap="onTagTap" data-label="{{searchValue}}">
 			#{{searchValue}}</l-tag>
 	</view>
+	<view>
+		<l-tag l-class="tag" plain="{{false}}" bg-color="#337559"
+			   font-color="#fff" bind:lintap="onTagTap" data-label="更新日期" icon="pull-down">
+			更新日期</l-tag>
+	</view>
 </scroll-view>
 
 <!-- 下拉层按钮 -->
@@ -36,7 +41,7 @@
 <scroll-view scroll-y enable-back-to-top lower-threshold="5" class="topic-scroll" bindscrolltoupper="scrollToUpper"
 	bindscrolltolower="scrollToLower" style="height:{{height}}rpx">
 	<l-card type="avatar" l-class="card" l-title-class="card-title-anon"
-		wx:for="{{wa_list}}" l-img-class="l-img" wx:key="item" wx:for-index="cardIndex" title="{{item.title}}" describe="{{item.update_at}} 由 {{item.user_name}} 上传"
+		wx:for="{{wa_list}}" l-img-class="l-img" wx:key="item" wx:for-index="cardIndex" title="{{item.title}}" describe="{{item.create_at}} 由 {{item.user_name}} 上传"
 		bind:linavatar="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}"
 		bind:lintitle="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}" data-user-id="{{item.user.id}}">
 		<view class="{{item.description.length >= 200 && !item.flod ? 'content-close' : 'avater-content'}}"

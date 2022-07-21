@@ -70,10 +70,20 @@ Page({
     })
   },
   getTabList(){
+    this.setData({
+      checkTab: 0
+    })
+    if(wxutil.getStorage('tab_list'+this.data.version)){
+      this.setData({
+        tab_list: wxutil.getStorage('tab_list'+this.data.version)
+      })
+      return;
+    }
     const url = api.waAPI+'get-tab-list?version='+ this.data.version
     const data = {}
     wxutil.request.get(url, data).then((res) => {
-      if (res.data.code == 200) {
+      if (res.data.code === 200) {
+        wxutil.setStorage('tab_list' + this.data.version, res.data.data, 3600 * 24);
         this.setData({
           tab_list: res.data.data
         })
@@ -83,31 +93,22 @@ Page({
 
   //获取版本列表
   getVersionList() {
-    const that = this
     const url = api.versionAPI+'get-version-list'
     const data = {}
-    if(app.globalData.version_list){
+    if(wxutil.getStorage('version_list')){
       this.setData({
-        version_list: app.globalData.version_list
+        version_list: wxutil.getStorage('version_list')
       })
-    }else{
-      wxutil.request.get(url, data).then((res) => {
-        if (res.data.code == 200) {
-          for(var index in res.data.data){
-            var val = res.data.data[index]
-            var path = app.getCacheImage('versions:'+val.version);
-            if(!path){
-              path = app.cacheImage(api.imageBgUrl + val.version + '.png','versions:'+val.version);
-            }
-            res.data.data[index].image_url = path;
-          }
-          app.globalData.version_list = res.data.data
-          this.setData({
-            version_list: res.data.data
-          })
-        }
-      })
+      return;
     }
+    wxutil.request.get(url, data).then((res) => {
+      if (res.data.code === 200) {
+        wxutil.setStorage('version_list', res.data.data, 3600 * 24);
+        this.setData({
+          version_list: res.data.data
+        })
+      }
+    })
   },
 
   /**

@@ -30,7 +30,7 @@
 <!-- 动态详情 -->
 <l-card wx:if="{{wa_info.id}}" type="avatar" l-class="card" l-img-class="card-img"
 		l-title-class="{{wa_info.user_id != -1 ? 'nick-name' : 'nick-name-anon'}}"
-	title="{{wa_info.title}}" describe="{{wa_info.update_at}} 由 {{wa_info.user_name}} 上传"
+	title="{{wa_info.title}}" describe="{{wa_info.create_at}} 由 {{wa_info.user_name}} 上传"
 	bind:linavatar="{{wa_info.user_id != 0 ? 'gotoVisitingCard' : ''}}"
 	bind:lintitle="{{wa_info.user_id != 0 ? 'gotoVisitingCard' : ''}}" data-user-id="{{wa_info.user_id}}">
 	<view>

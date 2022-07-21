@@ -3,6 +3,7 @@
     display: block;
     /* padding: 20rpx; */
     font-size: 30rpx;
+    /*background-color: rgb(229,229,229);*/
     background-color: rgb(229,229,229);
     width: 25%;
     height:600rpx;
