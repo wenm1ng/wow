@@ -17,8 +17,20 @@ Page({
   },
 
   onLoad(options) {
-    const roomId = options.roomId
-    const countDown = options.countDown
+    // const roomId = !options.roomId ? 1 : options.roomId
+    // const countDown = options.countDown ? options.countDown : 0
+    //
+    // this.getCountDown(countDown)
+    // this.getUserId()
+    // this.getScrollHeight()
+    // this.connectSocket(roomId)
+    // this.onSocketMessage("status") // 监听状态信息
+    // this.onSocketMessage("message") // 监听文字消息
+    // this.onSocketMessage("images") // 监听图片消息
+  },
+  onShow(){
+    const roomId = 1
+    const countDown = 0
 
     this.getCountDown(countDown)
     this.getUserId()
@@ -28,7 +40,6 @@ Page({
     this.onSocketMessage("message") // 监听文字消息
     this.onSocketMessage("images") // 监听图片消息
   },
-
   onUnload() {
     this.sendSocketMessage("leave")
   },
@@ -91,9 +102,70 @@ Page({
    * 获取用户ID
    */
   getUserId() {
-    this.setData({
-      userId: app.globalData.userDetail.id
-    })
+    if(!app.globalData.userDetail){
+      wx.showModal({
+        title: "提示",
+        content: "您还未登录，是否跳转到登录页？",
+        success: (res) => {
+          if (res.confirm) {
+            wx.navigateTo({
+              url: "/pages/auth/index",
+            })
+          }else{
+            let pages = getCurrentPages();
+            console.log(pages)
+            console.log(111)
+            let prevPage = pages[pages.length - 2];
+            let lastPage;
+            console.log(prevPage);
+
+            if(prevPage === undefined){
+              lastPage = '/pages/wa/index'
+            }else{
+              lastPage = prevPage.route
+            }
+            console.log(lastPage)
+            if(lastPage === '/pages/wa/index' || lastPage === 'pages/profile/index'){
+              wx.switchTab({
+                url: lastPage,
+              })
+            }else{
+              wx.navigateTo({
+                url: lastPage,
+              })
+            }
+          }
+        },
+        fail: (res) => {
+          let pages = getCurrentPages();
+          console.log(pages)
+          console.log(111)
+          let prevPage = pages[pages.length - 2];
+          let lastPage;
+          console.log(prevPage);
+          if(prevPage === undefined){
+            lastPage = '/pages/wa/index'
+          }else{
+            lastPage = prevPage.route
+          }
+          if(lastPage === '/pages/wa/index' || lastPage === 'pages/profile/index'){
+            wx.switchTab({
+              url: lastPage,
+            })
+          }else{
+            wx.navigateTo({
+              url: lastPage,
+            })
+          }
+        },
+      })
+    }else{
+      console.log(111)
+      this.setData({
+        userId: app.globalData.userDetail.id
+      })
+    }
+
   },
 
   /**

@@ -2,25 +2,12 @@
 const app = getApp()
 const api = app.api
 const wxutil = app.wxutil
-const pageSize = 16 // 每页显示条数
+const pageSize = 10 // 每页显示条数
 
 Page({
   data: {
     labels: [],
-    topics: [
-      {
-          'user': {
-              'nick_name': '法师三系技能监视',
-              'avatar': 'https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'
-          },
-          'create_time':'ffff',
-          'content': '你说你想要逃',
-          'images':['https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png','https://www.wenming.online/public/uploads/20220509/9127f18eb7773e44390d1b1508274e5e.png'],
-          'id':1,
-          'has_comment':1,
-          'comment_count':2
-      }
-    ],
+    topics: [],
     actionList: [],
     page: 1,
     labelId: '全部',
@@ -39,6 +26,8 @@ Page({
     ttId:0,
     searchValue:'',
     wa_list:[],
+    orderColumn: 'create_at',
+    scrollTop: 0,
   },
 
   /**
@@ -61,16 +50,23 @@ Page({
   },
 
   getWaList(isSearch = 0){
-    const that = this
+    const page = isSearch === 1 ? 1 : this.data.page
+
     const url = api.waAPI+'get-wa-list?version='+ this.data.version + '&talent_name='+ this.data.talentName + '&type=' + this.data.type + '&tt_id=' + this.data.ttId +
-    '&oc=' + this.data.occupation + '&page=' + this.data.page + '&pageSize=' + pageSize
+    '&oc=' + this.data.occupation + '&page=' + page + '&pageSize=' + pageSize + '&order=' + this.data.orderColumn
     const data = {
       search_value: this.data.searchValue
     }
-    const page = this.data.page
 
     if ((this.data.isEnd && page !== 1 && isSearch === 0) || this.data.inRequest) {
       return
+    }
+
+    if(isSearch === 1){
+      wx.showToast({
+        title: "加载中...",
+        icon: "loading"
+      })
     }
 
     this.setData({
@@ -81,12 +77,21 @@ Page({
       if (res.data.code == 200) {
         const wa_list = res.data.data['list']
         this.setData({
-          page: (wa_list.length == 0 && page != 1) ? page - 1 : page,
+          page: isSearch === 1 ? 1 :((wa_list.length == 0 && page != 1) ? page - 1 : page),
           loading: false,
           inRequest: false,
-          isEnd: ((wa_list.length < pageSize) || (wa_list.length == 0 && page != 1)) ? true : false,
-          wa_list: page == 1 ? wa_list : this.data.wa_list.concat(wa_list)
+          isEnd: isSearch === 1 ? false : (((wa_list.length < pageSize) || (wa_list.length == 0 && page != 1)) ? true : false),
+          wa_list: isSearch === 1 ? wa_list : (page === 1 ? wa_list : this.data.wa_list.concat(wa_list))
         })
+      }
+      if(isSearch === 1) {
+        // wx.pageScrollTo({
+        //   scrollTop: 0
+        // })
+        this.setData({
+          scrollTop: 0
+        })
+        wx.hideToast()
       }
     })
   },
@@ -130,8 +135,9 @@ Page({
         const windowWidth = res.windowWidth;
         const ratio = 750 / windowWidth;
         const height = windowHeight * ratio;
+        console.log(height);
         that.setData({
-          height: height - 90
+          height: height - 150
         })
       }
     })
@@ -194,11 +200,11 @@ Page({
   /**
    * 下拉刷新
    */
-  scrollToUpper() {
-    this.getWaList()
-    // 振动交互
-    wx.vibrateShort()
-  },
+  // scrollToUpper() {
+  //   this.getWaList()
+  //   // 振动交互
+  //   wx.vibrateShort()
+  // },
 
   /**
    * 触底加载
@@ -219,9 +225,23 @@ Page({
    */
   onTagTap(event) {
     const currLabelId = event.currentTarget.dataset.label
+    if(currLabelId === this.data.talentName || currLabelId === this.data.searchValue){
+      return;
+    }
     this.setData({
       talentName: currLabelId,
       labelId: currLabelId
+    })
+    this.getWaList(1)
+  },
+
+  onOrder(event){
+    const orderColumn = event.currentTarget.dataset.order
+    if(orderColumn === this.data.orderColumn){
+      return;
+    }
+    this.setData({
+      orderColumn: orderColumn
     })
     this.getWaList(1)
   },

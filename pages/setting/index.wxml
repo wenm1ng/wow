@@ -18,8 +18,8 @@
 </button>
 
 <view class="footer">
-	<image class="github-logo" src="/images/logo/logo_github.png" bindtap="copyLink" />
-	<text class="github-uri" bindtap="copyLink">YYJeffrey/july_client</text>
+	<image class="github-logo" src="/images/logo/logo.png" bindtap="copyLink" />
+	<text class="github-uri" bindtap="copyLink">WOW WA仓库</text>
 </view>
 
 <!-- 下拉层 -->
