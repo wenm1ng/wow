@@ -1,5 +1,11 @@
 
 Page({
+  properties: {
+    isEmptyContent:{
+      type:Number,  //type：作用是指明proID这个值的类型
+      value:0      //默认值
+    }
+  },
   data: {
     isShow: false,//控制emoji表情是否显示
     isLoad: true,//解决初试加载时emoji动画执行一次
@@ -9,6 +15,7 @@ Page({
     cfBg: false,
     _index: 0,
     comments:'',
+    textPosition: 0,
     emojiChar: "☺-😋-😌-😍-😏-😜-😝-😞-😔-😪-😭-😁-😂-😃-😅-😆-👿-😒-😓-😔-😏-😖-😘-😚-😒-😡-😢-😣-😤-😢-😨-😳-😵-😷-😸-😻-😼-😽-😾-😿-🙊-🙋-🙏-✈-🚇-🚃-🚌-🍄-🍅-🍆-🍇-🍈-🍉-🍑-🍒-🍓-🐔-🐶-🐷-👦-👧-👱-👩-👰-👨-👲-👳-💃-💄-💅-💆-💇-🌹-💑-💓-💘-🚲",
     //0x1f---
     emoji: [
@@ -85,15 +92,24 @@ Page({
     textAreaBlur: function (e) {
       //获取此时文本域值
       this.setData({
-        content: e.detail.value
+        content: e.detail.value,
+        textPosition: e.detail.cursor
       })
 
     },
-    //文本域获得焦点事件处理
-    textAreaFocus: function () {
+    textBlur: function(e){
       this.setData({
-        isShow: false,
-        cfBg: false
+        textPosition: e.detail.cursor
+      })
+    },
+    //文本域获得焦点事件处理
+    textAreaFocus: function (e) {
+      // this.setData({
+      //   isShow: false,
+      //   cfBg: false
+      // })
+      this.setData({
+        textPosition: e.detail.cursor
       })
     },
     textAreaInput: function (e){
@@ -111,10 +127,21 @@ Page({
     },
     //表情选择
     emojiChoose: function (e) {
-      //当前输入内容和表情合并
-      this.setData({
-        content: this.data.content + e.currentTarget.dataset.emoji
-      })
+      let that = this
+      setTimeout(function () {
+        //当前输入内容和表情合并
+        let content = that.data.content;
+        let beforeContent = content.substring(0, that.data.textPosition);
+        let afterContent = '';
+        if(content.length !== beforeContent.length){
+          afterContent = content.substring(that.data.textPosition);
+        }
+        that.setData({
+          content: beforeContent + e.currentTarget.dataset.emoji + afterContent,
+          textPosition: that.data.textPosition + 2
+        })
+      }, 200)
+
       // this.triggerEvent('receiveEmoji', e.currentTarget.dataset.emoji)
     },
     //点击emoji背景遮罩隐藏emoji盒子
@@ -124,12 +151,27 @@ Page({
         cfBg: false
       })
     },
+    emptyContent: function(){
+      this.setData({
+        content: ''
+      })
+    },
     //发送评论评论 事件处理
     send: function () {
       var that = this, conArr = [];
+      that.cemojiCfBg();
       //此处延迟的原因是 在点发送时 先执行失去文本焦点 再执行的send 事件 此时获取数据不正确 故手动延迟100毫秒
       setTimeout(function () {
         that.triggerEvent('sendMessage', that.data.content)
+      }, 100)
+
+      setTimeout(function () {
+        if(that.properties.isEmptyContent === 1){
+          that.setData({
+            content: '',
+            isEmptyContent: 0
+          })
+        }
       }, 100)
     }
   // }

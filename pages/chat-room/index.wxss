@@ -14,12 +14,12 @@ page {
 }
 
 .avatar-room {
-  position: relative;
+  /*position: relative;*/
   width: 80rpx;
   height: 80rpx;
-  border-radius: 50%;
-  margin-top: -100rpx;
-  border: 4rpx #fff solid;
+  /*border-radius: 50%;*/
+  /*margin-top: -100rpx;*/
+  /*border: 4rpx #fff solid;*/
 }
 
 .avatar-image{
@@ -37,9 +37,9 @@ page {
 /**可拖动悬浮按钮样式表**/
 .leftBox {
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  position: fixed;
+  position: absolute;
   right: -720px;
   top: 0px;
   z-index: 1;
@@ -47,9 +47,9 @@ page {
 
 .left {
   width: 18vw;
-  height: 100vh;
+  height: 100%;
   background: #fff;
-  position: fixed;
+  position: absolute;
   right: -720px;
   top: 0px;
   transition: all 0.5s; /*动画  */

@@ -17,7 +17,7 @@ Page({
     timeDown: 0, // 大于5分钟消息间隔报时
     preTime: 0,// 上一条消息的时间
     countDown: 0, // 倒计时秒数
-    height: 980, // 消息内容区高度
+    height: 1500, // 消息内容区高度
     msg: [], //消息内容
     roomMembers: [], //房间成员
     automaticClose:true, // 这里默认是客户端和服务器自动断开
@@ -27,12 +27,14 @@ Page({
   },
   showRight(e) {
     this.setData({
-      leftView: !this.data.leftView
+      leftView: !this.data.leftView,
+      height: 975
     })
   },
   hideLeft() {
     this.setData({
-      leftView: !this.data.leftView
+      leftView: !this.data.leftView,
+      height: 980
     })
   },
   connetWebsocket() { // wbsocket逻辑
@@ -275,6 +277,8 @@ Page({
     this.setData({
       content: null,
     })
+    let emoji = this.selectComponent("#emoji");
+    emoji.emptyContent();
   },
   onUnload() {
     //离开页面
@@ -468,7 +472,7 @@ Page({
       const listHeight = res[1].height;
       // if(height < listHeight - scorllHeight + 20){
         this.setData({
-          scrollTop: listHeight - scorllHeight
+          scrollTop: listHeight - scorllHeight + 20
         });
       // }
     });

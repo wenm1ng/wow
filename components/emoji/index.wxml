@@ -4,8 +4,9 @@
   <!--评论盒子-->
   <view class="comment-fixed">
     <view class="cf-box">
+      <textarea class="cf-content" maxlength="200" bindblur="textAreaBlur" auto-height value="{{content}}" placeholder="评论"/>
       <view class="emoji iconfont icon-emoji" catchtap="emojiShowHide"></view>
-      <textarea class="cf-content" bindfocus="textAreaFocus" maxlength="200" bindblur="textAreaBlur" auto-height value="{{content}}" placeholder="评论"/>
+      <!--      bindfocus="textAreaFocus" bindinput="textBlur"-->
       <text class="cf-send touch-active" bindtap="send">发送</text>
     </view>
 
