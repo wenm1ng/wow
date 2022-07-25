@@ -1,17 +1,100 @@
 <!-- pages/chat-room/index.wxml -->
+<view class="profile" bindtap="showRight">
+	<image src="../../images/icon_tab/profile.png" class="avatar-room"  />
+</view>
 <!--在线人数-->
-<!--<view class="btn_Suspension" bindtap="btn_Suspension_click" catchtouchmove="buttonMove" bindtouchstart="buttonStart" bindtouchend="buttonEnd" style="top:{{buttonTop}}px;left:{{buttonLeft}}px;">-->
-<!--	<view class="cornorMark">-->
-<!--		<text>当前在线人数:1</text>-->
-<!--	</view>-->
-<!--</view>-->
+<view class="leftBox '{{leftView?'leftActive':''}}'" bindtap='hideLeft' data-item="1">
+	<view class="left goods-detail '{{leftView?'leftActive':''}}'">
+		<text class="" catchtap="hideLeft">在线人数:{{roomMembers.length}}</text>
+		<view>
+			<view wx:for="{{roomMembers}}" wx:key="item">
+				<image src="{{item.avatar_url}}" class="avatar-image"/>
+			</view>
+		</view>
+
+<!--		<view class="goods-info">-->
+<!--			<view class="l-info">-->
+<!--				<view class="produc-img">-->
+<!--					<image mode="aspectFit" src="https://www.boyuan.com/file/upload/201910/09/092204581.png.thumb.png"></image>-->
+<!--				</view>-->
+<!--			</view>-->
+<!--			<view class="r-info">-->
+<!--				<view class="r-content">-->
+<!--					<view class="goods-name">商品5</view>-->
+<!--					<view class="sub-txt goods-code">-->
+<!--						库存:-->
+<!--						<text class="amount-num">22 件</text>-->
+<!--					</view>-->
+<!--					<view class="sub-txt goods-code">-->
+<!--						销量:-->
+<!--						<text class="amount-num">0 件</text>-->
+<!--					</view>-->
+<!--					<view class="sub-txt goods-code">-->
+<!--						单价: ￥-->
+<!--						<text class="amount-num price-pre">面议</text> /-->
+<!--						<text class="unit">件</text>-->
+<!--					</view>-->
+<!--				</view>-->
+<!--			</view>-->
+<!--		</view>-->
+<!--		<view class="promotion-section">-->
+<!--			<view class="price-line">-->
+<!--				<view class="price-head">-->
+<!--					<view class="price-head-item">起批</view>-->
+<!--					<view class="price-head-item">1-5件</view>-->
+<!--					<view class="price-head-item">6-50件</view>-->
+<!--					<view class="price-head-item">2000件以上</view>-->
+<!--				</view>-->
+<!--				<view class="price-head">-->
+<!--					<view class="price-head-item">价格</view>-->
+<!--					<view class="price-head-item f_price">￥188.00</view>-->
+<!--					<view class="price-head-item f_price">￥165.00</view>-->
+<!--					<view class="price-head-item f_price">￥155.00</view>-->
+<!--				</view>-->
+<!--			</view>-->
+<!--			<view class="aui-card-list-footer">-->
+<!--				<view class="p1">-->
+<!--					颜色：-->
+<!--					<view class="nv_1 nv_2">红色</view><text decode="true">  </text>-->
+<!--					<view class="nv_1">蓝色</view><text decode="true">  </text>-->
+<!--					<view class="nv_1">黑色</view><text decode="true">  </text>-->
+<!--					<view class="nv_1">白色</view>-->
+<!--				</view>-->
+<!--			</view>-->
+			<!-- <view class="aui-card-list-footer">
+              <view class="p1">
+                颜色：
+                <view class="nv_1 nv_2">红色</view><text decode="true">  </text>
+                <view class="nv_1">蓝色</view><text decode="true">  </text>
+                <view class="nv_1">黑色</view><text decode="true">  </text>
+                <view class="nv_1">白色</view>
+              </view>
+            </view> -->
+
+			<!-- <view class="aui-card-list-footer">
+              <view class="p4">
+                尺寸：
+                <view class="" style="display: inline-block;float: left;text-align: center;margin-right: 5px;">
+                  <view></view>
+                </view>
+              </view>
+            </view> -->
+<!--		</view>-->
+	</view>
+</view>
 <!-- 消息内容 -->
 <scroll-view class="msg-scroll" style="height:{{height}}rpx" scroll-y scroll-with-animation scroll-top="{{scrollTop}}"
 	enable-back-to-top>
+	<view wx:if="{{!isEnd}}" class="moreMessage" bindtap="onMoreMessage">
+		<text>加载更多消息</text>
+	</view>
+	<view wx:else class="moreMessage" bindtap="onMoreMessage">
+		<text style="color:#bebbbb">只显示最近的100条消息</text>
+	</view>
 	<view class="msg-list">
 		<block wx:for="{{msg}}" wx:key="item" in="msg{{index+1}}">
 			<view wx:if="{{item.type === 'entryRoom'}}" class="chat-item">
-				<view class="tip">{{item.user_name}}, 进入聊天室</view>
+				<view class="tip">{{item.user_name}} 进入聊天室</view>
 			</view>
 			<view wx:if="{{item.type === 'time'}}" class="chat-item">
 				<view class="tip">{{item.content}}</view>
@@ -37,15 +120,17 @@
 </scroll-view>
 
 <!-- 内容编辑区 -->
-<view class="chat-edit">
-	<l-input l-class="edit-input" hide-label maxlength="150" width="600" value="{{content}}" confirmHold="{{true}}"
-		placeholder="聊点什么吧~" confirmType="send" bind:lininput="setMessage" bind:linconfirm="onSendMessageTap" />
-	<view class="add-box">
-		<l-icon name="add" size="45" color="#0f6945" l-class="add-pic" bindtap="sendImg" />
-	</view>
-	<l-button shape="semicircle" size="mini" bg-color="#337559" width="125" height="60" bind:lintap="onSend">发送
-	</l-button>
-</view>
+<!--<view class="chat-edit">-->
+<!--	<l-input l-class="edit-input" hide-label maxlength="150" width="600" value="{{content}}" confirmHold="{{true}}"-->
+<!--		placeholder="聊点什么吧~" confirmType="send" bind:lininput="setMessage" bind:linconfirm="onSend" />-->
+<!--&lt;!&ndash;	<view class="add-box">&ndash;&gt;-->
+<!--&lt;!&ndash;		<l-icon name="add" size="45" color="#0f6945" l-class="add-pic" bindtap="sendImg" />&ndash;&gt;-->
+<!--&lt;!&ndash;	</view>&ndash;&gt;-->
+<!--	<l-button shape="semicircle" size="mini" bg-color="#337559" width="125" height="60" bind:lintap="onSend">发送-->
+<!--	</l-button>-->
+<!--</view>-->
+<emoji bind:sendMessage="onSend"></emoji>
+
 
 <!-- 消息提示 -->
 <l-message />

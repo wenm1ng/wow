@@ -4,47 +4,197 @@ page {
   padding-bottom: 88rpx;
 }
 
-/**可拖动悬浮按钮样式表**/
-.btn_Suspension{
-  position: fixed;
-  height: 100rpx;
-  width: 100rpx;
-  background-color: rgba(255, 255, 255, 0.755);
-  border-radius: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 99999;
-  box-shadow: 1px 0px 1px 1px #ede7e7;
-}
-.Suspension_logo{
-  position:absolute;
-  height:50%;
-  width:50%;
-  left:23%;
-  top:27%
-}
-.cornorMark{
-  position:absolute;
-  background: rgb(242, 109, 38);
-  border:1px solid rgb(242, 109, 38);
-  border-radius: 100px;
-  width:30rpx;
-  height:30rpx;
-  top:-17rpx;
-  right:3rpx;
-  color:#fff;
-  font-size: 12px;
-  text-align: center;
-}
-.cornorMark text{
-  position:absolute;
-  width:100%;
-  text-align: center;
-  top:-1px;
-  right:100%;
+/**自定义**/
+.profile{
+  position: absolute;
+  top:500rpx;
+  left:710rpx;
+  z-index: 1;
+  width:20rpx;
 }
 
+.avatar-room {
+  position: relative;
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-top: -100rpx;
+  border: 4rpx #fff solid;
+}
+
+.avatar-image{
+  width:100rpx;
+  height:100rpx;
+  padding: 20rpx;
+}
+
+.moreMessage{
+  text-align: center;
+  padding-top: 20rpx;
+  color: #258b63;
+}
+
+/**可拖动悬浮按钮样式表**/
+.leftBox {
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  right: -720px;
+  top: 0px;
+  z-index: 1;
+}
+
+.left {
+  width: 18vw;
+  height: 100vh;
+  background: #fff;
+  position: fixed;
+  right: -720px;
+  top: 0px;
+  transition: all 0.5s; /*动画  */
+  z-index: 10;
+  overflow-x: none;
+}
+
+.leftActive {
+  right: 0px;
+}
+
+.goods-detail .goods-info {
+  zoom: 1;
+  overflow: hidden;
+  padding: 20rpx 0 20rpx 24rpx;
+}
+
+.goods-detail .goods-info {
+  margin-left: -40rpx;
+  padding-left: 0;
+  padding-top: 70rpx;
+}
+
+.goods-detail .goods-info .l-info {
+  float: left;
+  width: 280rpx;
+  position: relative;
+}
+
+.goods-detail .goods-info .l-info .produc-img {
+  width: 280rpx;
+  height: 280rpx;
+  text-align: center;
+  box-sizing: border-box;
+  border: 1px solid #d2d2d2;
+  background: #fff;
+  padding: 10rpx;
+}
+
+.goods-detail .goods-info .l-info .produc-img image {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+}
+
+.goods-detail .close-btn {
+  margin-right: 32rpx;
+  margin-top: 10rpx;
+  position: absolute;
+  right: -10rpx;
+  color: #999;
+}
+
+.goods-detail .goods-info .r-info {
+  float: left;
+  width: calc(100% - 280rpx);
+}
+
+.goods-detail .goods-info .r-info .r-content {
+  padding-left: 24rpx;
+}
+
+.goods-detail .goods-info .goods-name {
+  font-size: 40rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.goods-detail .goods-info .goods-code {
+  margin-top: 8rpx;
+}
+
+.price-pre {
+  color: red;
+  font-size: 32rpx;
+}
+
+.promotion-section {
+  padding: 20rpx 0;
+}
+
+.aui-card-list-footer {
+  min-height: 1.5rem;
+  padding: 0.25rem 0.75rem;
+  color: #999;
+  font-size: 0.6rem;
+  margin-bottom: 10px;
+}
+
+.aui-card-list-footer {
+  font-size: 28rpx;
+}
+
+.aui-card-list-footer .nv_1 {
+  display: inline-block;
+  padding: 0.6em 0.65em;
+  font-size: 0.6rem;
+  line-height: 1;
+  color: #616161;
+  background-color: #f3f3f3;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25em;
+}
+
+.aui-card-list-footer .nv_2 {
+  display: inline-block;
+  padding: 0.6em 0.65em;
+  font-size: 13px;
+  line-height: 1;
+  color: #fff;
+  background-color: #03a9f4;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25em;
+}
+
+.aui-card-list-footer .nv_2, .aui-card-list-footer .nv_1 {
+  font-size: 13px;
+}
+
+.price-line {
+  padding: 24rpx 8rpx;
+  border-bottom: 1px solid #eee;
+}
+
+.price-head {
+  display: flex;
+  width: 100%;
+  text-align: center;
+  background-color: #fbf9fe;
+  padding: 5px 0;
+}
+
+.price-head-item {
+  flex: 1;
+  text-align: center;
+  font-size: 26rpx;
+}
+.f_price {
+  color: #ff0000;
+}
+/**右侧悬浮窗**/
 .chat-item {
   display: flex;
   flex-direction: row;

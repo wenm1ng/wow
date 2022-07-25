@@ -1,5 +1,6 @@
 /**app.wxss**/
-
+@import 'weui/weui.wxss';
+@import 'iconfont/iconfont.wxss';
 page {
   background: #f7f7f7;
   font-family: "苹方";
@@ -31,4 +32,45 @@ image {
   box-sizing: border-box;
   flex-direction: column;
   padding: 10rpx 30rpx;
+}
+
+.ellipsis {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp:1
+}
+.ellipsis-2 {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp:2
+}
+.ellipsis-3 {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp:3
+}
+.weui-loadmore__tips_in-line {
+  background-color: #f2f2f2
+}
+.weui-loadmore {
+  background-color: #fff;
+  width: 100%;
+  margin: 0 auto;
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+}
+.touch-active:active {
+  background-color: #f2f2f2
+}
+.weui-bg-transparent {
+  background-color: transparent;
+  width:85%;
+  margin: 15px auto 0 auto;
+  padding: 0
 }

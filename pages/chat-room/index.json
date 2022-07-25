@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "艾泽拉斯 聊天室"
+  "navigationBarTitleText": "艾泽拉斯 聊天室",
+  "usingComponents": {
+    "emoji": "../../components/emoji/index"
+  }
 }

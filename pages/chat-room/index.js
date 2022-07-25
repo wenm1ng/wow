@@ -17,16 +17,32 @@ Page({
     timeDown: 0, // 大于5分钟消息间隔报时
     preTime: 0,// 上一条消息的时间
     countDown: 0, // 倒计时秒数
-    height: 1116, // 消息内容区高度
+    height: 980, // 消息内容区高度
     msg: [], //消息内容
     roomMembers: [], //房间成员
-    automaticClose:true // 这里默认是客户端和服务器自动断开
+    automaticClose:true, // 这里默认是客户端和服务器自动断开
+    page: 1,
+    pageSize: 10,
+    isEnd: false
+  },
+  showRight(e) {
+    this.setData({
+      leftView: !this.data.leftView
+    })
+  },
+  hideLeft() {
+    this.setData({
+      leftView: !this.data.leftView
+    })
   },
   connetWebsocket() { // wbsocket逻辑
+    if(!app.globalData.userDetail){
+      return;
+    }
     that = this;// 保存this指向
     if( webSocket ) that.closeWebSocket(); // 先关 再开 避免多次重复连接
     webSocket = wx.connectSocket({
-      url: api.chatAPI,
+      url: api.socketAPI,
       header:{
         'content-type': 'application/json'
       }
@@ -47,7 +63,10 @@ Page({
           that.onMessage(data)
           break;
         case 'entryRoom':
-          that.onEntryRoom()
+          that.onEntryRoom(data)
+          break;
+        case 'leaveRoom':
+          that.onLeaveRoom(data)
           break;
       }
     })
@@ -57,6 +76,18 @@ Page({
     wx.onSocketClose(function (res) { //监测webSocket关闭
       that.data.automaticClose && that.readConnectWebSocket()  // 只有是自动断开时才开启重连 这判断挺重要
     })
+  },
+  receiveMessage(e){
+    console.log(e.detail)
+  },
+  /**
+   * 加载更多消息
+   */
+  onMoreMessage(){
+    // this.setData({
+    //   scrollTop: 500
+    // });
+    this.getHistoryMessage()
   },
   /**
    * 消息处理
@@ -91,6 +122,7 @@ Page({
    * @param res
    */
   onEntryRoom(res){
+    console.log(res);
     let msg = this.data.msg
     let preTime = this.data.preTime
     let nowTime = Date.parse(new Date())/1000;
@@ -107,10 +139,38 @@ Page({
     }
     content = {...content, ...res}
     msg.push(content)
+
+    //记录房间人数
+    let roomMembers = this.data.roomMembers
+    roomMembers.push(res)
+    console.log(roomMembers);
     this.setData({
-      msg: msg
+      msg: msg,
+      roomMembers: roomMembers
     })
     this.scrollToBottom()
+  },
+
+  /**
+   * 离开房间
+   * @param res
+   */
+  onLeaveRoom(res){
+    //记录房间人数
+    let roomMembers = this.data.roomMembers
+    // for (var i=0;i<roomMembers.length;i++){
+    //   if(roomMembers[i].user_id == res.user_id){
+    //     roomMembers[i].remove();
+    //   }
+    // }
+    for (var i in roomMembers){
+      if(roomMembers[i].user_id === res.user_id){
+        roomMembers[i].remove();
+      }
+    }
+    this.setData({
+      roomMembers: roomMembers
+    })
   },
   closeWebSocket(){ // 手动关闭webSocket
     webSocket.close({
@@ -118,6 +178,12 @@ Page({
         webSocket = null;
         console.log('webSocket关闭成功')
       }
+    })
+    wx.sendSocketMessage({
+      data:JSON.stringify({
+        action: 'leaveRoom',
+        token: app.globalData.userDetail.token
+      })
     })
   },
   readConnectWebSocket(){  // 重新连接webSocket
@@ -132,7 +198,27 @@ Page({
       that.startLogTimer() // startLogTimer为一个开启setInterval的函数
     }
   },
+  startLogTimer(){
+    // const interval = setInterval(() => {
+    //   let timeDown = this.data.timeDown
+    //   if (countDown <= 0) {
+    //     clearInterval(interval)
+    //     wx.navigateBack()
+    //   }
+    // }, 1000);
+    //记录websocket连接失败信息
+    const url = api.chatAPI + 'record-log'
+    const data = {
+      content: 'websocket连接失败'
+    }
+    wxutil.request.post(url, data).then((res) => {
+      if (res.data.code === 200) {
+        console.log(res)
+      }
+    })
+  },
   onShow(){
+    this.getUserId()
     this.setData({ automaticClose:true,num:0,t:5 }) // 恢复小程序websocket默认自动断开 初始化数据
     this.connetWebsocket()
   },
@@ -141,19 +227,37 @@ Page({
     this.closeWebSocket()
   },
   onLoad(options) {
-    // const roomId = !options.roomId ? 1 : options.roomId
-    // const countDown = options.countDown ? options.countDown : 0
-    //
-    // // this.getCountDown(countDown)
-    // this.getUserId()
-    // this.getScrollHeight()
-    // this.connectSocket(roomId)
-    // this.onSocketMessage("status") // 监听状态信息
-    // this.onSocketMessage("message") // 监听文字消息
-    // this.onSocketMessage("images") // 监听图片消息
+    this.getHistoryMessage()
   },
-  onSend(){
-    const content = this.data.content
+  getHistoryMessage(){
+    const url = api.chatAPI + 'get-history'
+    const data = {
+      room_id: 1,
+      page: this.data.page,
+      pageSize: this.data.pageSize
+    }
+    wxutil.request.get(url, data).then((res) => {
+      if (res.data.code === 200) {
+        if(res.data.data.length === 0){
+          this.setData({
+            isEnd: true
+          })
+          return;
+        }
+        let msg = this.data.msg;
+        msg = res.data.data.concat(msg);
+        this.setData({
+          msg: msg,
+          page: this.data.page + 1
+        })
+      }
+    })
+  },
+
+  onSend(e){
+    // const content = this.data.content
+    const content = e.detail
+    console.log(e.detail);
     if (!wxutil.isNotNull(content)) {
       wx.lin.showMessage({
         type: "error",
@@ -306,7 +410,7 @@ Page({
    * 连接Socket
    */
   connectSocket(roomId) {
-    socket = this.socket = io(api.chatAPI)
+    socket = this.socket = io(api.socketAPI)
     socket.on("connect", () => {
       const data = {
         room_id: roomId,
@@ -362,11 +466,11 @@ Page({
     query.exec((res) => {
       const scorllHeight = res[0].height;
       const listHeight = res[1].height;
-      if(height < listHeight - scorllHeight + 20){
+      // if(height < listHeight - scorllHeight + 20){
         this.setData({
           scrollTop: listHeight - scorllHeight
         });
-      }
+      // }
     });
   },
 
@@ -379,23 +483,6 @@ Page({
     })
   },
 
-  /**
-   * 发送消息
-   */
-  onSendMessageTap() {
-    const content = this.data.content
-    if (!wxutil.isNotNull(content)) {
-      wx.lin.showMessage({
-        type: "error",
-        content: "内容不能为空！"
-      })
-      return
-    }
-    this.sendSocketMessage("send", content)
-    this.setData({
-      content: null,
-    })
-  },
 
   /**
    * 发送图片
