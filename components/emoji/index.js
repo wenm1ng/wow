@@ -1,3 +1,5 @@
+const app = getApp()
+const api = app.api
 
 Page({
   properties: {
@@ -26,6 +28,7 @@ Page({
       "41", "42", "43", "44", "45", "46", "47", "48", "49","50",
       "51", "52", "53", "54", "55",
     ],
+    imageBrowUrl: api.imageBrowUrl,
     emojis: [{char: "☺", emoji: "01"},
       {char: "😋", emoji: "02"},
       {char: "😌", emoji: "03"},

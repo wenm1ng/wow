@@ -118,7 +118,7 @@
   color: #333;
   font-size: 28rpx;
   margin: 10rpx 0;
-  height: 70rpx;
+  height: 10%;
 }
 
 .text-flod {

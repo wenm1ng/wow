@@ -1,4 +1,8 @@
-  .wa-left-tab {
+.page{
+    height:100%
+}
+
+.wa-left-tab {
     float:left;
     display: block;
     /* padding: 20rpx; */
@@ -6,7 +10,7 @@
     /*background-color: rgb(229,229,229);*/
     background-color: rgb(229,229,229);
     width: 25%;
-    height:600rpx;
+    height:63%;
     color:black;
     text-align: center;
   }
@@ -32,7 +36,7 @@
 
   .wa-right{
     overflow: auto;
-    height:600rpx;
+    height:63%;
   }
 
   .text-title{

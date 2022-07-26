@@ -52,6 +52,12 @@ Page({
     wx.onSocketOpen(function (res) { // 打开webSocket
       wx.sendSocketMessage({
         data:JSON.stringify({
+          action: 'getRoomMember',
+          token: app.globalData.userDetail.token
+        })
+      })
+      wx.sendSocketMessage({
+        data:JSON.stringify({
           action: 'entryRoom',
           token: app.globalData.userDetail.token
         })
@@ -67,8 +73,8 @@ Page({
         case 'entryRoom':
           that.onEntryRoom(data)
           break;
-        case 'leaveRoom':
-          that.onLeaveRoom(data)
+        case 'getRoomMember':
+          that.onGetRoomMember(data)
           break;
       }
     })
@@ -79,8 +85,16 @@ Page({
       that.data.automaticClose && that.readConnectWebSocket()  // 只有是自动断开时才开启重连 这判断挺重要
     })
   },
-  receiveMessage(e){
-    console.log(e.detail)
+
+  /**
+   * 获取房间所有成员
+   * @param res
+   */
+  onGetRoomMember(res){
+    for(var x in res.list){
+      var info = JSON.parse(x);
+      console.log();
+    }
   },
   /**
    * 加载更多消息
@@ -157,17 +171,12 @@ Page({
    * 离开房间
    * @param res
    */
-  onLeaveRoom(res){
+  onLeaveRoom(){
     //记录房间人数
     let roomMembers = this.data.roomMembers
-    // for (var i=0;i<roomMembers.length;i++){
-    //   if(roomMembers[i].user_id == res.user_id){
-    //     roomMembers[i].remove();
-    //   }
-    // }
     for (var i in roomMembers){
-      if(roomMembers[i].user_id === res.user_id){
-        roomMembers[i].remove();
+      if(roomMembers[i].user_id === this.data.userId){
+        roomMembers.splice(i, 1)
       }
     }
     this.setData({
@@ -175,18 +184,19 @@ Page({
     })
   },
   closeWebSocket(){ // 手动关闭webSocket
+    that.onLeaveRoom()
     webSocket.close({
       success(){
         webSocket = null;
         console.log('webSocket关闭成功')
       }
     })
-    wx.sendSocketMessage({
-      data:JSON.stringify({
-        action: 'leaveRoom',
-        token: app.globalData.userDetail.token
-      })
-    })
+    // wx.sendSocketMessage({
+    //   data:JSON.stringify({
+    //     action: 'leaveRoom',
+    //     token: app.globalData.userDetail.token
+    //   })
+    // })
   },
   readConnectWebSocket(){  // 重新连接webSocket
     clearTimeout(setTimer); // 先关闭定时器
