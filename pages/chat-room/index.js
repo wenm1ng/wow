@@ -91,10 +91,13 @@ Page({
    * @param res
    */
   onGetRoomMember(res){
+    let roomMembers = [];
     for(var x in res.list){
-      var info = JSON.parse(x);
-      console.log();
+      roomMembers.push(JSON.parse(x));
     }
+    this.setData({
+      roomMembers: roomMembers
+    })
   },
   /**
    * 加载更多消息
@@ -184,6 +187,9 @@ Page({
     })
   },
   closeWebSocket(){ // 手动关闭webSocket
+    if(!that){
+      return;
+    }
     that.onLeaveRoom()
     webSocket.close({
       success(){
@@ -230,8 +236,14 @@ Page({
     })
   },
   onShow(){
-    this.getUserId()
+    let isLogin = this.getUserId()
+    if(!isLogin){
+      return;
+    }
     this.setData({ automaticClose:true,num:0,t:5 }) // 恢复小程序websocket默认自动断开 初始化数据
+    if(this.data.msg.length === 0){
+      this.getHistoryMessage();
+    }
     this.connetWebsocket()
   },
   onHide(){
@@ -242,6 +254,9 @@ Page({
     this.getHistoryMessage()
   },
   getHistoryMessage(){
+    if(this.data.userId === -1){
+      return;
+    }
     const url = api.chatAPI + 'get-history'
     const data = {
       room_id: 1,
@@ -412,12 +427,13 @@ Page({
           }
         },
       })
+      return false;
     }else{
       this.setData({
         userId: app.globalData.userDetail.id
       })
     }
-
+    return true;
   },
 
   /**

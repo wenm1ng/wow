@@ -7,7 +7,7 @@ page {
 /**自定义**/
 .profile{
   position: absolute;
-  top:500rpx;
+  top:50%;
   left:710rpx;
   z-index: 1;
   width:20rpx;
