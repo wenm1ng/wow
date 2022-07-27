@@ -80,7 +80,7 @@
 			<view class="number">{{wa_info.read_num}}</view>
 		</view>
 	</view>
-	<l-icon l-class="ellipsis" slot="more" name="ellipsis" color="#777" size="32" bindtap="onMoreTap" />
+<!--	<l-icon l-class="ellipsis" slot="more" name="ellipsis" color="#777" size="32" bindtap="onMoreTap" />-->
 </l-card>
 <!-- 收藏 -->
 <!-- <view wx:if="{{waInfo.id}}" class="star-box" wx:if="{{waInfo.likes_num.length > 0}}">
@@ -111,7 +111,7 @@
 			<view class="content">
 				{{item.version_number}}
 			</view>
-			<view class="content" style="font-size: 9px;">
+			<view class="content">
 				{{item.create_at}}
 			</view>
 			<view class="content">

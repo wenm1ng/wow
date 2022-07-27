@@ -84,6 +84,7 @@ Page({
     wx.onSocketClose(function (res) { //监测webSocket关闭
       that.data.automaticClose && that.readConnectWebSocket()  // 只有是自动断开时才开启重连 这判断挺重要
     })
+    this.scrollToBottom()
   },
 
   /**
@@ -142,31 +143,36 @@ Page({
    */
   onEntryRoom(res){
     console.log(res);
-    let msg = this.data.msg
-    let preTime = this.data.preTime
-    let nowTime = Date.parse(new Date())/1000;
-    // 间隔时间大于2分钟输出时分秒
-    if (nowTime - preTime >= 120) {
-      msg.push({
-        type: "time",
-        content: wxutil.getDateTime().slice(-8, -3)
+
+    if(res.noticeType === 'message'){
+      let msg = this.data.msg
+      let preTime = this.data.preTime
+      let nowTime = Date.parse(new Date())/1000;
+      // 间隔时间大于2分钟输出时分秒
+      if (nowTime - preTime >= 120) {
+        msg.push({
+          type: "time",
+          content: wxutil.getDateTime().slice(-8, -3)
+        })
+      }
+      //提醒入房通知
+      let content = {
+        type: 'entryRoom',
+      }
+      content = {...content, ...res}
+      msg.push(content)
+      this.setData({
+        msg: msg
       })
     }
-
-    let content = {
-      type: 'entryRoom',
-    }
-    content = {...content, ...res}
-    msg.push(content)
-
     //记录房间人数
     let roomMembers = this.data.roomMembers
     roomMembers.push(res)
     console.log(roomMembers);
     this.setData({
-      msg: msg,
       roomMembers: roomMembers
     })
+
     this.scrollToBottom()
   },
 

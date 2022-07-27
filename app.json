@@ -30,7 +30,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "魔兽世界 WA仓库",
+    "navigationBarTitleText": "WOW WA仓库",
     "navigationBarTextStyle": "black",
     "backgroundColor": "#f7f7f7",
     "onReachBottomDistance": 50
@@ -47,8 +47,14 @@
         "selectedIconPath": "images/icon_tab/hole_hl.png"
       },
       {
-        "pagePath": "pages/chat-room/index",
+        "pagePath": "pages/select-skill/index",
         "text": "帮帮忙",
+        "iconPath": "images/icon_tab/topic.png",
+        "selectedIconPath": "images/icon_tab/topic_hl.png"
+      },
+      {
+        "pagePath": "pages/chat-room/index",
+        "text": "吹吹水",
         "iconPath": "images/icon_tab/topic.png",
         "selectedIconPath": "images/icon_tab/topic_hl.png"
       },

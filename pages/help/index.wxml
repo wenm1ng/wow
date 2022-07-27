@@ -1,2 +1,109 @@
-<!--pages/help/index.wxml-->
-<text>pages/help/index.wxml</text>
+<!-- pages/help/index.wxml -->
+
+<scroll-view scroll-x enable-flex class="tag-scroll2">
+    <view>
+        <l-tag l-class="tag" plain="{{false}}"
+               font-color="{{orderColumn === 'create_at' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="create_at" icon="pull-down">
+            发布日期</l-tag>
+    </view>
+    <view>
+        <l-tag l-class="tag" plain="{{false}}"
+               font-color="{{orderColumn === 'likes_num' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="likes_num" icon="pull-down">
+            是否采纳</l-tag>
+    </view>
+    <view>
+        <l-tag l-class="tag" plain="{{false}}"
+               font-color="{{orderColumn === 'likes_num' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="likes_num" icon="pull-down">
+            我的</l-tag>
+    </view>
+</scroll-view>
+        <!-- 下拉层按钮 -->
+<view class="btn-popup" bindtap="togglePopup">
+    <l-icon l-class="{{showPopup? 'btn-active' : 'btn'}}" name="close" size="15" color="#777" />
+</view>
+
+        <!-- 下拉层 -->
+<l-popup show="{{showPopup}}" animation content-align="top" bind:lintap="togglePopup" z-index="99">
+    <view class="popup">
+        <l-tag wx:if="{{searchValue === ''}}" wx:for="{{labels}}" wx:key="item" l-class="tag" plain="{{labelId == item ? false : true}}" shape="circle"
+               bg-color="#337559" font-color="{{labelId == item ? '#fff' : '#337559'}}" bind:lintap="onTagTap"
+               data-label="{{item}}">#{{item}}</l-tag>
+        <l-tag wx:if="{{searchValue !== ''}}" l-class="tag" plain="{{false}}" shape="circle"
+               bg-color="#337559" font-color="#fff" bind:lintap="onTagTap"
+               data-label="{{searchValue}}">#{{searchValue}}</l-tag>
+    </view>
+</l-popup>
+
+<nothing wx:if="{{wa_list.length === 0}}" pic="../../images/icon_nothing/pic_hole.png" tip="没有内容，换个关键词试试吧" />
+        <!-- 动态内容 -->
+<scroll-view scroll-y enable-back-to-top lower-threshold="5" class="topic-scroll" bindscrolltoupper="scrollToUpper"
+             bindscrolltolower="scrollToLower" style="height:{{height}}rpx" scroll-top="{{scrollTop}}">
+    <l-card type="avatar" l-class="card" l-title-class="card-title-anon"
+            wx:for="{{wa_list}}" l-img-class="l-img" wx:key="item" wx:for-index="cardIndex" title="{{item.title}}" describe="{{item.create_at}} 由 {{item.user_name}} 上传"
+            bind:linavatar="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}"
+            bind:lintitle="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}">
+        <view class="{{item.description.length >= 50 && !item.flod ? 'content-close' : 'avater-content'}}"
+              data-id="{{item.id}}" bindtap="gotoDetail">{{item.description}}</view>
+        <view wx:if="{{item.description.length >= 50}}" data-index="{{cardIndex}}" class="text-flod" bindtap="onFlodTap">
+            {{item.flod ? '收起' : '全文'}}</view>
+
+        <view class="posters" data-id="{{item.id}}" bindtap="gotoDetail">
+            <!--			<block wx:if="{{item.images.length == 1}}">-->
+            <!--				<image class="column-one" wx:for="{{item.images}}" wx:key="item" src="{{item.image_url}}" mode="widthFix"-->
+            <!--					catchtap="previewImage" data-src="{{item.image_url}}" data-index="{{cardIndex}}" lazy-load />-->
+            <!--			</block>-->
+            <!--			<block wx:elif="{{item.images.length == 2 || item.images.length == 4}}">-->
+            <!--				<image class="column-three" wx:for="{{item.images}}" wx:key="item" src="{{item.image_url}}" mode="aspectFill"-->
+            <!--					catchtap="previewImage" data-src="{{item.image_url}}" data-index="{{cardIndex}}" lazy-load />-->
+            <!--			</block>-->
+            <!--			<block wx:else>-->
+            <block>
+                <image wx:for="{{item.images}}" wx:key="item" src="{{item.image_url}}" mode="aspectFill" catchtap="previewImage"
+                       data-src="{{item.image_url}}" data-index="{{cardIndex}}" lazy-load />
+            </block>
+        </view>
+        <!--		label-box-->
+        <view class="popup" wx:if="{{item.tips}}">
+            <!-- <l-tag wx:for="{{wa_info.label}}" wx:key="item" l-class="tag" shape="circle" bg-color="#337559" font-color="#337559"
+                plain bind:lintap="gotowa_info" data-label="{{item}}">#{{item}}</l-tag> -->
+            <l-tag l-class="tag" wx:for="{{item.tips}}" wx:for-item="item2" shape="circle" bg-color="#337559" font-color="#337559"
+                   plain="true" data-label="{{item2}}">#{{item2}}</l-tag>
+        </view>
+        <view class="avater-share-container">
+            <view class="like-container" data-id="{{item.id}}" bindtap="gotoDetail">
+                <l-icon name="comment" color="{{item.has_comment ? '#d81e05' : '#666'}}" size="28" />
+                <view class="{{item.has_comment ? 'has-text' : ''}} number">{{item.comment_count}}</view>
+            </view>
+            <view class="like-container" data-index="{{cardIndex}}" bindtap="onStarTap">
+                <l-icon name="like" color="{{item.has_likes ? '#d81e05' : '#666'}}" size="28" />
+                <view class="{{item.has_likes ? 'has-text' : ''}} number">{{item.likes_count}}</view>
+            </view>
+            <view class="like-container" data-id="{{item.id}}" bindtap="gotoDetail">
+                <l-icon name="eye" color="#666" size="28" />
+                <view class="number">{{item.read_num}}</view>
+            </view>
+        </view>
+        <!--		<l-icon l-class="ellipsis" slot="more" name="ellipsis" color="#777" size="32" data-index="{{cardIndex}}"-->
+        <!--			bindtap="onMoreTap" />-->
+    </l-card>
+    <l-loadmore wx:if="{{!isEnd}}" show="{{loading}}" line l-class="loading" />
+    <l-loadmore show="{{isEnd && page != 1}}" line l-class="loading" type="end" />
+</scroll-view>
+
+        <!-- 编辑按钮 -->
+        <!--<view class="btn-edit" bindtap="onEditTap">-->
+        <!--	<l-icon name="edit" color="#fff" size="30" />-->
+        <!--</view>-->
+
+        <!-- nothing -->
+        <!--<nothing wx:if="{{wa_list.length === 0}}" pic="../../images/icon_nothing/pic_topic.png" tip="暂时没有WA" />-->
+
+        <!-- 操作菜单 -->
+<l-action-sheet show-cancel open-api="{{false}}" item-list="{{actionList}}" show="{{showAction}}"
+                bind:linitemtap="onActionItemtap" bind:lincancel="onCancelSheetTap" />
+
+        <!-- 消息对话框 -->
+<l-dialog />
+
+        <!-- 消息提示 -->
+<l-message />
