@@ -12,6 +12,7 @@ module.exports = {
   userAPI: baseAPI2 + "user/", // 用户接口
   versionAPI: baseAPI2 + "version/", // 版本接口
   waAPI: baseAPI2 + "wa/", // wa接口
+  helpCenterAPI: baseAPI2 + "help-center/", // wa接口
   occupationAPI: baseAPI2 + "occupation/", // 职业接口
   talentAPI: baseAPI2 + "talent/", // 天赋接口
   socketAPI: socketAPI, // Socket接口

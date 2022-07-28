@@ -47,7 +47,7 @@
         "selectedIconPath": "images/icon_tab/hole_hl.png"
       },
       {
-        "pagePath": "pages/select-skill/index",
+        "pagePath": "pages/help/index",
         "text": "帮帮忙",
         "iconPath": "images/icon_tab/topic.png",
         "selectedIconPath": "images/icon_tab/topic_hl.png"
