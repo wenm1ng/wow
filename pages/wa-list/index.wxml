@@ -53,12 +53,12 @@
 	</view>
 </l-popup>
 
-<nothing wx:if="{{help_list.length === 0}}" pic="../../images/icon_nothing/pic_hole.png" tip="暂时还没有内容哦" />
+<nothing wx:if="{{wa_list.length === 0}}" pic="../../images/icon_nothing/pic_hole.png" tip="暂时还没有内容哦" />
 <!-- 动态内容 -->
 <scroll-view scroll-y enable-back-to-top lower-threshold="5" class="topic-scroll" bindscrolltoupper="scrollToUpper"
 	bindscrolltolower="scrollToLower" style="height:{{height}}rpx" scroll-top="{{scrollTop}}">
 	<l-card type="avatar" l-class="card" l-title-class="card-title-anon"
-		wx:for="{{help_list}}" l-img-class="l-img" wx:key="item" wx:for-index="cardIndex" title="{{item.user_info.user_name}}" describe="{{item.create_at}} 由 {{item.user_name}} 上传"
+		wx:for="{{wa_list}}" l-img-class="l-img" wx:key="item" wx:for-index="cardIndex" title="{{item.user_info.user_name}}" describe="{{item.create_at}} 由 {{item.user_name}} 上传"
 		bind:linavatar="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}"
 		bind:lintitle="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}">
 		<view class="{{item.description.length >= 50 && !item.flod ? 'content-close' : 'avater-content'}}"

@@ -1,62 +1,66 @@
 <!-- pages/help/index.wxml -->
-
 <scroll-view scroll-x enable-flex class="tag-scroll2">
-    <view>
+    <view class="tag-view">
         <l-tag l-class="tag" plain="{{false}}"
                font-color="{{orderColumn === 'create_at' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="create_at" icon="pull-down">
             发布日期</l-tag>
     </view>
-    <view>
+    <view class="tag-view">
         <l-tag l-class="tag" plain="{{false}}"
-               font-color="{{orderColumn === 'likes_num' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="likes_num" icon="pull-down">
-            是否采纳</l-tag>
+               font-color="{{orderColumn === 'help_num' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="likes_num" icon="pull-down">
+            帮助数</l-tag>
+    </view>
+    <view class="tag-view">
+        <l-tag l-class="tag" plain="{{false}}"
+               font-color="{{orderColumn === 'pay_num' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="likes_num" icon="pull-down">
+            有偿求助</l-tag>
     </view>
     <view>
         <l-tag l-class="tag" plain="{{false}}"
-               font-color="{{orderColumn === 'likes_num' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="likes_num" icon="pull-down">
-            我的</l-tag>
+               font-color="{{orderColumn === 'search' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="likes_num" icon="pull-down">
+            筛选</l-tag>
     </view>
 </scroll-view>
-        <!-- 下拉层按钮 -->
-<view class="btn-popup" bindtap="togglePopup">
-    <l-icon l-class="{{showPopup? 'btn-active' : 'btn'}}" name="close" size="15" color="#777" />
-</view>
-
-        <!-- 下拉层 -->
-<l-popup show="{{showPopup}}" animation content-align="top" bind:lintap="togglePopup" z-index="99">
-    <view class="popup">
-        <l-tag wx:if="{{searchValue === ''}}" wx:for="{{labels}}" wx:key="item" l-class="tag" plain="{{labelId == item ? false : true}}" shape="circle"
-               bg-color="#337559" font-color="{{labelId == item ? '#fff' : '#337559'}}" bind:lintap="onTagTap"
-               data-label="{{item}}">#{{item}}</l-tag>
-        <l-tag wx:if="{{searchValue !== ''}}" l-class="tag" plain="{{false}}" shape="circle"
-               bg-color="#337559" font-color="#fff" bind:lintap="onTagTap"
-               data-label="{{searchValue}}">#{{searchValue}}</l-tag>
+<scroll-view scroll-x enable-flex class="tag-scroll" scroll-into-view="{{toTag}}">
+    <view wx:if="{{searchValue === ''}}" wx:for="{{labels}}" wx:key="item">
+        <l-tag l-class="tag" plain="{{labelId == item ? false : true}}" shape="circle" bg-color="#337559"
+               font-color="{{labelId == item ? '#fff' : '#337559'}}" bind:lintap="onTagTap" data-label="{{item}}">
+            #{{item}}</l-tag>
     </view>
-</l-popup>
+    <view wx:if="{{searchValue !== ''}}">
+        <l-tag l-class="tag" plain="{{false}}" shape="circle" bg-color="#337559"
+               font-color="#fff" bind:lintap="onTagTap" data-label="{{searchValue}}">
+            #{{searchValue}}</l-tag>
+    </view>
 
-<nothing wx:if="{{wa_list.length === 0}}" pic="../../images/icon_nothing/pic_hole.png" tip="没有内容，换个关键词试试吧" />
+</scroll-view>
+
+<nothing wx:if="{{help_list.length === 0}}" pic="../../images/icon_nothing/pic_hole.png" tip="没有内容，换个关键词试试吧" />
         <!-- 动态内容 -->
 <scroll-view scroll-y enable-back-to-top lower-threshold="5" class="topic-scroll" bindscrolltoupper="scrollToUpper"
              bindscrolltolower="scrollToLower" style="height:{{height}}rpx" scroll-top="{{scrollTop}}">
-    <l-card type="avatar" l-class="card" l-title-class="card-title-anon"
-            wx:for="{{wa_list}}" l-img-class="l-img" wx:key="item" wx:for-index="cardIndex" title="{{item.title}}" describe="{{item.create_at}} 由 {{item.user_name}} 上传"
-            bind:linavatar="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}"
-            bind:lintitle="{{item.user.id != -1 ? 'gotoVisitingCard' : ''}}">
-        <view class="{{item.description.length >= 50 && !item.flod ? 'content-close' : 'avater-content'}}"
+    <l-card type="avatar" l-class="card" l-title-class="card-title-anon"  image="{{item.user_info.avatar_url}}"
+            wx:for="{{help_list}}" l-img-class="l-img" wx:key="item" wx:for-index="cardIndex" title="{{item.user_info.user_name}}" describe="{{item.modify_at}} 更新">
+        <view bindtap="gotoDetail">{{item.title}}</view>
+        <view class="{{item.description.length > 83 && !item.flod ?  'content-close' : 'avater-content'}} description"
               data-id="{{item.id}}" bindtap="gotoDetail">{{item.description}}</view>
-        <view wx:if="{{item.description.length >= 50}}" data-index="{{cardIndex}}" class="text-flod" bindtap="onFlodTap">
+        <view wx:if="{{item.description.length > 83}}" data-index="{{cardIndex}}" class="text-flod" bindtap="onFlodTap">
             {{item.flod ? '收起' : '全文'}}</view>
-
+        <l-tag  shape="circle"
+                bg-color="#f3f3f3"
+                font-color="#0f6945"
+                slot="more"
+                size="large" l-class="l-tag" location="left">
+            {{item.version_name}}
+        </l-tag>
+        <l-tag  shape="circle"
+                bg-color="#f3f3f3"
+                font-color="#0f6945"
+                slot="more"
+                size="large" l-class="tag" location="left">
+            {{item.help_type_name}}
+        </l-tag>
         <view class="posters" data-id="{{item.id}}" bindtap="gotoDetail">
-            <!--			<block wx:if="{{item.images.length == 1}}">-->
-            <!--				<image class="column-one" wx:for="{{item.images}}" wx:key="item" src="{{item.image_url}}" mode="widthFix"-->
-            <!--					catchtap="previewImage" data-src="{{item.image_url}}" data-index="{{cardIndex}}" lazy-load />-->
-            <!--			</block>-->
-            <!--			<block wx:elif="{{item.images.length == 2 || item.images.length == 4}}">-->
-            <!--				<image class="column-three" wx:for="{{item.images}}" wx:key="item" src="{{item.image_url}}" mode="aspectFill"-->
-            <!--					catchtap="previewImage" data-src="{{item.image_url}}" data-index="{{cardIndex}}" lazy-load />-->
-            <!--			</block>-->
-            <!--			<block wx:else>-->
             <block>
                 <image wx:for="{{item.images}}" wx:key="item" src="{{item.image_url}}" mode="aspectFill" catchtap="previewImage"
                        data-src="{{item.image_url}}" data-index="{{cardIndex}}" lazy-load />
@@ -75,7 +79,7 @@
                 <view class="{{item.has_comment ? 'has-text' : ''}} number">{{item.comment_count}}</view>
             </view>
             <view class="like-container" data-index="{{cardIndex}}" bindtap="onStarTap">
-                <l-icon name="like" color="{{item.has_likes ? '#d81e05' : '#666'}}" size="28" />
+                <l-icon name="favor" color="{{item.has_likes ? '#d81e05' : '#666'}}" size="28" />
                 <view class="{{item.has_likes ? 'has-text' : ''}} number">{{item.likes_count}}</view>
             </view>
             <view class="like-container" data-id="{{item.id}}" bindtap="gotoDetail">
@@ -85,6 +89,7 @@
         </view>
         <!--		<l-icon l-class="ellipsis" slot="more" name="ellipsis" color="#777" size="32" data-index="{{cardIndex}}"-->
         <!--			bindtap="onMoreTap" />-->
+
     </l-card>
     <l-loadmore wx:if="{{!isEnd}}" show="{{loading}}" line l-class="loading" />
     <l-loadmore show="{{isEnd && page != 1}}" line l-class="loading" type="end" />
@@ -96,7 +101,7 @@
         <!--</view>-->
 
         <!-- nothing -->
-        <!--<nothing wx:if="{{wa_list.length === 0}}" pic="../../images/icon_nothing/pic_topic.png" tip="暂时没有WA" />-->
+        <!--<nothing wx:if="{{help_list.length === 0}}" pic="../../images/icon_nothing/pic_topic.png" tip="暂时没有WA" />-->
 
         <!-- 操作菜单 -->
 <l-action-sheet show-cancel open-api="{{false}}" item-list="{{actionList}}" show="{{showAction}}"

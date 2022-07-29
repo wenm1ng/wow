@@ -83,7 +83,7 @@
       margin-top:7rpx;
   }
   .whiteBackground{
-      background-color: #F7F7F7;
+      background-color: #f7f7f7;
   }
   .wa-icon-image{
       height:70rpx;

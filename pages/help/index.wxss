@@ -1,4 +1,27 @@
 /* pages/help/index.wxss */
+
+/*自定义*/
+.l-tag{
+    margin-left: 30%;
+}
+
+.content-close {
+    display: -webkit-box;
+    word-break: break-all;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #333;
+    font-size: 30rpx;
+    margin: 10rpx 0;
+}
+
+.description{
+    color: #a09a9a !important;
+    font-size: 27rpx !important;
+}
+    /*自定义*/
 .search-column{
     display: block;
     float:left;
@@ -6,7 +29,7 @@
     width:100rpx;
 }
 
-.tag-scroll {
+.tag-scroll2 {
     display: flex;
     flex-direction: row;
     position: fixed;
@@ -14,32 +37,25 @@
     left: 0;
     z-index: 99;
     white-space: nowrap;
-    height: 50rpx;
-    width: 750rpx;
-    padding: 20rpx 0;
-    background: #f7f7f7;
-}
-
-.tag-scroll2 {
-    display: flex;
-    flex-direction: row;
-    position: fixed;
-    top: 70rpx;
-    left: 0;
-    z-index: 99;
-    white-space: nowrap;
-    height: 50rpx;
+    height: 100rpx;
     width: 750rpx;
     padding: 20rpx 0;
 }
 
 .tag-scroll2 view{
-    border:0;
     background: none;
+    border:0
+}
+
+.tag-view{
+    border-right:1rpx solid #c2b8b8 !important;
+    height:50rpx;
 }
 
 .tag {
     margin: 0 10rpx;
+    width:150rpx;
+    text-align: center;
 }
 
 .btn-popup {
@@ -97,7 +113,7 @@
 .card-title-anon {
     color: #7a8c9a !important;
     font-weight: bold;
-    width: 560rpx;
+    width: 160rpx;
 }
 
 .avater-content {
@@ -107,18 +123,7 @@
     margin: 10rpx 0;
 }
 
-.content-close {
-    display: -webkit-box;
-    word-break: break-all;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #333;
-    font-size: 28rpx;
-    margin: 10rpx 0;
-    height: 10%;
-}
+
 
 .text-flod {
     color: #0f6945;
@@ -182,7 +187,7 @@
 }
 
 .topic-scroll {
-    margin-top: 150rpx;
+    margin-top: 90rpx;
 }
 
 .loading {
@@ -205,7 +210,4 @@
     border-radius: 50%;
     background: #337559;
     opacity: 0.9;
-}
-.l-img {
-    width:0rpx !important;
 }
