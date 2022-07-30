@@ -21,12 +21,15 @@ Page({
     help_list:[],
     orderColumn: 'create_at',
     scrollTop: 0,
+    version_list: [],
     searchQuery: {
       version: 0,
-      help_type: 0,
+      help_type: [],
       is_pay: 0,
+      adopt_type: 0,
       order: '',
-    }
+    },
+    pay_num: 0,
   },
 
   /**
@@ -39,15 +42,58 @@ Page({
       type:options.type ? options.type : 1,
       ttId:options.ttId ? options.ttId : 0,
       occupation:options.occupation ? options.occupation : '',
-      searchValue: options.searchValue ? options.searchValue : ''
+      searchValue: options.searchValue ? options.searchValue : '',
     })
+    if(wxutil.getStorage('version_list')){
+      this.setData({
+        version_list: wxutil.getStorage('version_list')
+      })
+    }
     this.getScrollHeight()
     this.getHelpList()
     // this.getLabels()
     // this.getUserId()
     // this.getTopics()
   },
-
+  showRight() {
+    this.setData({
+      leftView: !this.data.leftView,
+      orderColumn: 'search'
+    })
+  },
+  hideLeft() {
+    this.setData({
+      leftView: !this.data.leftView,
+    })
+  },
+  buttonClick(e) {
+    let type = e.target.dataset.type;
+    type = 'searchQuery.'+ type;
+    let value = e.target.dataset.value;
+    this.setData({
+      [type]: value
+    })
+  },
+  formSubmit(e) {
+    console.log('form发生了submit事件，携带数据为：', e.detail.value)
+  },
+  change(e) {
+    let items = this.data.items;
+    items.forEach(item => {
+      if(item.name == e.detail.key) {
+        item.checked = e.detail.checked;
+      }
+    });
+    this.setData({
+      items: items
+    });
+  },
+  /**
+   * 阻止冒泡事件
+   */
+  closeBubble(){
+    //不做任务处理
+  },
   getHelpList(isSearch = 0){
     const page = isSearch === 1 ? 1 : this.data.page
 
@@ -76,7 +122,7 @@ Page({
       inRequest: true
     })
 
-    wxutil.request.get(url, data).then((res) => {
+    wxutil.request.post(url, data).then((res) => {
       if (res.data.code == 200) {
         const help_list = res.data.data['list']
         this.setData({
@@ -204,7 +250,7 @@ Page({
    * 下拉刷新
    */
   // scrollToUpper() {
-  //   this.getWaList()
+  //   this.getHelpList()
   //   // 振动交互
   //   wx.vibrateShort()
   // },
@@ -220,7 +266,7 @@ Page({
       page:page + 1
     })
 
-    this.getWaList()
+    this.getHelpList()
   },
 
   /**
@@ -235,7 +281,7 @@ Page({
       talentName: currLabelId,
       labelId: currLabelId
     })
-    this.getWaList(1)
+    this.getHelpList(1)
   },
 
   onOrder(event){
@@ -246,7 +292,9 @@ Page({
     this.setData({
       orderColumn: orderColumn
     })
-    this.getWaList(1)
+
+    this.getHelpList(1)
+
   },
 
   /**
