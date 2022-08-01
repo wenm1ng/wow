@@ -24,10 +24,9 @@ Page({
     version_list: [],
     searchQuery: {
       version: 0,
-      help_type: [],
+      help_type: 0,
       is_pay: 0,
       adopt_type: 0,
-      order: '',
     },
     pay_num: 0,
   },
@@ -58,7 +57,6 @@ Page({
   showRight() {
     this.setData({
       leftView: !this.data.leftView,
-      orderColumn: 'search'
     })
   },
   hideLeft() {
@@ -73,20 +71,33 @@ Page({
     this.setData({
       [type]: value
     })
+    console.log(this.data.searchQuery);
   },
-  formSubmit(e) {
-    console.log('form发生了submit事件，携带数据为：', e.detail.value)
+  /**
+   * 跳转到回答页面
+   */
+  gotoAddAnswer(){
+    wx.navigateTo({
+      url: "/pages/answer-add/index"
+    })
   },
-  change(e) {
-    let items = this.data.items;
-    items.forEach(item => {
-      if(item.name == e.detail.key) {
-        item.checked = e.detail.checked;
-      }
-    });
+  /**
+   * 进行搜索
+   */
+  submit() {
+    this.getHelpList(1)
+    this.hideLeft();
+  },
+  /**
+   * 重置搜索条件
+   */
+  reset() {
     this.setData({
-      items: items
-    });
+      ['searchQuery.version']: 0,
+      ['searchQuery.help_type']: 0,
+      ['searchQuery.is_pay']: 0,
+      ['searchQuery.adopt_type']: 0,
+    })
   },
   /**
    * 阻止冒泡事件
@@ -102,7 +113,8 @@ Page({
       version: this.data.searchQuery.version,
       help_type: this.data.searchQuery.help_type,
       is_pay: this.data.searchQuery.is_pay,
-      order: this.data.searchQuery.order,
+      adopt_type: this.data.searchQuery.adopt_type,
+      order: this.data.orderColumn,
       page: page,
       pageSize: pageSize
     }
@@ -111,12 +123,12 @@ Page({
       return
     }
 
-    if(isSearch === 1){
-      wx.showToast({
-        title: "加载中...",
-        icon: "loading"
-      })
-    }
+    // if(isSearch === 1){
+    //   wx.showToast({
+    //     title: "加载中...",
+    //     icon: "loading"
+    //   })
+    // }
 
     this.setData({
       inRequest: true
@@ -140,7 +152,7 @@ Page({
         this.setData({
           scrollTop: 0
         })
-        wx.hideToast()
+      //   wx.hideToast()
       }
     })
   },
@@ -152,25 +164,7 @@ Page({
   //   this.getTalentTreeList(options.version)
   // },
   onShow() {
-    // const labelId = wxutil.getStorage("labelId")
-    // // 由于wx.switchTab()的传参限制，故用缓存获取标签参数
-    //
-    // if (!wxutil.getStorage("refreshTopics")) {
-    //   if (labelId) {
-    //     wx.removeStorageSync("labelId")
-    //     this.setData({
-    //       labelId: labelId,
-    //       toTag: "tag_" + labelId
-    //     })
-    //     // this.getTopics(1, labelId)
-    //   }
-    // } else {
-    //   wx.removeStorageSync("refreshTopics")
-    //   this.setData({
-    //     labelId: -1
-    //   })
-    //   // this.getTopics()
-    // }
+
   },
 
   /**
@@ -187,30 +181,6 @@ Page({
         console.log(height);
         that.setData({
           height: height - 150
-        })
-      }
-    })
-  },
-
-  /**
-   * 获取标签
-   */
-  getLabels() {
-    if(this.data.searchValue !== ''){
-      return
-    }
-    const url = api.waAPI + 'get-wa-label'
-    const data = {
-      version:this.data.version,
-      tt_id:this.data.ttId,
-      oc:this.data.occupation
-    }
-
-    wxutil.request.get(url, data).then((res) => {
-      if (res.data.code == 200) {
-        let labels = ['全部']
-        this.setData({
-          labels: labels.concat(res.data.data.labels)
         })
       }
     })

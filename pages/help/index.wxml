@@ -1,4 +1,11 @@
 <!-- pages/help/index.wxml -->
+
+<!--中间z-index按钮-->
+<view class="add-button-view" bindtap="gotoAddAnswer">
+    <l-button size="medium" l-class="add-button" width="400">发布帮忙信息</l-button>
+</view>
+
+<!--右侧弹出层-->
 <view class="leftBox '{{leftView?'leftActive':''}}'" data-item="1" bindtap='hideLeft'>
 <!--    bindtap='hideLeft'-->
     <scroll-view scroll-y style="height:100%">
@@ -6,60 +13,74 @@
             <l-form name="student" l-form-btn-class="l-form-btn-class" bind:linsubmit="submit">
                 <view class="bg-font">版本</view>
                 <view>
-                    <l-button wx:for="{{version_list}}" wx:key="item" size="mini" l-class="search-button" data-type="version" bindtap="buttonClick">{{item.name}}</l-button>
+                    <l-button wx:for="{{version_list}}" wx:key="item" size="mini"  l-class="{{searchQuery.version == item.wv_id ? 'search-hover-button' : 'search-button'}}" data-value="{{item.wv_id}}" data-type="version" bindtap="buttonClick">{{item.name}}</l-button>
                 </view>
                 <view class="bg-font">是否采纳</view>
                 <view>
-                    <l-button size="mini" l-class="search-button" data-type="adopt_type" data-value="1" bindtap="buttonClick">已采纳</l-button>
-                    <l-button size="mini" l-class="search-button" data-type="adopt_type" data-value="0" bindtap="buttonClick">未采纳</l-button>
+                    <l-button size="mini" l-class="{{searchQuery.adopt_type === '1' ? 'search-hover-button' : 'search-button'}}" data-type="adopt_type" data-value="1" bindtap="buttonClick">已采纳</l-button>
+                    <l-button size="mini" l-class="{{searchQuery.adopt_type === '2' ? 'search-hover-button' : 'search-button'}}" data-type="adopt_type" data-value="2" bindtap="buttonClick">未采纳</l-button>
                 </view>
-                <view class="bg-font">有偿帮忙</view>
+                <view class="bg-font">是否有偿</view>
                 <view>
-                    <l-button size="mini" l-class="search-button" data-type="is_pay" data-value="1" bindtap="buttonClick">有偿帮忙：{{pay_num}}</l-button>
-                    <l-button size="mini" l-class="search-button" data-type="is_pay" data-value="0" bindtap="buttonClick">普通帮忙</l-button>
+                    <l-button size="mini" l-class="{{searchQuery.is_pay === '1' ? 'search-hover-button' : 'search-button'}}" data-type="is_pay" data-value="1" bindtap="buttonClick">有偿帮忙：{{pay_num}}</l-button>
+                    <l-button size="mini" l-class="{{searchQuery.is_pay === '2' ? 'search-hover-button' : 'search-button'}}" data-type="is_pay" data-value="2" bindtap="buttonClick">普通帮忙</l-button>
                 </view>
                 <view class="bg-font">帮助类型</view>
-                <view style="margin-top:5%">
-                    <label class="checkbox">
-                        <checkbox value="1" data-type="help_type" bindchange="change" name="help_type" />插件研究
-                    </label>
-                    <label class="checkbox2">
-                        <checkbox value="2" data-type="help_type" bindchange="change" name="help_type" />副本专区
-                    </label>
+<!--                <view style="margin-top:5%">-->
+<!--                    <label class="checkbox">-->
+<!--                        <checkbox data-value="1" data-type="help_type" bindchange="change" name="help_type" />插件研究-->
+<!--                    </label>-->
+<!--                    <label class="checkbox2">-->
+<!--                        <checkbox data-value="2" data-type="help_type" bindchange="change" name="help_type" />副本专区-->
+<!--                    </label>-->
+<!--                </view>-->
+<!--                <view style="margin-top:5%">-->
+<!--                    <label class="checkbox">-->
+<!--                        <checkbox data-value="3" data-type="help_type" bindchange="change" name="help_type" />任务/成就-->
+<!--                    </label>-->
+<!--                    <label class="checkbox2">-->
+<!--                        <checkbox data-value="4" data-type="help_type" bindchange="change" name="help_type" />人员招募-->
+<!--                    </label>-->
+<!--                </view>-->
+<!--                <view style="margin-top:5%">-->
+<!--                    <label class="checkbox">-->
+<!--                        <checkbox data-value="5" data-type="help_type" bindchange="change" name="help_type" />幻化讨论-->
+<!--                    </label>-->
+<!--                    <label class="checkbox2">-->
+<!--                        <checkbox data-value="6" data-type="help_type" bindchange="change" name="help_type" />宠物讨论-->
+<!--                    </label>-->
+<!--                </view>-->
+<!--                <view style="margin-top:5%">-->
+<!--                    <label class="checkbox">-->
+<!--                        <checkbox data-value="7" data-type="help_type" bindchange="change" name="help_type" />竞技场/战场-->
+<!--                    </label>-->
+<!--                    <label class="checkbox2">-->
+<!--                        <checkbox data-value="8" data-type="help_type" bindchange="change" name="help_type" />地精商会-->
+<!--                    </label>-->
+<!--                </view>-->
+<!--                <view style="margin-top:5%">-->
+<!--                    <label class="checkbox">-->
+<!--                        <checkbox data-value="9" data-type="help_type" bindchange="change" name="help_type" />新版本讨论-->
+<!--                    </label>-->
+<!--                </view>-->
+                <view>
+                    <l-button size="mini" l-class="{{searchQuery.help_type === '1' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="1" bindtap="buttonClick">插件研究</l-button>
+                    <l-button size="mini" l-class="{{searchQuery.help_type === '2' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="2" bindtap="buttonClick">副本专区</l-button>
+                    <l-button size="mini" l-class="{{searchQuery.help_type === '3' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="3" bindtap="buttonClick">任务/成就</l-button>
                 </view>
-                <view style="margin-top:5%">
-                    <label class="checkbox">
-                        <checkbox value="3" data-type="help_type" bindchange="change" name="help_type" />任务/成就
-                    </label>
-                    <label class="checkbox2">
-                        <checkbox value="4" data-type="help_type" bindchange="change" name="help_type" />人员招募
-                    </label>
+                <view>
+                    <l-button size="mini" l-class="{{searchQuery.help_type === '4' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="4" bindtap="buttonClick">人员招募</l-button>
+                    <l-button size="mini" l-class="{{searchQuery.help_type === '5' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="5" bindtap="buttonClick">幻化讨论</l-button>
+                    <l-button size="mini" l-class="{{searchQuery.help_type === '6' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="6" bindtap="buttonClick">宠物讨论</l-button>
                 </view>
-                <view style="margin-top:5%">
-                    <label class="checkbox">
-                        <checkbox value="5" data-type="help_type" bindchange="change" name="help_type" />幻化讨论
-                    </label>
-                    <label class="checkbox2">
-                        <checkbox value="6" data-type="help_type" bindchange="change" name="help_type" />宠物讨论
-                    </label>
+                <view>
+                    <l-button size="mini" l-class="{{searchQuery.help_type === '7' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="7" bindtap="buttonClick">pvp</l-button>
+                    <l-button size="mini" l-class="{{searchQuery.help_type === '8' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="8" bindtap="buttonClick">拍卖行</l-button>
+                    <l-button size="mini" l-class="{{searchQuery.help_type === '9' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="9" bindtap="buttonClick">新版本讨论</l-button>
                 </view>
-                <view style="margin-top:5%">
-                    <label class="checkbox">
-                        <checkbox value="7" data-type="help_type" bindchange="change" name="help_type" />竞技场/战场
-                    </label>
-                    <label class="checkbox2">
-                        <checkbox value="8" data-type="help_type" bindchange="change" name="help_type" />地精商会
-                    </label>
-                </view>
-                <view style="margin-top:5%">
-                    <label class="checkbox">
-                        <checkbox value="9" data-type="help_type" bindchange="change" name="help_type" />新版本讨论
-                    </label>
-                </view>
-
                 <view style="margin-left:20%;margin-top:30%">
-                    <l-button size="mini" l-class="search-button" l-hover-class="search-hover-button" formType="reset">重置</l-button>
-                    <l-button size="mini" l-hover-class="search-button2" l-class="search-hover-button" formType="submit">提交</l-button>
+                    <l-button size="mini" l-class="search-button" l-hover-class="search-hover-button" bindtap="reset">重置</l-button>
+                    <l-button size="mini" l-hover-class="search-button2" l-class="search-hover-button" bindtap="submit">提交</l-button>
                 </view>
             </l-form>
 
@@ -80,7 +101,7 @@
     </view>
     <view class="tag-view">
         <l-tag l-class="tag" plain="{{false}}"
-               font-color="{{orderColumn === 'pay_num' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="pay_num" icon="pull-down">
+               font-color="{{orderColumn === 'favorites_num' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="favorites_num" icon="pull-down">
             收藏量</l-tag>
     </view>
     <view class="tag-view">
@@ -90,7 +111,7 @@
     </view>
     <view>
         <l-tag l-class="tag" plain="{{false}}"
-               font-color="{{orderColumn === 'search' ? '#337559' : '#A0A0A0'}}" bind:lintap="showRight" data-order="search" icon="research">
+               font-color="#A0A0A0" bind:lintap="showRight" data-order="search" icon="research">
             搜索</l-tag>
     </view>
 </scroll-view>

@@ -25,7 +25,8 @@
     "pages/wa-detail/index",
     "pages/user-favorites/index",
     "pages/help/index",
-    "pages/preparing/index"
+    "pages/preparing/index",
+    "pages/answer-add/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
