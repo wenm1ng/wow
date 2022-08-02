@@ -1,0 +1,10 @@
+<!--pages/help-add-description/index.wxml-->
+<form catchsubmit="formSubmit" catchreset="formReset">
+    <l-textarea indicator="{{true}}"  maxlength="500" placeholder="建议详细描述一下你的帮忙信息噢..." name="description" l-class="textarea" value="{{description}}"/>
+    <view class="z-index-submit">
+
+<!--        <l-button size="mini" l-hover-class="search-button2" l-class="search-hover-button" type="primary" formType="submit">提交</l-button>-->
+        <button type="primary" formType="submit" class="search-hover-button z-index-submit">提交</button>
+
+    </view>
+</form>

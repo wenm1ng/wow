@@ -1,15 +1,15 @@
-<!--pages/answer-add/index.wxml-->
-<view class="bg-font">版本</view>
+<!--pages/help-add/index.wxml-->
+<view class="bg-font"><text style="color:red">*</text>版本</view>
 <view>
-    <l-button wx:for="{{version_list}}" wx:key="item" size="mini"  l-class="{{version == item.wv_id ? 'search-hover-button' : 'search-button'}}" data-value="{{item.wv_id}}" data-type="version" bindtap="buttonClick">{{item.name}}</l-button>
+    <l-button wx:for="{{version_list}}" wx:key="item" size="mini"  l-class="{{formData.version == item.wv_id ? 'search-hover-button' : 'search-button'}}" data-value="{{item.wv_id}}" data-type="version" bindtap="buttonClick">{{item.name}}</l-button>
 </view>
-<view class="bg-font">是否有偿</view>
+<view class="bg-font"><text style="color:red">*</text>是否有偿</view>
 <view>
     <l-button size="mini" l-class="{{formData.is_pay === '1' ? 'search-hover-button' : 'search-button'}}" data-type="is_pay" data-value="1" bindtap="buttonClick">有偿帮忙</l-button>
     <l-button size="mini" l-class="{{formData.is_pay === '2' ? 'search-hover-button' : 'search-button'}}" data-type="is_pay" data-value="2" bindtap="buttonClick">普通帮忙</l-button>
 </view>
 <view wx:if="{{hasCoin}}">
-    <view class="bg-font">奖励币数</view>
+    <view class="bg-font"><text style="color:red">*</text>奖励币数</view>
     <l-button size="mini" l-class="{{formData.is_pay === '5' ? 'search-hover-button' : 'search-button'}}" data-type="coin" data-value="5" bindtap="buttonClick">5</l-button>
     <l-button size="mini" l-class="{{formData.is_pay === '10' ? 'search-hover-button' : 'search-button'}}" data-type="coin" data-value="10" bindtap="buttonClick">10</l-button>
     <l-button size="mini" l-class="{{formData.is_pay === '20' ? 'search-hover-button' : 'search-button'}}" data-type="coin" data-value="20" bindtap="buttonClick">20</l-button>
@@ -17,32 +17,44 @@
     <l-button size="mini" l-class="{{formData.is_pay === '100' ? 'search-hover-button' : 'search-button'}}" data-type="coin" data-value="100" bindtap="buttonClick">100</l-button>
     <l-input label="自定义" type="number" placeholder="自定义币数"  />
 </view>
-<view class="bg-font">帮助类型</view>
+<view class="bg-font"><text style="color:red">*</text>帮助类型</view>
 <view>
     <l-button size="mini" l-class="{{formData.help_type === '1' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="1" bindtap="buttonClick">插件研究</l-button>
     <l-button size="mini" l-class="{{formData.help_type === '2' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="2" bindtap="buttonClick">副本专区</l-button>
     <l-button size="mini" l-class="{{formData.help_type === '3' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="3" bindtap="buttonClick">任务/成就</l-button>
-</view>
-<view>
     <l-button size="mini" l-class="{{formData.help_type === '4' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="4" bindtap="buttonClick">人员招募</l-button>
     <l-button size="mini" l-class="{{formData.help_type === '5' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="5" bindtap="buttonClick">幻化讨论</l-button>
     <l-button size="mini" l-class="{{formData.help_type === '6' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="6" bindtap="buttonClick">宠物讨论</l-button>
-</view>
-<view>
     <l-button size="mini" l-class="{{formData.help_type === '7' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="7" bindtap="buttonClick">pvp</l-button>
     <l-button size="mini" l-class="{{formData.help_type === '8' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="8" bindtap="buttonClick">拍卖行</l-button>
     <l-button size="mini" l-class="{{formData.help_type === '9' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="9" bindtap="buttonClick">新版本讨论</l-button>
 </view>
-<view class="bg-font">帮忙标题</view>
-<l-input placeholder="请输入帮忙标题" value="{{formData.title}}" />
-<view class="bg-font">帮忙信息</view>
-<l-textarea indicator="{{true}}" auto-height="{{true}}" maxlength="500" width="500" placeholder="建议详细描述一下你的帮忙信息噢..."  value="{{formData.description}}" style="height:200rpx;"/>
-<view class="bg-font">图片信息</view>
 <view>
-    <l-image-picker count="1" siz="1" urls="{{imageUrl}}" size-type="compressed" bind:linchange="onChangeTap" />
+
+</view>
+<view>
+
+</view>
+<view class="bg-font" style="margin-top:20rpx;margin-bottom: 20rpx"><text style="color:red">*</text>帮忙标题</view>
+<view style="border-radius: 4rpx;border: 1rpx solid #d8dee5;">
+    <l-input placeholder="请输入帮忙标题" data-type="title" hide-label="{{true}}"  bind:linblur="setAnswerTitle"/>
+</view>
+
+<view class="bg-font" style="margin-top:20rpx;margin-bottom: 20rpx"><text style="color:red">*</text>帮忙信息</view>
+<view bindtap="gotoDescription">
+    <l-textarea indicator="{{true}}"  maxlength="500" placeholder="建议详细描述一下你的帮忙信息噢..."  disabled="true" data-type="description" bindinput="setDescription" value="{{formData.description}}" />
+</view>
+<!--        bind:linfocus="gotoDescription"-->
+<view class="bg-font" style="margin-top:20rpx;margin-bottom: 20rpx">图片信息</view>
+<view>
+    <l-image-picker count="1" clear="{{ isClear }}" siz="1" urls="{{formData.image_url}}" size-type="compressed" bind:linchange="onAddImage" max-image-size="2097152" preview="true" bind:linoversize="onImageMaxSize" bind:linremove="onImageRemove"/>
 <!--    <l-image-picker count="1" siz="1" urls="{{testUrl}}" size-type="compressed" custom="{{true}}" bind:linchange="onChangeTap" >-->
 <!--        <view>-->
 <!--            <image src="../../images/icon_tab/select_image.png" />-->
 <!--        </view>-->
 <!--    </l-image-picker>-->
+</view>
+<view class="z-index-submit">
+    <l-button size="mini" l-class="search-button" l-hover-class="search-hover-button" bindtap="onResetAnswer">重置</l-button>
+    <l-button size="mini" l-hover-class="search-button2" l-class="search-hover-button" bindtap="onAddAnswer">提交</l-button>
 </view>

@@ -1,4 +1,4 @@
-/* pages/answer-add/index.wxss */
+/* pages/help-add/index.wxss */
 .bg-font{
     background-color:#f7f7f7;
     text-align: center;
@@ -27,4 +27,12 @@
     margin:2% 4% 2% 2% !important;
     margin-top:20rpx !important;
     margin-bottom:20rpx !important;
+}
+
+.z-index-submit{
+    z-index:99;
+    position: absolute;
+    top:90%;
+    left:30%;
+    width:60%;
 }

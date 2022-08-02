@@ -1,4 +1,4 @@
-// pages/help/index.js
+// pages/help-detail/index.js
 const app = getApp()
 const api = app.api
 const wxutil = app.wxutil
@@ -6,29 +6,12 @@ const pageSize = 10 // 每页显示条数
 
 Page({
   data: {
-    labels: [],
-    actionList: [],
-    page: 1,
-    labelId: '全部',
-    userId: -1,
-    topicIndex: -1, // 点击的话题的下标
+    id:0,
     height: 1206, // 话题区高度
-    showPopup: false, // 是否显示下拉区
-    showAction: false, // 是否显示操作菜单
     isEnd: false, // 是否到底
     inRequest: false, // 在请求中
     loading: true, // 是否正在加载
-    help_list:[],
-    orderColumn: 'create_at',
-    scrollTop: 0,
-    version_list: [],
-    searchQuery: {
-      version: 0,
-      help_type: 0,
-      is_pay: 0,
-      adopt_type: 0,
-    },
-    pay_num: 0,
+    info:{},
   },
 
   /**
@@ -36,31 +19,43 @@ Page({
    */
   onLoad(options) {
     this.setData({
-      version: options.version ? options.version : 1,
-      talentName: options.talentName ? options.talentName : '',
-      type:options.type ? options.type : 1,
-      ttId:options.ttId ? options.ttId : 0,
-      occupation:options.occupation ? options.occupation : '',
-      searchValue: options.searchValue ? options.searchValue : '',
+      id: options.id
     })
-    if(wxutil.getStorage('version_list')){
-      this.setData({
-        version_list: wxutil.getStorage('version_list')
-      })
-    }
     this.getScrollHeight()
-    // this.getLabels()
-    // this.getUserId()
-    // this.getTopics()
+    this.getApiData();
   },
-  showRight() {
-    this.setData({
-      leftView: !this.data.leftView,
+
+  getHelpInfo(){
+    const data = {
+      id: this.data.id
+    }
+    const url = api.helpCenterAPI + 'info'
+    wxutil.request.get(url, data).then((res) => {
+      if (res.data.code === 200) {
+        const info = res.data.data
+        this.setData({
+          info: info
+        })
+      }
     })
   },
-  hideLeft() {
-    this.setData({
-      leftView: !this.data.leftView,
+  /**
+   * 并发请求接口
+   */
+  getApiData(){
+
+//存储promise对象的数组
+    let promiseArr = [];
+//将图片地址的上传的promise对象加入到promiseArr
+    let promise = new Promise((resolve, reject) => {
+      //这里可以写要发的请求，这里以上传为例
+      this.getHelpInfo();
+    });
+    promiseArr.push(promise)
+//Promise.all处理promiseArr数组中的每一个promise对象
+    Promise.all(promiseArr).then((result) => {
+      //在存储对象的数组里的所有请求都完成时，会执行这里
+      console.log(11111);
     })
   },
   buttonClick(e) {
@@ -157,7 +152,7 @@ Page({
         this.setData({
           scrollTop: 0
         })
-      //   wx.hideToast()
+        //   wx.hideToast()
       }
     })
   },
@@ -169,7 +164,7 @@ Page({
   //   this.getTalentTreeList(options.version)
   // },
   onShow() {
-    this.getHelpList()
+    // this.getHelpList()
   },
 
   /**
@@ -374,40 +369,6 @@ Page({
   },
 
   /**
-   * 举报话题
-   */
-  reportTopic() {
-    wx.lin.showDialog({
-      type: "confirm",
-      title: "提示",
-      content: "确定要举报该话题？",
-      success: (res) => {
-        if (res.confirm) {
-          const topicId = this.data.topics[this.data.topicIndex].id
-          const url = api.topicAPI + "report/"
-          const data = {
-            topic_id: topicId
-          }
-
-          wxutil.request.post(url, data).then((res) => {
-            if (res.data.code == 200) {
-              wx.lin.showMessage({
-                type: "success",
-                content: "举报成功！"
-              })
-            } else {
-              wx.lin.showMessage({
-                type: "error",
-                content: "举报失败！"
-              })
-            }
-          })
-        }
-      }
-    })
-  },
-
-  /**
    * 展开或收起弹出层
    */
   togglePopup() {
@@ -473,15 +434,9 @@ Page({
    * 跳转话题详情页
    */
   gotoDetail(event) {
-    // if(!app.globalData.userDetail){
-    //   wx.navigateTo({
-    //     url: "/pages/auth/index"
-    //   })
-    //   return;
-    // }
-    const id = event.currentTarget.dataset.id
+    const waId = event.currentTarget.dataset.id
     wx.navigateTo({
-      url: "/pages/help-detail/index?id=" + id
+      url: "/pages/wa-detail/index?id=" + waId
     })
   },
 

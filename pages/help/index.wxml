@@ -26,43 +26,6 @@
                     <l-button size="mini" l-class="{{searchQuery.is_pay === '2' ? 'search-hover-button' : 'search-button'}}" data-type="is_pay" data-value="2" bindtap="buttonClick">普通帮忙</l-button>
                 </view>
                 <view class="bg-font">帮助类型</view>
-<!--                <view style="margin-top:5%">-->
-<!--                    <label class="checkbox">-->
-<!--                        <checkbox data-value="1" data-type="help_type" bindchange="change" name="help_type" />插件研究-->
-<!--                    </label>-->
-<!--                    <label class="checkbox2">-->
-<!--                        <checkbox data-value="2" data-type="help_type" bindchange="change" name="help_type" />副本专区-->
-<!--                    </label>-->
-<!--                </view>-->
-<!--                <view style="margin-top:5%">-->
-<!--                    <label class="checkbox">-->
-<!--                        <checkbox data-value="3" data-type="help_type" bindchange="change" name="help_type" />任务/成就-->
-<!--                    </label>-->
-<!--                    <label class="checkbox2">-->
-<!--                        <checkbox data-value="4" data-type="help_type" bindchange="change" name="help_type" />人员招募-->
-<!--                    </label>-->
-<!--                </view>-->
-<!--                <view style="margin-top:5%">-->
-<!--                    <label class="checkbox">-->
-<!--                        <checkbox data-value="5" data-type="help_type" bindchange="change" name="help_type" />幻化讨论-->
-<!--                    </label>-->
-<!--                    <label class="checkbox2">-->
-<!--                        <checkbox data-value="6" data-type="help_type" bindchange="change" name="help_type" />宠物讨论-->
-<!--                    </label>-->
-<!--                </view>-->
-<!--                <view style="margin-top:5%">-->
-<!--                    <label class="checkbox">-->
-<!--                        <checkbox data-value="7" data-type="help_type" bindchange="change" name="help_type" />竞技场/战场-->
-<!--                    </label>-->
-<!--                    <label class="checkbox2">-->
-<!--                        <checkbox data-value="8" data-type="help_type" bindchange="change" name="help_type" />地精商会-->
-<!--                    </label>-->
-<!--                </view>-->
-<!--                <view style="margin-top:5%">-->
-<!--                    <label class="checkbox">-->
-<!--                        <checkbox data-value="9" data-type="help_type" bindchange="change" name="help_type" />新版本讨论-->
-<!--                    </label>-->
-<!--                </view>-->
                 <view>
                     <l-button size="mini" l-class="{{searchQuery.help_type === '1' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="1" bindtap="buttonClick">插件研究</l-button>
                     <l-button size="mini" l-class="{{searchQuery.help_type === '2' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="2" bindtap="buttonClick">副本专区</l-button>
@@ -156,8 +119,8 @@
         </l-tag>
         <view class="posters" data-id="{{item.id}}" bindtap="gotoDetail">
             <block>
-                <image wx:for="{{item.images}}" wx:key="item" src="{{item.image_url}}" mode="aspectFill" catchtap="previewImage"
-                       data-src="{{item.image_url}}" data-index="{{cardIndex}}" lazy-load />
+                <image wx:if="{{item.image_url}}" src="{{item.image_url}}" mode="aspectFill" catchtap="previewImage"
+                       data-src="{{item.image_url}}" lazy-load data-index="{{cardIndex}}" />
             </block>
         </view>
         <!--		label-box-->
