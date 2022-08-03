@@ -12,6 +12,7 @@ Page({
     inRequest: false, // 在请求中
     loading: true, // 是否正在加载
     info:{},
+    answer_list: []
   },
 
   /**
@@ -25,6 +26,9 @@ Page({
     this.getApiData();
   },
 
+  /**
+   * 获取帮助详情
+   */
   getHelpInfo(){
     const data = {
       id: this.data.id
@@ -35,6 +39,45 @@ Page({
         const info = res.data.data
         this.setData({
           info: info
+        })
+      }
+    })
+  },
+  /**
+   * 获取帮助列表
+   */
+  getAnswerList(){
+    const page = this.data.page
+
+    const url = api.helpCenterAPI+'answer-list';
+    const data = {
+      id: this.data.id
+    }
+
+    if ((this.data.isEnd && page !== 1) || this.data.inRequest) {
+      return
+    }
+
+    // if(isSearch === 1){
+    //   wx.showToast({
+    //     title: "加载中...",
+    //     icon: "loading"
+    //   })
+    // }
+
+    this.setData({
+      inRequest: true
+    })
+
+    wxutil.request.get(url, data).then((res) => {
+      if (res.data.code === 200) {
+        const help_list = res.data.data['list']
+        this.setData({
+          page: (help_list.length == 0 && page != 1) ? page - 1 : page,
+          loading: false,
+          inRequest: false,
+          isEnd: ((help_list.length < pageSize) || (help_list.length == 0 && page != 1)) ? true : false,
+          answer_list: page === 1 ? help_list : this.data.help_list.concat(help_list)
         })
       }
     })
@@ -52,6 +95,11 @@ Page({
       this.getHelpInfo();
     });
     promiseArr.push(promise)
+    let promiseAnswer = new Promise((resolve, reject) => {
+      //这里可以写要发的请求，这里以上传为例
+      this.getAnswerList();
+    });
+    promiseArr.push(promiseAnswer)
 //Promise.all处理promiseArr数组中的每一个promise对象
     Promise.all(promiseArr).then((result) => {
       //在存储对象的数组里的所有请求都完成时，会执行这里
