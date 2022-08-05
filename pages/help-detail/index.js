@@ -2,7 +2,7 @@
 const app = getApp()
 const api = app.api
 const wxutil = app.wxutil
-const pageSize = 10 // 每页显示条数
+const pageSize = 5 // 每页显示条数
 
 Page({
   data: {
@@ -12,7 +12,8 @@ Page({
     inRequest: false, // 在请求中
     loading: true, // 是否正在加载
     info:{},
-    answer_list: []
+    answer_list: [],
+    page: 1,
   },
 
   /**
@@ -51,7 +52,9 @@ Page({
 
     const url = api.helpCenterAPI+'answer-list';
     const data = {
-      id: this.data.id
+      id: this.data.id,
+      page: page,
+      pageSize: pageSize
     }
 
     if ((this.data.isEnd && page !== 1) || this.data.inRequest) {
@@ -71,13 +74,13 @@ Page({
 
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code === 200) {
-        const help_list = res.data.data['list']
+        const answer_list = res.data.data['list']
         this.setData({
-          page: (help_list.length == 0 && page != 1) ? page - 1 : page,
+          page: (answer_list.length == 0 && page != 1) ? page - 1 : page,
           loading: false,
           inRequest: false,
-          isEnd: ((help_list.length < pageSize) || (help_list.length == 0 && page != 1)) ? true : false,
-          answer_list: page === 1 ? help_list : this.data.help_list.concat(help_list)
+          isEnd: ((answer_list.length < pageSize) || (answer_list.length == 0 && page != 1)) ? true : false,
+          answer_list: page === 1 ? answer_list : this.data.answer_list.concat(answer_list)
         })
       }
     })

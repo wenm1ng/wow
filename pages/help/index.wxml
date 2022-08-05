@@ -98,7 +98,7 @@
              bindscrolltolower="scrollToLower" style="height:{{height}}rpx" scroll-top="{{scrollTop}}">
     <l-card type="avatar" l-class="card" l-title-class="card-title-anon"  image="{{item.user_info.avatar_url}}"
             wx:for="{{help_list}}" l-img-class="l-img" wx:key="item" wx:for-index="cardIndex" title="{{item.user_info.user_name}}" describe="{{item.modify_at}} 更新">
-        <view bindtap="gotoDetail">{{item.title}}</view>
+        <view data-id="{{item.id}}" bindtap="gotoDetail">{{item.title}}</view>
         <view class="{{item.description.length > 83 && !item.flod ?  'content-close' : 'avater-content'}} description"
               data-id="{{item.id}}" bindtap="gotoDetail">{{item.description}}</view>
         <view wx:if="{{item.description.length > 83}}" data-index="{{cardIndex}}" class="text-flod" bindtap="onFlodTap">

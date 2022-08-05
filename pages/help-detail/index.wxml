@@ -1,9 +1,9 @@
 <!--pages/help-detail/index.wxml-->
 <view class="add-button-view" bindtap="gotoAddAnswer">
-    <l-button size="medium" l-class="add-button" width="400">发布帮忙信息</l-button>
+    <l-button size="medium" l-class="add-button" width="400">我来帮忙</l-button>
 </view>
         <!-- 动态内容 -->
-<scroll-view scroll-y enable-back-to-top lower-threshold="5" class="topic-scroll" bindscrolltoupper="scrollToUpper"
+<scroll-view scroll-y enable-back-to-top lower-threshold="5" bindscrolltoupper="scrollToUpper"
              bindscrolltolower="scrollToLower" style="height:{{height}}rpx" scroll-top="{{scrollTop}}">
     <l-card type="avatar" l-class="card" l-title-class="card-title-anon"  image="{{info.user_info.avatar_url}}"
              l-img-class="l-img"  title="{{info.user_info.user_name}}" describe="{{info.modify_at}} 更新">
@@ -41,12 +41,12 @@
         </view>
         <view class="avater-share-container">
             <view class="like-container" data-id="{{info.id}}" bindtap="gotoDetail">
-                <l-icon name="comment" color="{{info.has_comment ? '#d81e05' : '#666'}}" size="28" />
-                <view class="{{info.has_comment ? 'has-text' : ''}} number">{{info.comment_count}}</view>
+                <l-icon name="comment" color="{{info.has_answer ? '#d81e05' : '#666'}}" size="28" />
+                <view class="{{info.has_answer ? 'has-text' : ''}} number">{{info.help_num}}</view>
             </view>
             <view class="like-container" data-index="{{cardIndex}}" bindtap="onStarTap">
-                <l-icon name="favor" color="{{info.has_likes ? '#d81e05' : '#666'}}" size="28" />
-                <view class="{{info.has_likes ? 'has-text' : ''}} number">{{info.likes_count}}</view>
+                <l-icon name="favor" color="{{info.has_favor ? '#d81e05' : '#666'}}" size="28" />
+                <view class="{{info.has_favor ? 'has-text' : ''}} number">{{info.favorites_num}}</view>
             </view>
             <view class="like-container" data-id="{{info.id}}" bindtap="gotoDetail">
                 <l-icon name="eye" color="#666" size="28" />
@@ -57,17 +57,60 @@
         <!--			bindtap="onMoreTap" />-->
 
     </l-card>
+
+    <l-card type="avatar" wx:for="{{answer_list}}" l-class="card" l-title-class="card-title-anon" wx:key="item" wx:for-index="cardIndex"  image="{{item.user_info.avatar_url}}"
+            l-img-class="l-img"  title="{{item.user_info.user_name}}" describe="{{item.modify_at}} 更新">
+        <view bindtap="gotoDetail">{{item.title}}</view>
+        <view class="{{item.description.length > 83 && !info.flod ?  'content-close' : 'avater-content'}} description"
+              data-id="{{item.id}}" bindtap="gotoDetail">{{item.description}}</view>
+        <view wx:if="{{item.description.length > 83}}" data-index="{{cardIndex}}" class="text-flod" bindtap="onFlodTap">
+            {{item.flod ? '收起' : '全文'}}</view>
+        <l-tag  shape="circle"
+                bg-color="#f3f3f3"
+                font-color="#0f6945"
+                slot="more"
+                size="large" l-class="l-tag" location="left">NO.
+            {{cardIndex + 1}}
+        </l-tag>
+        <!--        <l-tag  shape="circle"-->
+        <!--                bg-color="#f3f3f3"-->
+        <!--                font-color="#0f6945"-->
+        <!--                slot="more"-->
+        <!--                size="large" l-class="r-tag" location="left">-->
+        <!--            {{item.help_type_name}}-->
+        <!--        </l-tag>-->
+        <view class="posters" data-id="{{item.id}}" bindtap="gotoDetail">
+            <block>
+                <image wx:if="{{item.image_url}}" src="{{item.image_url}}" mode="aspectFill" catchtap="previewImage"
+                       data-src="{{item.image_url}}" lazy-load data-index="{{cardIndex}}" />
+            </block>
+        </view>
+        <!--		label-box-->
+        <view class="popup" wx:if="{{item.tips}}">
+            <!-- <l-tag wx:for="{{wa_info.label}}" wx:key="item" l-class="tag" shape="circle" bg-color="#337559" font-color="#337559"
+                plain bind:lintap="gotowa_info" data-label="{{item}}">#{{item}}</l-tag> -->
+            <l-tag l-class="tag" wx:for="{{item.tips}}" wx:for-item="item2" shape="circle" bg-color="#337559" font-color="#337559"
+                   plain="true" data-label="{{item2}}">#{{item2}}</l-tag>
+        </view>
+
+        <view class="avater-share-container">
+            <view class="like-container" data-id="{{item.id}}" bindtap="gotoDetail" style="margin-left:30rpx">
+                <l-icon name="comment" color="{{item.has_comment ? '#d81e05' : '#666'}}" size="28" />
+                <view class="{{item.has_comment ? 'has-text' : ''}} number">{{item.comment_num}}</view>
+            </view>
+            <view class="like-container" data-index="{{cardIndex}}" bindtap="onStarTap">
+                <l-icon name="favor" color="{{item.has_favor ? '#d81e05' : '#666'}}" size="28" />
+                <view class="{{item.has_favor ? 'has-text' : ''}} number">{{item.favorites_num}}</view>
+            </view>
+        </view>
+        <!--		<l-icon l-class="ellipsis" slot="more" name="ellipsis" color="#777" size="32" data-index="{{cardIndex}}"-->
+        <!--			bindtap="onMoreTap" />-->
+
+    </l-card>
     <l-loadmore wx:if="{{!isEnd}}" show="{{loading}}" line l-class="loading" />
     <l-loadmore show="{{isEnd && page != 1}}" line l-class="loading" type="end" />
 </scroll-view>
 
-        <!-- 编辑按钮 -->
-        <!--<view class="btn-edit" bindtap="onEditTap">-->
-        <!--	<l-icon name="edit" color="#fff" size="30" />-->
-        <!--</view>-->
-
-        <!-- nothing -->
-        <!--<nothing wx:if="{{help_list.length === 0}}" pic="../../images/icon_nothing/pic_topic.png" tip="暂时没有WA" />-->
 
         <!-- 操作菜单 -->
 <l-action-sheet show-cancel open-api="{{false}}" item-list="{{actionList}}" show="{{showAction}}"
