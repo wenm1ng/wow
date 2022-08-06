@@ -2,3 +2,10 @@
 node_modules/
 package-lock.json
 .idea/
+
+#{
+#        "pagePath": "pages/help/index",
+#        "text": "帮帮忙",
+#        "iconPath": "images/icon_tab/topic.png",
+#        "selectedIconPath": "images/icon_tab/topic_hl.png"
+#      },
