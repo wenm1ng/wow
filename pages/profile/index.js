@@ -94,11 +94,9 @@ Page({
     this.setData({
       inRequest: true,
     })
-    wx.showToast({
-      title: '加载中...',
-      icon: 'loading',
-      duration: 1500
-    })
+    wx.showLoading({
+      title: '加载中',
+    });
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code === 200) {
         const wa_list = res.data.data['list']
@@ -151,11 +149,9 @@ Page({
       inRequest: true,
       pageStar: pageComment
     })
-    wx.showToast({
-      title: '加载中...',
-      icon: 'loading',
-      duration: 1500
-    })
+    wx.showLoading({
+      title: '加载中',
+    });
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code === 200) {
         const comments = res.data.data.list

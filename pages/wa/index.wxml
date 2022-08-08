@@ -1,7 +1,7 @@
 <view class="page">
     <l-search-bar l-class="wa-search" placeholder="搜索" show-cancel="{{false}}" bind:linconfirm="doSearch"></l-search-bar>
     <view class="wa-big-image">
-        <image class='btnImg' src='http://wenming.online/public/uploads/bg/bg.jpg'></image>
+        <image class='btnImg' src='https://mingtongct.com/images/bg/bg.jpg'></image>
     </view>
     <view class="text-title">
         <text wx:for="{{version_list}}" wx:key="item" style="color:{{index == checkVersion ? 'black' : '#A0A0A0'}}" data-version="{{item.version}}" data-index="{{index}}" bindtap="bindVersion">{{item.name}}</text>

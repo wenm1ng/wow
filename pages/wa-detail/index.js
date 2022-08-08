@@ -552,11 +552,14 @@ Page({
       success: (res) => {
         if (res.confirm) {
           const commentId = event.currentTarget.dataset.id
-          const url = api.commentAPI + commentId + "/"
-
-          wxutil.request.delete(url).then((res) => {
+          const url = api.waAPI + 'del-comment'
+          const data = {
+            id: commentId
+          }
+          wxutil.request.post(url, data).then((res) => {
             if (res.data.code == 200) {
-              this.getComments(this.data.topic.id)
+              this.getWaDetail(this.data.wa_info.id)
+              // this.getComments(waId)
 
               wx.lin.showMessage({
                 type: "success",
