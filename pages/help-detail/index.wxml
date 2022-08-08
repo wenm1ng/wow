@@ -3,7 +3,7 @@
     <l-button size="medium" l-class="add-button" width="400">我来帮忙</l-button>
 </view>
         <!-- 动态内容 -->
-<scroll-view scroll-y enable-back-to-top lower-threshold="5" bindscrolltoupper="scrollToUpper"
+<scroll-view scroll-y enable-back-to-top lower-threshold="5"
              bindscrolltolower="scrollToLower" style="height:{{height}}rpx" scroll-top="{{scrollTop}}">
     <l-card type="avatar" l-class="card" l-title-class="card-title-anon"  image="{{info.user_info.avatar_url}}"
              l-img-class="l-img"  title="{{info.user_info.user_name}}" describe="{{info.modify_at}} 更新">

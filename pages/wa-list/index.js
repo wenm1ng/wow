@@ -28,6 +28,7 @@ Page({
     wa_list:[],
     orderColumn: 'create_at',
     scrollTop: 0,
+    isScroll: true
   },
 
   /**
@@ -216,7 +217,11 @@ Page({
       loading: true,
       page:page + 1
     })
-
+    // if(this.data.isEnd){
+    //   this.setData({
+    //     isScroll:false
+    //   })
+    // }
     this.getWaList()
   },
 
@@ -450,8 +455,9 @@ Page({
    */
   gotoDetail(event) {
     const waId = event.currentTarget.dataset.id
+    const index = event.currentTarget.dataset.indexs
     wx.navigateTo({
-      url: "/pages/wa-detail/index?id=" + waId
+      url: "/pages/wa-detail/index?id=" + waId + '&index=' + index
     })
   },
 

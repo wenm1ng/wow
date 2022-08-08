@@ -20,13 +20,17 @@ Page({
     focus: false, // 获取焦点
     showAction: false, // 是否显示操作菜单
     isEnd: false, // 是否到底onStarTap
-    isShowWa: false //是否弹出wa字符串复制
+    isShowWa: false, //是否弹出wa字符串复制
+    index: -1
   },
 
   onLoad(options) {
     const waId = options.id
     const focus = options.focus
 
+    this.setData({
+      index: options.index
+    })
     // 评论获取焦点展开键盘
     if (focus) {
       this.setData({
@@ -157,8 +161,17 @@ Page({
 
     wxutil.request.get(url).then((res) => {
       if (res.data.code == 200) {
+        const is_favorites = wa_info.is_favorites
+        wa_info.is_favorites = !wa_info.is_favorites
+
+        if (is_favorites) {
+          wa_info.favor_count--
+        } else {
+          wa_info.favor_count++
+        }
+
         this.setData({
-          stars: res.data.data
+          wa_info: wa_info
         })
       }
     })
@@ -377,6 +390,16 @@ Page({
 
     wxutil.request.post(url, data).then((res) => {
       if (res.data.code === 200) {
+        const is_favorites = wa_info.is_favorites
+        wa_info.is_favorites = 1
+
+        if (!is_favorites) {
+          wa_info.favor_count++
+        }
+
+        this.setData({
+          wa_info: wa_info
+        })
         wx.showToast({
           title: '已收藏',
           icon: 'success',
@@ -410,19 +433,30 @@ Page({
 
     wxutil.request.post(url, data).then((res) => {
       if (res.data.code == 200) {
-
+        let that = this
         const is_like = wa_info.is_like
         wa_info.is_like = !wa_info.is_like
 
+        let pages = getCurrentPages();
+        let prevPage = pages[pages.length - 2];
+        let wa_list = prevPage.data.wa_list;
+
         if (is_like) {
           wa_info.likes_count--
+          wa_list[that.data.index]['likes_count'] = wa_list[that.data.index]['likes_count'] - 1
         } else {
           wa_info.likes_count++
+          wa_list[that.data.index]['likes_count'] = wa_list[that.data.index]['likes_count'] + 1
         }
 
+        wa_list[that.data.index]['has_likes'] = wa_info.likes_count === 0 ? 0 : 1
         this.setData({
           wa_info: wa_info
         })
+
+        prevPage.setData({
+          wa_list: wa_list
+        });
       }
     })
   },
@@ -523,13 +557,21 @@ Page({
 
             wa_info.has_comment = true
             wa_info.comment_count++
-            console.log(this.data.comments)
             that.setData({
               wa_info: wa_info,
               comment: null,
               commentId: null,
               placeholder: "评论点什么吧..."
             })
+            //修改上个页面的评论数和是否评论
+            let pages = getCurrentPages();
+            let prevPage = pages[pages.length - 2];
+            let wa_list = prevPage.data.wa_list;
+            wa_list[that.data.index]['has_comment'] = 1
+            wa_list[that.data.index]['comment_count'] = wa_list[that.data.index]['comment_count'] + 1
+            prevPage.setData({
+              wa_list: wa_list
+            });
           } else {
             wx.lin.showMessage({
               type: "error",
@@ -559,7 +601,16 @@ Page({
           wxutil.request.post(url, data).then((res) => {
             if (res.data.code == 200) {
               this.getWaDetail(this.data.wa_info.id)
-              // this.getComments(waId)
+              //修改上个页面的评论数和是否评论
+              let that = this
+              let pages = getCurrentPages();
+              let prevPage = pages[pages.length - 2];
+              let wa_list = prevPage.data.wa_list;
+              wa_list[that.data.index]['comment_count'] = wa_list[that.data.index]['comment_count'] - 1
+              wa_list[that.data.index]['has_comment'] = wa_list[that.data.index]['comment_count'] === 0 ? 0 : 1
+              prevPage.setData({
+                wa_list: wa_list
+              });
 
               wx.lin.showMessage({
                 type: "success",

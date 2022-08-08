@@ -2,8 +2,10 @@
 
 .bg {
   margin-top: -250rpx;
-  width: 600rpx;
-  height: 400rpx;
+  width: 144rpx;
+  height: 144rpx;
+  border-radius: 70%;
+  overflow:hidden;
 }
 
 .title-text {

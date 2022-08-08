@@ -1,5 +1,7 @@
 /* pages/topic/index.wxss */
-
+page{
+  overflow: hidden;
+}
 .search-column{
   display: block;
   float:left;
@@ -15,7 +17,7 @@
   left: 0;
   z-index: 99;
   white-space: nowrap;
-  height: 50rpx;
+  height: 130rpx;
   width: 750rpx;
   padding: 20rpx 0;
   background: #f7f7f7;
@@ -25,13 +27,27 @@
   display: flex;
   flex-direction: row;
   position: fixed;
-  top: 70rpx;
+  top: 100rpx;
   left: 0;
   z-index: 99;
   white-space: nowrap;
   height: 50rpx;
-  width: 750rpx;
+  /*width: 100rpx;*/
   padding: 20rpx 0;
+  background-color: #f7f7f7 !important;
+}
+
+.tag1{
+  left: 25%;
+}
+.tag2{
+  left: 50%;
+}
+.tag3{
+  left: 75%;
+}
+.tag4{
+  left: 100%;
 }
 
 .tag-scroll2 view{
@@ -184,6 +200,7 @@
 
 .topic-scroll {
   margin-top: 150rpx;
+  /*padding-bottom: -15%*/
 }
 
 .loading {

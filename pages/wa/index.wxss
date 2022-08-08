@@ -8,7 +8,7 @@
     /* padding: 20rpx; */
     font-size: 30rpx;
     /*background-color: rgb(229,229,229);*/
-    background-color: rgb(229,229,229);
+    background-color: rgb(215, 212, 206);
     width: 25%;
     height:63%;
     color:black;
@@ -25,7 +25,7 @@
     display: block;
     /* padding: 20rpx; */
     font-size: 37rpx;
-    background-color: rgb(229, 229, 229);
+    background-color: rgb(215, 212, 206);
     width: 90%;
     /*height:260rpx;*/
     color:black;
