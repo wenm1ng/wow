@@ -28,7 +28,11 @@ Page({
     wa_list:[],
     orderColumn: 'create_at',
     scrollTop: 0,
-    isScroll: true
+    isScroll: true,
+    animationData:'',
+    startclientY:'',
+    isShow: true,//底部遮罩
+    ifStop: true //阻止多次同方向滑动，多次动画效果
   },
 
   /**
@@ -49,7 +53,73 @@ Page({
     // this.getUserId()
     // this.getTopics()
   },
+  // bindtouchstart
+  startFun: function(e){
+    console.log(e,'start')
+    this.setData({
+      startclientY:e.touches[0].clientY   //起始点的clientY
+    })
+  },
+  // bindtouchmove
+  showFun: function (e) {
+    if (e.touches[0].clientY > this.data.startclientY){
+      console.log(this.data.ifStop,'隐藏')
+      if(this.data.ifStop){
+        return;
+      }
+      console.log('move')
+      // 隐藏遮罩层
+      var animation = wx.createAnimation({
+        duration: 500,
+        timingFunction: "linear",
+        delay: 0
+      })
+      animation.translateY(0).step()
+      this.setData({
+        animationData: animation.export(),
+        ifStop: true
+      })
+      setTimeout(function () {
+        animation.translateY(600).step()
+        this.setData({
+          animationData: animation.export(),
+          isShow: true
+        })
+      }.bind(this), 500)
+    }else{
+      console.log(this.data.ifStop,'显示')
+      if(!this.data.ifStop){
+        return;
+      }
+      console.log('move')
+      // 显示遮罩层
+      var animation = wx.createAnimation({
+        duration: 500,
+        timingFunction: "linear",
+        delay: 0
+      })
+      animation.translateY(600).step()
+      this.setData({
+        animationData: animation.export(),
+        ifStop: false
+      })
+      setTimeout(function () {
+        animation.translateY(0).step()
+        this.setData({
+          animationData: animation.export(),
+          isShow: false
+        })
+      }.bind(this), 500)
+    }
 
+  },
+  // bindtouchend
+  hideFun: function (e) {
+    console.log(e,'end')
+  },
+  clickFun: function () {
+    console.log('内容1')
+  },
   getWaList(isSearch = 0){
     const page = isSearch === 1 ? 1 : this.data.page
 
@@ -138,7 +208,7 @@ Page({
         const height = windowHeight * ratio;
         console.log(height);
         that.setData({
-          height: height - 150
+          height: height - 200
         })
       }
     })
@@ -157,7 +227,16 @@ Page({
       tt_id:this.data.ttId,
       oc:this.data.occupation
     }
-
+    if(this.data.occupation !== ''){
+      this.setData({
+        labelId: this.data.occupation
+      })
+    }
+    if(this.data.talentName !== ''){
+      this.setData({
+        labelId: this.data.talentName
+      })
+    }
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code == 200) {
         let labels = ['全部']
@@ -225,6 +304,13 @@ Page({
     this.getWaList()
   },
 
+  // onReachBottom: function() {
+  //   console.log(11)
+  // },
+  //
+  // onPullDownRefresh: function() {
+  //   console.log(22)
+  // },
   /**
    * 标签切换
    */

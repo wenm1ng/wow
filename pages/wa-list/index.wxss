@@ -1,6 +1,7 @@
 /* pages/topic/index.wxss */
 page{
   overflow: hidden;
+  height:100vh;
 }
 .search-column{
   display: block;
@@ -199,7 +200,7 @@ page{
 }
 
 .topic-scroll {
-  margin-top: 150rpx;
+  /*margin-top: 150rpx;*/
   /*padding-bottom: -15%*/
 }
 

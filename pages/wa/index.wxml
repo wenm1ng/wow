@@ -16,7 +16,7 @@
                 <image src="{{item.image_url}}" class="wa-icon-image"/>
                 <view class="wa-tab-text-right">{{item.title}}</view>
             </view>
-            <view class="wa-tab-text-right-blue" wx:for="{{item.description}}" wx:key="item" data-oc_name="{{item.description}}" data-type="{{tab_list[checkTab].type}}" data-tt_id="{{item.tt_id}}" data-occupation="{{item.occupation}}" bindtap="nextPage" >#{{item.description}}</view>
+            <view class="wa-tab-text-right-blue" wx:for="{{item.description}}" wx:for-item="val" data-oc_name="{{val.description}}" data-type="{{tab_list[checkTab].type}}" data-tt_id="{{item.tt_id}}" data-occupation="{{item.occupation}}" bindtap="nextPage" >#{{val.description}}</view>
         </scroll-view>
     </view>
 </view>
