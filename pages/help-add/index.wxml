@@ -47,7 +47,7 @@
 <!--        bind:linfocus="gotoDescription"-->
 <view class="bg-font" style="margin-top:20rpx;margin-bottom: 20rpx">图片信息</view>
 <view>
-    <l-image-picker count="1" clear="{{ isClear }}" siz="1" urls="{{formData.image_url}}" size-type="compressed" bind:linchange="onAddImage" max-image-size="2097152" preview="true" bind:linoversize="onImageMaxSize" bind:linremove="onImageRemove"/>
+    <l-image-picker count="1" clear="{{ isClear }}" siz="1" urls="{{formData.image_url}}" size-type="compressed" bind:linchange="onAddImage" max-image-size="10240000" preview="true" bind:linoversize="onImageMaxSize" bind:linremove="onImageRemove"/>
 <!--    <l-image-picker count="1" siz="1" urls="{{testUrl}}" size-type="compressed" custom="{{true}}" bind:linchange="onChangeTap" >-->
 <!--        <view>-->
 <!--            <image src="../../images/icon_tab/select_image.png" />-->

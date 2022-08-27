@@ -50,6 +50,12 @@
         "selectedIconPath": "images/icon_tab/hole_hl.png"
       },
       {
+        "pagePath": "pages/help/index",
+        "text": "帮帮忙",
+        "iconPath": "images/icon_tab/topic.png",
+        "selectedIconPath": "images/icon_tab/topic_hl.png"
+      },
+      {
         "pagePath": "pages/chat-room/index",
         "text": "吹吹水",
         "iconPath": "images/icon_tab/topic.png",

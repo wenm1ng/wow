@@ -68,7 +68,7 @@ Page({
    */
   onImageMaxSize(){
     wx.showToast({
-      title: '图片不能超过2M',
+      title: '图片不能超过10M',
       icon: 'error',
       duration: 2000//持续的时间
     })

@@ -449,28 +449,27 @@ Page({
    */
   onStarTap(event) {
     if (app.globalData.userDetail) {
-      const index = event.currentTarget.dataset.index
-      let help_list = this.data.help_list
-
+      let id = this.data.id
+      let info = this.data.info
       const url = api.userAPI + 'likes'
       const data = {
-        link_id: help_list[index].id,
-        type:2
+        link_id: id,
+        type:3
       }
 
       wxutil.request.post(url, data).then((res) => {
         if (res.data.code == 200) {
-          const hasLikes = help_list[index].has_likes
-          help_list[index].has_likes = !help_list[index].has_likes
+          const hasLikes = info.has_favor
+          info.has_favor = !info.has_favor
 
           if (hasLikes) {
-            help_list[index].likes_count--
+            info.favorites_num--
           } else {
-            help_list[index].likes_count++
+            info.favorites_num++
           }
 
           this.setData({
-            help_list: help_list
+            info: info
           })
         }
       })
@@ -481,6 +480,43 @@ Page({
     }
   },
 
+
+  /**
+   * 点赞或取消点赞（回答）
+   */
+  onStarTapAnswer(event) {
+    if (app.globalData.userDetail) {
+      const index = event.currentTarget.dataset.index
+      let answer_list = this.data.answer_list
+
+      const url = api.userAPI + 'likes'
+      const data = {
+        link_id: answer_list[index].id,
+        type:4
+      }
+
+      wxutil.request.post(url, data).then((res) => {
+        if (res.data.code == 200) {
+          const hasLikes = answer_list[index].has_favor
+          answer_list[index].has_favor = !answer_list[index].has_favor
+
+          if (hasLikes) {
+            answer_list[index].favorites_num--
+          } else {
+            answer_list[index].favorites_num++
+          }
+
+          this.setData({
+            answer_list: answer_list
+          })
+        }
+      })
+    } else {
+      wx.navigateTo({
+        url: "/pages/auth/index"
+      })
+    }
+  },
   /**
    * 跳转话题详情页
    */

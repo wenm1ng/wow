@@ -443,7 +443,7 @@ Page({
       const url = api.userAPI + 'likes'
       const data = {
         link_id: help_list[index].id,
-        type:2
+        type:3
       }
 
       wxutil.request.post(url, data).then((res) => {

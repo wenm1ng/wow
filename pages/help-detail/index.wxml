@@ -6,7 +6,7 @@
 <scroll-view scroll-y enable-back-to-top lower-threshold="5"
              bindscrolltolower="scrollToLower" style="height:{{height}}rpx" scroll-top="{{scrollTop}}">
     <l-card type="avatar" l-class="card" l-title-class="card-title-anon"  image="{{info.user_info.avatar_url}}"
-             l-img-class="l-img"  title="{{info.user_info.user_name}}" describe="{{info.modify_at}} 更新">
+             l-img-class="l-img"  title="{{info.user_info.user_name}}" describe="{{info.modify_at}} 提问">
         <view bindtap="gotoDetail">{{info.title}}</view>
         <view class="{{info.description.length > 83 && !info.flod ?  'content-close' : 'avater-content'}} description"
               data-id="{{info.id}}" bindtap="gotoDetail">{{info.description}}</view>
@@ -40,12 +40,12 @@
                    plain="true" data-label="{{item2}}">#{{item2}}</l-tag>
         </view>
         <view class="avater-share-container">
-            <view class="like-container" data-id="{{info.id}}" bindtap="gotoDetail">
-                <l-icon name="comment" color="{{info.has_answer ? '#d81e05' : '#666'}}" size="28" />
+            <view class="like-container" data-id="{{info.id}}">
+                <l-icon name="order" color="{{info.has_answer ? '#d81e05' : '#666'}}" size="28" />
                 <view class="{{info.has_answer ? 'has-text' : ''}} number">{{info.help_num}}</view>
             </view>
             <view class="like-container" data-index="{{cardIndex}}" bindtap="onStarTap">
-                <l-icon name="favor" color="{{info.has_favor ? '#d81e05' : '#666'}}" size="28" />
+                <l-icon name="like" color="{{info.has_favor ? '#d81e05' : '#666'}}" size="28" />
                 <view class="{{info.has_favor ? 'has-text' : ''}} number">{{info.favorites_num}}</view>
             </view>
             <view class="like-container" data-id="{{info.id}}" bindtap="gotoDetail">
@@ -59,7 +59,7 @@
     </l-card>
 
     <l-card type="avatar" wx:for="{{answer_list}}" l-class="card" l-title-class="card-title-anon" wx:key="item" wx:for-index="cardIndex"  image="{{item.user_info.avatar_url}}"
-            l-img-class="l-img"  title="{{item.user_info.user_name}}" describe="{{item.modify_at}} 更新">
+            l-img-class="l-img"  title="{{item.user_info.user_name}}" describe="{{item.modify_at}} 回答">
         <view bindtap="gotoDetail">{{item.title}}</view>
         <view class="{{item.description.length > 83 && !info.flod ?  'content-close' : 'avater-content'}} description"
               data-id="{{item.id}}" bindtap="gotoDetail">{{item.description}}</view>
@@ -98,8 +98,8 @@
                 <l-icon name="comment" color="{{item.has_comment ? '#d81e05' : '#666'}}" size="28" />
                 <view class="{{item.has_comment ? 'has-text' : ''}} number">{{item.comment_num}}</view>
             </view>
-            <view class="like-container" data-index="{{cardIndex}}" bindtap="onStarTap">
-                <l-icon name="favor" color="{{item.has_favor ? '#d81e05' : '#666'}}" size="28" />
+            <view class="like-container" data-index="{{cardIndex}}" bindtap="onStarTapAnswer">
+                <l-icon name="like" color="{{item.has_favor ? '#d81e05' : '#666'}}" size="28" />
                 <view class="{{item.has_favor ? 'has-text' : ''}} number">{{item.favorites_num}}</view>
             </view>
         </view>

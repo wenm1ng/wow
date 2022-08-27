@@ -132,12 +132,12 @@
         </view>
         <view class="avater-share-container">
             <view class="like-container" data-id="{{item.id}}" bindtap="gotoDetail">
-                <l-icon name="comment" color="{{item.has_comment ? '#d81e05' : '#666'}}" size="28" />
-                <view class="{{item.has_comment ? 'has-text' : ''}} number">{{item.comment_count}}</view>
+                <l-icon name="order" color="{{item.has_comment ? '#d81e05' : '#666'}}" size="28" />
+                <view class="{{item.has_comment ? 'has-text' : ''}} number">{{item.help_num}}</view>
             </view>
             <view class="like-container" data-index="{{cardIndex}}" bindtap="onStarTap">
-                <l-icon name="favor" color="{{item.has_likes ? '#d81e05' : '#666'}}" size="28" />
-                <view class="{{item.has_likes ? 'has-text' : ''}} number">{{item.likes_count}}</view>
+                <l-icon name="like" color="{{item.has_favor ? '#d81e05' : '#666'}}" size="28" />
+                <view class="{{item.has_favor ? 'has-text' : ''}} number">{{item.favorites_num}}</view>
             </view>
             <view class="like-container" data-id="{{item.id}}" bindtap="gotoDetail">
                 <l-icon name="eye" color="#666" size="28" />
