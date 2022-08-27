@@ -52,7 +52,7 @@
 				data-src="{{item.image_url}}" lazy-load />
 		</block>
 	</view>
-
+	<view class="avater-content">来源：{{wa_info.origin_url}}</view>
 
 
 	<view class="label-box" wx:if="{{wa_info.label}}">
