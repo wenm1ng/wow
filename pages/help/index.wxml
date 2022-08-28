@@ -65,7 +65,7 @@
     <view class="tag-view">
         <l-tag l-class="tag" plain="{{false}}"
                font-color="{{orderColumn === 'favorites_num' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="favorites_num" icon="pull-down">
-            收藏量</l-tag>
+            点赞量</l-tag>
     </view>
     <view class="tag-view">
         <l-tag l-class="tag" plain="{{false}}"
@@ -97,7 +97,7 @@
 <scroll-view scroll-y enable-back-to-top lower-threshold="5" class="topic-scroll"
              bindscrolltolower="scrollToLower" style="height:{{height}}rpx" scroll-top="{{scrollTop}}">
     <l-card type="avatar" l-class="card" l-title-class="card-title-anon"  image="{{item.user_info.avatar_url}}"
-            wx:for="{{help_list}}" l-img-class="l-img" wx:key="item" wx:for-index="cardIndex" title="{{item.user_info.user_name}}" describe="{{item.modify_at}} 更新">
+            wx:for="{{help_list}}" l-img-class="l-img" wx:key="item" wx:for-index="cardIndex" title="{{item.user_info.user_name}}" describe="{{item.modify_at}} 提问">
         <view data-id="{{item.id}}" bindtap="gotoDetail">{{item.title}}</view>
         <view class="{{item.description.length > 83 && !item.flod ?  'content-close' : 'avater-content'}} description"
               data-id="{{item.id}}" bindtap="gotoDetail">{{item.description}}</view>

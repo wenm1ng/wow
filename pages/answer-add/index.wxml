@@ -1,0 +1,23 @@
+<!--pages/answer-add/index.wxml-->
+<view class="bg-font" style="margin-top:20rpx;margin-bottom: 20rpx"><text style="color:red">*</text>帮忙信息</view>
+<view bindtap="gotoDescription">
+    <l-textarea indicator="{{true}}"  maxlength="500" placeholder="建议详细描述一下你的回答信息噢..."  disabled="true" data-type="description" bindinput="setDescription" value="{{formData.description}}" />
+</view>
+<view wx:if="{{helpType === '1'}}" class="bg-font" style="margin-top:20rpx;margin-bottom: 20rpx">wa字符串（选填）</view>
+<view wx:if="{{helpType === '1'}}" style="border-radius: 4rpx;border: 1rpx solid #d8dee5;">
+    <l-input placeholder="请输入wa字符串" data-type="title" hide-label="{{true}}"  bind:linblur="setAnswerWa"/>
+</view>
+        <!--        bind:linfocus="gotoDescription"-->
+<view class="bg-font" style="margin-top:20rpx;margin-bottom: 20rpx">图片信息</view>
+<view>
+    <l-image-picker count="1" clear="{{ isClear }}" siz="1" urls="{{formData.image_url}}" size-type="compressed" bind:linchange="onAddImage" max-image-size="10240000" preview="true" bind:linoversize="onImageMaxSize" bind:linremove="onImageRemove"/>
+    <!--    <l-image-picker count="1" siz="1" urls="{{testUrl}}" size-type="compressed" custom="{{true}}" bind:linchange="onChangeTap" >-->
+    <!--        <view>-->
+    <!--            <image src="../../images/icon_tab/select_image.png" />-->
+    <!--        </view>-->
+    <!--    </l-image-picker>-->
+</view>
+<view class="z-index-submit">
+    <l-button size="mini" l-class="search-button" l-hover-class="search-hover-button" bindtap="onResetAnswer">重置</l-button>
+    <l-button size="mini" l-hover-class="search-button2" l-class="search-hover-button" bindtap="onAddAnswer">提交</l-button>
+</view>

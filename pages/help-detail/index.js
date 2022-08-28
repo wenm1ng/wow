@@ -14,6 +14,7 @@ Page({
     info:{},
     answer_list: [],
     page: 1,
+    userId: 0,
   },
 
   /**
@@ -23,8 +24,7 @@ Page({
     this.setData({
       id: options.id
     })
-    this.getScrollHeight()
-    this.getApiData();
+    this.getUserId();
   },
 
   /**
@@ -129,7 +129,7 @@ Page({
       return;
     }
     wx.navigateTo({
-      url: "/pages/help-add/index"
+      url: "/pages/answer-add/index?helpId=" + this.data.id + '&helpType=' + this.data.info.help_type
     })
   },
   /**
@@ -216,6 +216,8 @@ Page({
   // },
   onShow() {
     // this.getHelpList()
+    this.getScrollHeight()
+    this.getApiData();
   },
 
   /**
@@ -480,6 +482,16 @@ Page({
     }
   },
 
+  /**
+   * 获取用户ID
+   */
+  getUserId() {
+    if (app.globalData.userDetail) {
+      this.setData({
+        userId: app.globalData.userDetail.id
+      })
+    }
+  },
 
   /**
    * 点赞或取消点赞（回答）
@@ -521,9 +533,10 @@ Page({
    * 跳转话题详情页
    */
   gotoDetail(event) {
-    const waId = event.currentTarget.dataset.id
+    const answerId = event.currentTarget.dataset.id
+    const index = event.currentTarget.dataset.index
     wx.navigateTo({
-      url: "/pages/wa-detail/index?id=" + waId
+      url: "/pages/answer-detail/index?id=" + answerId + '&index='+ index
     })
   },
 

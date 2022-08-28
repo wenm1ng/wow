@@ -13,6 +13,14 @@
     width:40% !important;
 }
 
+.size{
+    font-size: 20rpx !important;
+}
+
+.help{
+
+}
+
 .bg-font{
     background-color:#f7f7f7;
     text-align: center;

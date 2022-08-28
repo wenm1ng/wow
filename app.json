@@ -28,7 +28,9 @@
     "pages/preparing/index",
     "pages/help-add/index",
     "pages/help-add-description/index",
-    "pages/help-detail/index"
+    "pages/help-detail/index",
+    "pages/answer-add/index",
+    "pages/answer-detail/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

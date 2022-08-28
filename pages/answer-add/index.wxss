@@ -1,0 +1,38 @@
+/* pages/help-add/index.wxss */
+.bg-font{
+    background-color:#f7f7f7;
+    text-align: center;
+    color:#bebbbb;
+    font-size:25rpx;
+}
+
+.search-button{
+    background-color:white !important;
+    color:#0f6945 !important;
+    border:1rpx #0f6945 solid;
+    margin:2% 4% 2% 2% !important;
+    margin-top:20rpx !important;
+    margin-bottom:20rpx !important;
+}
+.search-button2{
+    background-color:white !important;
+    color:#0f6945 !important;
+    border:1rpx #0f6945 solid;
+    margin-top:20rpx !important;
+}
+.search-hover-button{
+    background-color:#0f6945 !important;
+    border:1rpx white solid;
+    color:white !important;
+    margin:2% 4% 2% 2% !important;
+    margin-top:20rpx !important;
+    margin-bottom:20rpx !important;
+}
+
+.z-index-submit{
+    z-index:99;
+    position: absolute;
+    top:90%;
+    left:30%;
+    width:60%;
+}

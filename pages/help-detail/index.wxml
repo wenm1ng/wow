@@ -5,11 +5,11 @@
         <!-- 动态内容 -->
 <scroll-view scroll-y enable-back-to-top lower-threshold="5"
              bindscrolltolower="scrollToLower" style="height:{{height}}rpx" scroll-top="{{scrollTop}}">
-    <l-card type="avatar" l-class="card" l-title-class="card-title-anon"  image="{{info.user_info.avatar_url}}"
+    <l-card type="avatar" l-class="card help" l-title-class="card-title-anon"  image="{{info.user_info.avatar_url}}"
              l-img-class="l-img"  title="{{info.user_info.user_name}}" describe="{{info.modify_at}} 提问">
-        <view bindtap="gotoDetail">{{info.title}}</view>
+        <view>{{info.title}}</view>
         <view class="{{info.description.length > 83 && !info.flod ?  'content-close' : 'avater-content'}} description"
-              data-id="{{info.id}}" bindtap="gotoDetail">{{info.description}}</view>
+              data-id="{{info.id}}">{{info.description}}</view>
         <view wx:if="{{info.description.length > 83}}" data-index="{{cardIndex}}" class="text-flod" bindtap="onFlodTap">
             {{info.flod ? '收起' : '全文'}}</view>
         <l-tag  shape="circle"
@@ -26,7 +26,7 @@
                 size="large" l-class="r-tag" location="left">
             {{info.help_type_name}}
         </l-tag>
-        <view class="posters" data-id="{{info.id}}" bindtap="gotoDetail">
+        <view class="posters" data-id="{{info.id}}" >
             <block>
                 <image wx:if="{{info.image_url}}" src="{{info.image_url}}" mode="aspectFill" catchtap="previewImage"
                        data-src="{{info.image_url}}" lazy-load data-index="{{cardIndex}}" />
@@ -48,7 +48,7 @@
                 <l-icon name="like" color="{{info.has_favor ? '#d81e05' : '#666'}}" size="28" />
                 <view class="{{info.has_favor ? 'has-text' : ''}} number">{{info.favorites_num}}</view>
             </view>
-            <view class="like-container" data-id="{{info.id}}" bindtap="gotoDetail">
+            <view class="like-container" data-id="{{info.id}}">
                 <l-icon name="eye" color="#666" size="28" />
                 <view class="number">{{info.read_num}}</view>
             </view>
@@ -60,9 +60,9 @@
 
     <l-card type="avatar" wx:for="{{answer_list}}" l-class="card" l-title-class="card-title-anon" wx:key="item" wx:for-index="cardIndex"  image="{{item.user_info.avatar_url}}"
             l-img-class="l-img"  title="{{item.user_info.user_name}}" describe="{{item.modify_at}} 回答">
-        <view bindtap="gotoDetail">{{item.title}}</view>
+        <view data-index="{{cardIndex}}" bindtap="gotoDetail">{{item.title}}</view>
         <view class="{{item.description.length > 83 && !info.flod ?  'content-close' : 'avater-content'}} description"
-              data-id="{{item.id}}" bindtap="gotoDetail">{{item.description}}</view>
+              data-id="{{item.id}}" data-index="{{cardIndex}}" bindtap="gotoDetail">{{item.description}}</view>
         <view wx:if="{{item.description.length > 83}}" data-index="{{cardIndex}}" class="text-flod" bindtap="onFlodTap">
             {{item.flod ? '收起' : '全文'}}</view>
         <l-tag  shape="circle"
@@ -79,7 +79,7 @@
         <!--                size="large" l-class="r-tag" location="left">-->
         <!--            {{item.help_type_name}}-->
         <!--        </l-tag>-->
-        <view class="posters" data-id="{{item.id}}" bindtap="gotoDetail">
+        <view class="posters" data-id="{{item.id}}" data-index="{{cardIndex}}" bindtap="gotoDetail">
             <block>
                 <image wx:if="{{item.image_url}}" src="{{item.image_url}}" mode="aspectFill" catchtap="previewImage"
                        data-src="{{item.image_url}}" lazy-load data-index="{{cardIndex}}" />
@@ -94,13 +94,19 @@
         </view>
 
         <view class="avater-share-container">
-            <view class="like-container" data-id="{{item.id}}" bindtap="gotoDetail" style="margin-left:30rpx">
+            <view class="like-container" data-id="{{item.id}}" data-index="{{cardIndex}}" bindtap="gotoDetail" style="margin-left:30rpx">
                 <l-icon name="comment" color="{{item.has_comment ? '#d81e05' : '#666'}}" size="28" />
                 <view class="{{item.has_comment ? 'has-text' : ''}} number">{{item.comment_num}}</view>
             </view>
             <view class="like-container" data-index="{{cardIndex}}" bindtap="onStarTapAnswer">
                 <l-icon name="like" color="{{item.has_favor ? '#d81e05' : '#666'}}" size="28" />
                 <view class="{{item.has_favor ? 'has-text' : ''}} number">{{item.favorites_num}}</view>
+            </view>
+            <view wx:if="{{item.user_info.user_id === userId}}" class="like-container" data-index="{{cardIndex}}" bindtap="onDelAnswer">
+                <l-button size="small" l-class="add-button size" width="150" height="50">删除回答</l-button>
+            </view>
+            <view wx:elif="{{info.user_info.user_id === userId}}" class="like-container" data-index="{{cardIndex}}" bindtap="onAdoptAnswer">
+                <l-button size="small" l-class="add-button size" width="150" height="50">采纳回答</l-button>
             </view>
         </view>
         <!--		<l-icon l-class="ellipsis" slot="more" name="ellipsis" color="#777" size="32" data-index="{{cardIndex}}"-->

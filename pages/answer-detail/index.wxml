@@ -1,0 +1,100 @@
+<l-popup show="{{isShowWa}}" content-align="center" >
+    <view class='mask-content'>
+        <view>
+            <text style="color:white;">pc端：复制后ctrl+c；移动端：长按黏贴</text>
+        </view>
+        <l-button size="large" bg-color="#337559" bindtap="copyWaStr" style="margin-bottom: 20rpx">复制字符串</l-button>
+        <view>
+            <text style="color:white;">收藏后再也不怕找不到我了噢~</text>
+        </view>
+        <l-button size="large" bg-color="#337559" data-iswa="1" bindtap="onFavoritesTap">收藏字符串</l-button>
+    </view>
+</l-popup>
+
+        <!-- 动态详情 -->
+<l-card type="avatar" l-class="card" l-title-class="card-title-anon" wx:key="item" wx:for-index="cardIndex"  image="{{info.user_info.avatar_url}}"
+        l-img-class="l-img"  title="{{info.user_info.user_name}}" describe="{{info.modify_at}} 回答">
+    <view data-index="{{index}}" bindtap="gotoDetail">{{item.title}}</view>
+    <view class="{{info.description.length > 83 && !info.flod ?  'content-close' : 'avater-content'}} description"
+          data-id="{{info.id}}" data-index="{{index}}" bindtap="gotoDetail">{{info.description}}</view>
+    <view wx:if="{{info.description.length > 83}}" data-index="{{cardIndex}}" class="text-flod" bindtap="onFlodTap">
+        {{info.flod ? '收起' : '全文'}}</view>
+    <!--        <l-tag  shape="circle"-->
+    <!--                bg-color="#f3f3f3"-->
+    <!--                font-color="#0f6945"-->
+    <!--                slot="more"-->
+    <!--                size="large" l-class="r-tag" location="left">-->
+    <!--            {{info.help_type_name}}-->
+    <!--        </l-tag>-->
+    <view class="posters" data-id="{{info.id}}" data-index="{{index}}" bindtap="gotoDetail">
+        <block>
+            <image wx:if="{{info.image_url}}" src="{{info.image_url}}" mode="aspectFill" catchtap="previewImage"
+                   data-src="{{info.image_url}}" lazy-load data-index="{{cardIndex}}" />
+        </block>
+    </view>
+
+    <view class="avater-share-container">
+        <view class="like-container" data-id="{{info.id}}" data-index="{{index}}" bindtap="gotoDetail" style="margin-left:30rpx">
+            <l-icon name="comment" color="{{info.has_comment ? '#d81e05' : '#666'}}" size="28" />
+            <view class="{{info.has_comment ? 'has-text' : ''}} number">{{info.comment_num}}</view>
+        </view>
+        <view class="like-container" data-index="{{cardIndex}}" bindtap="onStarTapAnswer">
+            <l-icon name="like" color="{{info.has_favor ? '#d81e05' : '#666'}}" size="28" />
+            <view class="{{info.has_favor ? 'has-text' : ''}} number">{{info.favorites_num}}</view>
+        </view>
+    </view>
+    <!--		<l-icon l-class="ellipsis" slot="more" name="ellipsis" color="#777" size="32" data-index="{{cardIndex}}"-->
+    <!--			bindtap="onMoreTap" />-->
+
+</l-card>
+<view wx:if="{{info.id}}" class="comment-box" wx:if="{{comments.length > 0}}">
+    <view class="comment" wx:for="{{comments}}" wx:key="item">
+        <image class="avatar" src="{{item.avatar_url}}" data-user-id="{{item.user_id}}" catchtap="gotoVisitingCard" />
+        <view class="comment-right {{index == comments.length - 1 && isEnd ? 'non-border' : ''}}">
+            <view class="comment-top">
+                <view class="nick-name" data-user-id="{{item.user_id}}" catchtap="gotoVisitingCard">{{item.user_name}}
+                </view>
+                <view class="time">{{item.create_at}}</view>
+            </view>
+            <view class="comment-bottom">
+                <view class="content">
+                    <text wx:if="{{item.reply_user_id}}">回复</text>
+                    <text class="nick-name">{{item.reply_user_name}}: </text>{{item.content}}
+                </view>
+                <view class="delete-box" wx:if="{{userId == item.user_id}}">
+                    <view class="delete-text" data-id="{{item.id}}" catchtap="deleteComment">删除</view>
+                </view>
+                <view class="delete-box" wx:if="{{userId != item.user_id}}">
+                    <view class="delete-text" data-id="{{item.id}}" data-index="{{index}}" bindtap="onCommentItemTap">回复</view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="more" wx:if="{{!isEnd}}" bindtap="getMoreComments">
+        <text>展开更多评论</text>
+        <view class="more-icon">
+            <l-icon name="down" color="#337559" size="22" />
+        </view>
+    </view>
+</view>
+
+        <!-- 评论编辑区 -->
+<view wx:if="{{info.id}}" class="comment-edit">
+    <l-input hide-label maxlength="150" width="600" focus="{{focus}}" placeholder="{{placeholder}}" value="{{comment}}"
+             bind:lininput="inputComment" />
+    <l-button shape="circle" size="mini" bg-color="#337559" width="125" height="60" bind:lintap="onCommntBtnTap">评论
+    </l-button>
+</view>
+
+        <!-- nothing -->
+<nothing wx:if="{{!info.id}}" pic="../../images/icon_nothing/pic_topic.png" tip="该回答消失了" />
+
+        <!-- 操作菜单 -->
+<l-action-sheet show-cancel open-api="{{false}}" item-list="{{actionList}}" show="{{showAction}}"
+                bind:linitemtap="onActionItemtap" bind:lincancel="onCancelSheetTap" />
+
+        <!-- 消息提示 -->
+<l-message />
+
+        <!-- 消息对话框 -->
+<l-dialog />
