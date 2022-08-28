@@ -44,6 +44,38 @@ Page({
       }
     })
   },
+
+  /**
+   * 删除回答
+   */
+  onDelAnswer(){
+
+  },
+
+  /**
+   * 采纳回答
+   */
+  onAdoptAnswer(e){
+    const url = api.helpCenterAPI+'adopt-answer';
+    const data = {
+      id: e.target.dataset.id
+    }
+    wxutil.request.post(url, data).then((res) => {
+      if (res.data.code === 200) {
+        wx.showToast({
+          title: '采纳成功',
+          icon: 'error',
+          duration: 2000//持续的时间
+        })
+      }else{
+        wx.showToast({
+          title: '采纳失败',
+          icon: 'error',
+          duration: 2000//持续的时间
+        })
+      }
+    })
+  },
   /**
    * 获取帮助列表
    */
@@ -239,16 +271,6 @@ Page({
     })
   },
 
-  /**
-   * 获取用户ID
-   */
-  getUserId() {
-    if (app.globalData.userDetail) {
-      this.setData({
-        userId: app.globalData.userDetail.id
-      })
-    }
-  },
 
   /**
    * 图片预览

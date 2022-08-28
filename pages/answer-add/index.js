@@ -132,6 +132,12 @@ Page({
                 })
               }
             })
+          }else{
+            wx.showToast({
+              title: '发布失败',
+              icon: 'error',
+              duration: 2000//持续的时间
+            })
           }
         }).catch((error) => {
           reject(error)

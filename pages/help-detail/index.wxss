@@ -17,8 +17,20 @@
     font-size: 20rpx !important;
 }
 
-.help{
+.adopt{
+    width:15%;
+    background-color: #0f6945;
+    color:white;
+    text-align: center;
+    font-size:25rpx;
+}
 
+.no_adopt{
+    width:15%;
+    background-color: #d24a16;
+    color:white;
+    text-align: center;
+    font-size:25rpx;
 }
 
 .bg-font{

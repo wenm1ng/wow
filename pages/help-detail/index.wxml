@@ -7,6 +7,8 @@
              bindscrolltolower="scrollToLower" style="height:{{height}}rpx" scroll-top="{{scrollTop}}">
     <l-card type="avatar" l-class="card help" l-title-class="card-title-anon"  image="{{info.user_info.avatar_url}}"
              l-img-class="l-img"  title="{{info.user_info.user_name}}" describe="{{info.modify_at}} 提问">
+        <view wx:if="{{info.is_adopt == 1}}" class="adopt">已采纳</view>
+        <view wx:else class="no_adopt">未采纳</view>
         <view>{{info.title}}</view>
         <view class="{{info.description.length > 83 && !info.flod ?  'content-close' : 'avater-content'}} description"
               data-id="{{info.id}}">{{info.description}}</view>
@@ -105,7 +107,7 @@
             <view wx:if="{{item.user_info.user_id === userId}}" class="like-container" data-index="{{cardIndex}}" bindtap="onDelAnswer">
                 <l-button size="small" l-class="add-button size" width="150" height="50">删除回答</l-button>
             </view>
-            <view wx:elif="{{info.user_info.user_id === userId}}" class="like-container" data-index="{{cardIndex}}" bindtap="onAdoptAnswer">
+            <view wx:elif="{{info.user_info.user_id === userId}}" class="like-container" data-index="{{cardIndex}}" data-id="{{item.id}}" bindtap="onAdoptAnswer">
                 <l-button size="small" l-class="add-button size" width="150" height="50">采纳回答</l-button>
             </view>
         </view>
