@@ -344,7 +344,7 @@ const showActionSheet = (itemList, itemColor = '#000000') => {
 /**
  * setStorage用法：
  * 1.setStorage("userInfo", userInfo)
- * 2.setStorage("userInfo", userInfo, 86400)
+ * 2.setStorage("userInfo", userInfo, 172800)
  * @param {String} key
  * @param {Object} value
  * @param {Int} time 过期时间，可选参数
@@ -353,12 +353,17 @@ const setStorage = (key, value, time) => {
   const dtime = '_deadtime'
   wx.setStorageSync(key, value)
   const seconds = parseInt(time)
+  console.log(seconds);
   if (seconds > 0) {
     let timestamp = Date.parse(new Date()) / 1000 + seconds
     wx.setStorageSync(key + dtime, timestamp + '')
   } else {
     wx.removeStorageSync(key + dtime)
   }
+}
+
+const clearStorage = () => {
+  wx.clearStorageSync()
 }
 
 /**
@@ -596,6 +601,7 @@ module.exports = {
   showLoading: showLoading,
   showActionSheet: showActionSheet,
   setStorage: setStorage,
+  clearStorage: clearStorage,
   getStorage: getStorage,
   getLocation: getLocation,
   getUserInfo: getUserInfo,

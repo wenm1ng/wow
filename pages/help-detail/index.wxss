@@ -13,6 +13,11 @@
     width:40% !important;
 }
 
+.del-button{
+    background-color: #ee0b41 !important;
+    width:40% !important;
+}
+
 .size{
     font-size: 20rpx !important;
 }
@@ -25,12 +30,31 @@
     font-size:25rpx;
 }
 
-.no_adopt{
+.help{
     width:15%;
-    background-color: #d24a16;
+    background-color: #0b52bb;
     color:white;
     text-align: center;
     font-size:25rpx;
+}
+
+.answer{
+    display: block;
+    float:left;
+    width:35%;
+    background-color: #c1920c;
+    color:white;
+    text-align: center;
+    font-size:25rpx;
+    margin-right: 5%;
+}
+
+.adopt{
+    background-color: #0b52bb;
+}
+
+.answer-view{
+    width:40%;
 }
 
 .bg-font{

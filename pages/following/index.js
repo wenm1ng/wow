@@ -136,7 +136,7 @@ Page({
    * 跳转到用户名片页
    */
   gotoVisitingCard(event) {
-    if (app.globalData.userDetail) {
+    if (app.getUserDetailNew()) {
       const userId = event.target.dataset.userId
       wx.navigateTo({
         url: "/pages/visiting-card/index?userId=" + userId

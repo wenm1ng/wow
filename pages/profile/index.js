@@ -43,9 +43,9 @@ Page({
    * 设置用户信息
    */
   setUser(){
-    if (app.globalData.userDetail){
+    if (app.getUserDetailNew()){
       this.setData({
-        user: app.globalData.userDetail
+        user: app.getUserDetailNew()
       })
     }
   },
@@ -71,7 +71,7 @@ Page({
    * 验证是否登录
    */
   checkAuth(){
-    if (!app.globalData.userDetail) {
+    if (!app.getUserDetailNew()) {
       return false
     }
     return true
@@ -276,7 +276,7 @@ Page({
   getMessageBrief() {
     const url = api.messageAPI + "brief/"
 
-    if (app.globalData.userDetail) {
+    if (app.getUserDetailNew()) {
       wxutil.request.get(url).then((res) => {
         if (res.data.code == 200) {
           if (res.data.data.count > 0) {
@@ -380,7 +380,7 @@ Page({
    */
   gotoVisitingCard(event) {
     console.log(event)
-    if (app.globalData.userDetail) {
+    if (app.getUserDetailNew()) {
       const userId = event.target.dataset.userId
       wx.navigateTo({
         url: "/pages/visiting-card/index?userId=" + userId
@@ -416,10 +416,9 @@ Page({
             wx.hideLoading()
             // 更新缓存
             const user = data.data
-            let userDetail = app.globalData.userDetail
+            let userDetail = app.getUserDetailNew()
             userDetail = Object.assign(userDetail, user)
             wxutil.setStorage("userDetail", userDetail)
-            app.globalData.userDetail = userDetail
 
             this.setData({
               user: user

@@ -31,9 +31,9 @@ Page({
       wxutil.request.post(url, data).then((res) => {
         if (res.data.code == 200) {
           // 缓存用户详细信息
-          wxutil.setStorage("userDetail", res.data.data)
-          app.globalData.userDetail = res.data.data
-          console.log(app.globalData.userDetail)
+          wxutil.setStorage("userDetail", res.data.data, 172800)
+          // app.getUserDetailNew() = res.data.data
+          // console.log(app.getUserDetailNew())
           wx.lin.showMessage({
             type: "success",
             content: "授权成功！",

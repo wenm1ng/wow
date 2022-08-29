@@ -142,9 +142,9 @@ Page({
    * 获取用户ID
    */
   getUserId() {
-    if (app.globalData.userDetail) {
+    if (app.getUserDetailNew()) {
       this.setData({
-        userId: app.globalData.userDetail.id
+        userId: app.getUserDetailNew().id
       })
     }
   },
@@ -181,7 +181,7 @@ Page({
    * 获取评论模板ID
    */
   getTemplateId(title = "评论模板") {
-    if (app.globalData.userDetail) {
+    if (app.getUserDetailNew()) {
       const url = api.templateAPI
       const data = {
         title: title
@@ -357,7 +357,7 @@ Page({
    * 跳转到用户名片页
    */
   gotoVisitingCard(event) {
-    if (app.globalData.userDetail) {
+    if (app.getUserDetailNew()) {
       const userId = event.target.dataset.userId
       wx.navigateTo({
         url: "/pages/visiting-card/index?userId=" + userId
@@ -374,7 +374,7 @@ Page({
    * @param event
    */
   onFavoritesTap(event){
-    if (!app.globalData.userDetail) {
+    if (!app.getUserDetailNew()) {
       wx.navigateTo({
         url: "/pages/auth/index"
       })
@@ -418,7 +418,7 @@ Page({
    * 点赞或取消点赞
    */
   onStarTap(event) {
-    if (!app.globalData.userDetail) {
+    if (!app.getUserDetailNew()) {
       wx.navigateTo({
         url: "/pages/auth/index"
       })
@@ -506,7 +506,7 @@ Page({
    * 发送评论
    */
   onCommntBtnTap() {
-    if (!app.globalData.userDetail) {
+    if (!app.getUserDetailNew()) {
       wx.navigateTo({
         url: "/pages/auth/index"
       })

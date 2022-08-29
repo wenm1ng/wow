@@ -36,7 +36,7 @@ Page({
    * 获取预约模板ID
    */
   getTemplateId(title = "预约模板") {
-    if (app.globalData.userDetail) {
+    if (app.getUserDetailNew()) {
       const url = api.templateAPI
       const data = {
         title: title
@@ -85,7 +85,7 @@ Page({
       // 进入树洞
       const countDown = (endTime - nowTime) / 1000
       const roomId = this.data.hole.room_id
-      if (app.globalData.userDetail) {
+      if (app.getUserDetailNew()) {
         this.gotoChatRoom(roomId, countDown)
       } else {
         this.gotoAuth()

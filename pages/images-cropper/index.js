@@ -105,10 +105,9 @@ Page({
           if (data.code == 200) {
             // 更新缓存
             const user = data.data
-            let userDetail = app.globalData.userDetail
+            let userDetail = app.getUserDetailNew()
             userDetail = Object.assign(userDetail, user)
             wxutil.setStorage("userDetail", userDetail)
-            app.globalData.userDetail = userDetail
 
             wx.lin.showMessage({
               type: "success",

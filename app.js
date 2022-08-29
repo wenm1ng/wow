@@ -30,6 +30,13 @@ App({
       this.globalData.userDetail = null
     }
   },
+  getUserDetailNew() {
+    const userDetail = wxutil.getStorage("userDetail")
+    if (userDetail) {
+      return userDetail
+    }
+    return null;
+  },
 
   /**
    * 缓存图片
@@ -91,8 +98,8 @@ App({
    */
   getHeader() {
     let header = {}
-    if (this.globalData.userDetail) {
-      header["Authorization"] = "Token " + this.globalData.userDetail.token
+    if (this.getUserDetailNew()) {
+      header["Authorization"] = "Token " + this.getUserDetailNew().token
     }
     return header
   },
@@ -146,7 +153,8 @@ App({
    * Token无效跳转授权页
    */
   gotoAuthPage(res) {
-    if (res.data.code == 50002) {
+    if (res.data.code === 50002) {
+      wx.clearStorage()
       wx.navigateTo({
         url: "/pages/auth/index",
       })

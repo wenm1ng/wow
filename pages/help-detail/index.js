@@ -24,7 +24,6 @@ Page({
     this.setData({
       id: options.id
     })
-    this.getUserId();
   },
 
   /**
@@ -52,28 +51,65 @@ Page({
 
   },
 
+  checkLogin(){
+    if(!app.getUserDetailNew()){
+      wx.navigateTo({
+        url: "/pages/auth/index"
+      })
+      console.log(111)
+      return false;
+    }
+    return true;
+  },
   /**
    * 采纳回答
    */
   onAdoptAnswer(e){
-    const url = api.helpCenterAPI+'adopt-answer';
-    const data = {
-      id: e.target.dataset.id
+    if(!this.checkLogin()){
+      return;
     }
-    wxutil.request.post(url, data).then((res) => {
-      if (res.data.code === 200) {
-        wx.showToast({
-          title: '采纳成功',
-          icon: 'error',
-          duration: 2000//持续的时间
-        })
-      }else{
+    let id = e.target.dataset.id
+    let helpId = e.target.dataset.help_id
+    let index = e.target.dataset.index
+    wx.showModal({
+      title: "提示",
+      content: "是否确认要采纳该回答?",
+      success: (res) => {
+        if (res.confirm) {
+          const url = api.helpCenterAPI+'adopt-answer';
+          const data = {
+            id: id,
+            help: helpId
+          }
+          wxutil.request.post(url, data).then((res) => {
+            if (res.data.code === 200) {
+              wx.showToast({
+                title: '采纳成功',
+                icon: 'error',
+                duration: 2000//持续的时间
+              })
+              let answerList = this.data.answer_list;
+              answerList[index].is_adopt_answer = 1;
+              this.setData({
+                answer_list: answerList
+              })
+            }else{
+              wx.showToast({
+                title: '采纳失败',
+                icon: 'error',
+                duration: 2000//持续的时间
+              })
+            }
+          })
+        }
+      },
+      fail: (res) => {
         wx.showToast({
           title: '采纳失败',
           icon: 'error',
           duration: 2000//持续的时间
         })
-      }
+      },
     })
   },
   /**
@@ -141,20 +177,11 @@ Page({
       console.log(11111);
     })
   },
-  buttonClick(e) {
-    let type = e.target.dataset.type;
-    type = 'searchQuery.'+ type;
-    let value = e.target.dataset.value;
-    this.setData({
-      [type]: value
-    })
-    console.log(this.data.searchQuery);
-  },
   /**
    * 跳转到回答页面
    */
   gotoAddAnswer(){
-    if(!app.globalData.userDetail){
+    if(!app.getUserDetailNew()){
       wx.navigateTo({
         url: "/pages/auth/index"
       })
@@ -164,13 +191,7 @@ Page({
       url: "/pages/answer-add/index?helpId=" + this.data.id + '&helpType=' + this.data.info.help_type
     })
   },
-  /**
-   * 进行搜索
-   */
-  submit() {
-    this.getHelpList(1)
-    this.hideLeft();
-  },
+
   /**
    * 重置搜索条件
    */
@@ -188,57 +209,6 @@ Page({
   closeBubble(){
     //不做任务处理
   },
-  getHelpList(isSearch = 0){
-    const page = isSearch === 1 ? 1 : this.data.page
-
-    const url = api.helpCenterAPI+'list';
-    const data = {
-      version: this.data.searchQuery.version,
-      help_type: this.data.searchQuery.help_type,
-      is_pay: this.data.searchQuery.is_pay,
-      adopt_type: this.data.searchQuery.adopt_type,
-      order: this.data.orderColumn,
-      page: page,
-      pageSize: pageSize
-    }
-
-    if ((this.data.isEnd && page !== 1 && isSearch === 0) || this.data.inRequest) {
-      return
-    }
-
-    // if(isSearch === 1){
-    //   wx.showToast({
-    //     title: "加载中...",
-    //     icon: "loading"
-    //   })
-    // }
-
-    this.setData({
-      inRequest: true
-    })
-
-    wxutil.request.post(url, data).then((res) => {
-      if (res.data.code == 200) {
-        const help_list = res.data.data['list']
-        this.setData({
-          page: isSearch === 1 ? 1 :((help_list.length == 0 && page != 1) ? page - 1 : page),
-          loading: false,
-          inRequest: false,
-          isEnd: isSearch === 1 ? false : (((help_list.length < pageSize) || (help_list.length == 0 && page != 1)) ? true : false),
-          help_list: isSearch === 1 ? help_list : (page === 1 ? help_list : this.data.help_list.concat(help_list))
-        })
-      }
-      if(isSearch === 1) {
-        // wx.pageScrollTo({
-        //   scrollTop: 0
-        // })
-        this.setData({
-          scrollTop: 0
-        })
-        //   wx.hideToast()
-      }
-    })
-  },
   // /**
   //  * 生命周期函数--监听页面加载
   //  */
@@ -247,7 +217,7 @@ Page({
   //   this.getTalentTreeList(options.version)
   // },
   onShow() {
-    // this.getHelpList()
+    this.getUserId();
     this.getScrollHeight()
     this.getApiData();
   },
@@ -297,49 +267,6 @@ Page({
   //   // 振动交互
   //   wx.vibrateShort()
   // },
-
-  /**
-   * 触底加载
-   */
-  scrollToLower() {
-    const page = this.data.page
-    console.log('wenming')
-    this.setData({
-      loading: true,
-      page:page + 1
-    })
-
-    this.getHelpList()
-  },
-
-  /**
-   * 标签切换
-   */
-  onTagTap(event) {
-    const currLabelId = event.currentTarget.dataset.label
-    if(currLabelId === this.data.talentName || currLabelId === this.data.searchValue){
-      return;
-    }
-    this.setData({
-      talentName: currLabelId,
-      labelId: currLabelId
-    })
-    this.getHelpList(1)
-  },
-
-  onOrder(event){
-    const orderColumn = event.currentTarget.dataset.order
-    if(orderColumn === this.data.orderColumn){
-      return;
-    }
-    this.setData({
-      orderColumn: orderColumn
-    })
-
-    this.getHelpList(1)
-
-  },
-
   /**
    * 点击显示或隐藏全文
    */
@@ -456,8 +383,8 @@ Page({
    * 点击编辑
    */
   onEditTap() {
-    console.log(app.globalData.userDetail)
-    if (app.globalData.userDetail) {
+    console.log(app.getUserDetailNew())
+    if (app.getUserDetailNew()) {
       wx.navigateTo({
         url: "/pages/topic-edit/index"
       })
@@ -472,7 +399,7 @@ Page({
    * 点赞或取消点赞
    */
   onStarTap(event) {
-    if (app.globalData.userDetail) {
+    if (app.getUserDetailNew()) {
       let id = this.data.id
       let info = this.data.info
       const url = api.userAPI + 'likes'
@@ -508,9 +435,9 @@ Page({
    * 获取用户ID
    */
   getUserId() {
-    if (app.globalData.userDetail) {
+    if (app.getUserDetailNew()) {
       this.setData({
-        userId: app.globalData.userDetail.id
+        userId: app.getUserDetailNew().id
       })
     }
   },
@@ -519,7 +446,7 @@ Page({
    * 点赞或取消点赞（回答）
    */
   onStarTapAnswer(event) {
-    if (app.globalData.userDetail) {
+    if (app.getUserDetailNew()) {
       const index = event.currentTarget.dataset.index
       let answer_list = this.data.answer_list
 
@@ -576,7 +503,7 @@ Page({
    * 跳转到用户名片页
    */
   gotoVisitingCard(event) {
-    if (app.globalData.userDetail) {
+    if (app.getUserDetailNew()) {
       const userId = event.target.dataset.userId
       wx.navigateTo({
         url: "/pages/visiting-card/index?userId=" + userId

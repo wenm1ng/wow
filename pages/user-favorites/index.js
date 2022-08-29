@@ -144,9 +144,9 @@ Page({
    * 获取用户ID
    */
   getUserId() {
-    if (app.globalData.userDetail) {
+    if (app.getUserDetailNew()) {
       this.setData({
-        userId: app.globalData.userDetail.id
+        userId: app.getUserDetailNew().id
       })
     }
   },
@@ -370,8 +370,8 @@ Page({
    * 点击编辑
    */
   onEditTap() {
-    console.log(app.globalData.userDetail)
-    if (app.globalData.userDetail) {
+    console.log(app.getUserDetailNew())
+    if (app.getUserDetailNew()) {
       wx.navigateTo({
         url: "/pages/topic-edit/index"
       })
@@ -386,7 +386,7 @@ Page({
    * 点赞或取消点赞
    */
   onStarTap(event) {
-    if (app.globalData.userDetail) {
+    if (app.getUserDetailNew()) {
       const index = event.currentTarget.dataset.index
       let wa_list = this.data.wa_list
 
@@ -443,7 +443,7 @@ Page({
    * 跳转到用户名片页
    */
   gotoVisitingCard(event) {
-    if (app.globalData.userDetail) {
+    if (app.getUserDetailNew()) {
       const userId = event.target.dataset.userId
       wx.navigateTo({
         url: "/pages/visiting-card/index?userId=" + userId

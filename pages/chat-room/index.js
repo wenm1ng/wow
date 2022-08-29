@@ -38,7 +38,7 @@ Page({
     })
   },
   connetWebsocket() { // wbsocket逻辑
-    if(!app.globalData.userDetail){
+    if(!app.getUserDetailNew()){
       return;
     }
     that = this;// 保存this指向
@@ -53,13 +53,13 @@ Page({
       wx.sendSocketMessage({
         data:JSON.stringify({
           action: 'getRoomMember',
-          token: app.globalData.userDetail.token
+          token: app.getUserDetailNew().token
         })
       })
       wx.sendSocketMessage({
         data:JSON.stringify({
           action: 'entryRoom',
-          token: app.globalData.userDetail.token
+          token: app.getUserDetailNew().token
         })
       })
     })
@@ -206,7 +206,7 @@ Page({
     // wx.sendSocketMessage({
     //   data:JSON.stringify({
     //     action: 'leaveRoom',
-    //     token: app.globalData.userDetail.token
+    //     token: app.getUserDetailNew().token
     //   })
     // })
   },
@@ -302,7 +302,7 @@ Page({
       data:JSON.stringify({
         action: 'speak',
         content: content,
-        token: app.globalData.userDetail.token
+        token: app.getUserDetailNew().token
       })
     })
     this.setData({
@@ -376,7 +376,7 @@ Page({
    * 获取用户ID
    */
   getUserId() {
-    if(!app.globalData.userDetail){
+    if(!app.getUserDetailNew()){
       wx.showModal({
         title: "提示",
         content: "您还未登录，是否跳转到登录页？",
@@ -436,7 +436,7 @@ Page({
       return false;
     }else{
       this.setData({
-        userId: app.globalData.userDetail.id
+        userId: app.getUserDetailNew().id
       })
     }
     return true;
@@ -450,7 +450,7 @@ Page({
     socket.on("connect", () => {
       const data = {
         room_id: roomId,
-        token: app.globalData.userDetail.token
+        token: app.getUserDetailNew().token
       }
       this.sendSocketMessage("join", data)
     })

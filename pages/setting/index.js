@@ -26,7 +26,6 @@ Page({
       success: (res) => {
         if (res.confirm) {
           wx.clearStorage()
-          app.globalData.userDetail = null
         }
       }
     })

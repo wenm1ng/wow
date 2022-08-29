@@ -42,7 +42,7 @@ Page({
    */
   gotoFollower() {
     wx.navigateTo({
-      url: "/pages/follower/index?userId=" + app.globalData.userDetail.id
+      url: "/pages/follower/index?userId=" + app.getUserDetailNew().id
     })
   },
 
@@ -51,7 +51,7 @@ Page({
    */
   gotoVisitingCard(event) {
     console.log(event)
-    if (app.globalData.userDetail) {
+    if (app.getUserDetailNew()) {
       const userId = event.target.dataset.userId
       wx.navigateTo({
         url: "/pages/visiting-card/index?userId=" + userId
