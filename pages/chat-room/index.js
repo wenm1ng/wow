@@ -34,7 +34,7 @@ Page({
   hideLeft() {
     this.setData({
       leftView: !this.data.leftView,
-      height: 980
+      height: 1500
     })
   },
   connetWebsocket() { // wbsocket逻辑
