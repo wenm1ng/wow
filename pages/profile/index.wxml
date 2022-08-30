@@ -88,7 +88,7 @@
 <!--	"has_comment": 0-->
 <!--	<scroll-view scroll-y enable-back-to-top lower-threshold="5" class="topic-scroll"-->
 <!--					 bindscrolltolower="scrollToLower" style="height:100vh">-->
-	<l-tabpanel tab="收藏" key="star" slot="star" bindscrolltolower="scrollToLower">
+	<l-tabpanel tab="WA收藏" key="star" slot="star" bindscrolltolower="scrollToLower">
 		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content" bindscrolltolower="scrollToLower">
 			<nothing wx:if="{{wa_list.length === 0}}" pic="../../images/icon_nothing/pic_star.png" tip="您还没有收藏wa"
 					 nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
@@ -111,25 +111,24 @@
 			<l-loadmore show="{{isEndStar && pageStar !== 1}}" line type="end" />
 		</view>
 	</l-tabpanel>
-<!--	</scroll-view>-->
 	<l-tabpanel tab="评论{{noRead}}" key="comment" slot="comment">
 		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content">
 			<nothing wx:if="{{comments.length === 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="您还没有发表评论"
-				nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
+					 nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
 			<l-card data-id="{{item.wa_id}}" bindtap="gotoWaDetail" wx:for="{{comments}}" wx:key="item" l-class="card"
-				l-img-class="card-img-none" l-title-class="topic-title" type="primary" position="left"
-				title="{{item.create_at}}">
+					l-img-class="card-img-none" l-title-class="topic-title" type="primary" position="left"
+					title="{{item.create_at}}">
 				<view class="comment-top">
 					<view class="card-content">{{item.content}}</view>
 					<view class="delete-text" data-id="{{item.id}}" data-index="{{index}}" catchtap="deleteComment">删除</view>
 				</view>
 				<view class="comment-topic" wx:if="{{item.reply_user_id !== 0}}">
 					<image src="{{item.reply_avatar_url ? item.reply_avatar_url : item.avatar_url}}"
-						class="{{item.reply_avatar_url ? 'card-img comment-image' : 'card-img-none'}}" mode="aspectFill" />
+						   class="{{item.reply_avatar_url ? 'card-img comment-image' : 'card-img-none'}}" mode="aspectFill" />
 					<view class="comment-right">
 						<text class="{{'tab-nick-name'}}"
-							catchtap="{{''}}"
-							data-user-id="{{item.reply_user_id}}">{{item.reply_user_name}}</text>
+							  catchtap="{{''}}"
+							  data-user-id="{{item.reply_user_id}}">{{item.reply_user_name}}</text>
 						<text class="card-content">{{item.reply_content}}</text>
 					</view>
 				</view>
@@ -138,6 +137,53 @@
 			<l-loadmore show="{{isEndComment && pageComment !== 1}}" line type="end" />
 		</view>
 	</l-tabpanel>
+	<l-tabpanel tab="求助" key="star" slot="star" bindscrolltolower="scrollToLower">
+		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content" bindscrolltolower="scrollToLower">
+			<nothing wx:if="{{wa_list.length === 0}}" pic="../../images/icon_nothing/pic_star.png" tip="您还没有收藏wa"
+					 nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
+			<l-card data-id="{{item.id}}" bindtap="gotoWaDetail" wx:for="{{wa_list}}" wx:key="item" l-class="card"
+					l-img-class="{{item.images.length > 0 ? 'card-img' : 'card-img-none'}}"
+					l-title-class="{{'tab-anon'}}" type="primary" position="left"
+					image="{{item.images.length > 0 ? item.images[0].image_url : ''}}" image-mode="aspectFill"
+					title="{{item.title}}" bind:lintitle="{{''}}"
+			>
+				<view class="card-content">
+					{{item.description}}
+				</view>
+				<view>
+					<text class="delete-text delete-star-text" data-id="{{item.id}}" data-index="{{index}}" catchtap="deleteStar">取消收藏</text>
+					<text class="reads-text">{{item.read_num}}浏览</text>
+					<text class="reads-text">{{item.likes_count}}点赞</text>
+				</view>
+			</l-card>
+			<l-loadmore wx:if="{{!isEndStar}}" show="{{loading}}" line l-class="loading" />
+			<l-loadmore show="{{isEndStar && pageStar !== 1}}" line type="end" />
+		</view>
+	</l-tabpanel>
+	<l-tabpanel tab="回答" key="star" slot="star" bindscrolltolower="scrollToLower">
+		<view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content" bindscrolltolower="scrollToLower">
+			<nothing wx:if="{{wa_list.length === 0}}" pic="../../images/icon_nothing/pic_star.png" tip="您还没有收藏wa"
+					 nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
+			<l-card data-id="{{item.id}}" bindtap="gotoWaDetail" wx:for="{{wa_list}}" wx:key="item" l-class="card"
+					l-img-class="{{item.images.length > 0 ? 'card-img' : 'card-img-none'}}"
+					l-title-class="{{'tab-anon'}}" type="primary" position="left"
+					image="{{item.images.length > 0 ? item.images[0].image_url : ''}}" image-mode="aspectFill"
+					title="{{item.title}}" bind:lintitle="{{''}}"
+			>
+				<view class="card-content">
+					{{item.description}}
+				</view>
+				<view>
+					<text class="delete-text delete-star-text" data-id="{{item.id}}" data-index="{{index}}" catchtap="deleteStar">取消收藏</text>
+					<text class="reads-text">{{item.read_num}}浏览</text>
+					<text class="reads-text">{{item.likes_count}}点赞</text>
+				</view>
+			</l-card>
+			<l-loadmore wx:if="{{!isEndStar}}" show="{{loading}}" line l-class="loading" />
+			<l-loadmore show="{{isEndStar && pageStar !== 1}}" line type="end" />
+		</view>
+	</l-tabpanel>
+<!--	</scroll-view>-->
 </l-tabs>
 
 <!-- 消息提示 -->

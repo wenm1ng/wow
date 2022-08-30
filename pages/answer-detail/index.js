@@ -25,6 +25,10 @@ Page({
   },
 
   onLoad(options) {
+    wx.showToast({
+      title: "加载中...",
+      icon: "loading"
+    })
     const answerId = options.id
     const focus = options.focus
 
@@ -40,6 +44,7 @@ Page({
     }
     this.getDetail()
     this.getUserId()
+    wx.hideToast()
   },
 
   /**
@@ -56,8 +61,6 @@ Page({
         })
         if ("id" in info) {
           this.getComments()
-          // this.getStars(answerId)
-          // this.getTemplateId()
         }
       }
     })

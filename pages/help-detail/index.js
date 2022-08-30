@@ -21,6 +21,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    wx.showToast({
+      title: "加载中...",
+      icon: "loading"
+    })
     this.setData({
       id: options.id
     })
@@ -47,8 +51,54 @@ Page({
   /**
    * 删除回答
    */
-  onDelAnswer(){
+  onDelAnswer(e){
+    if(!this.checkLogin()){
+      return;
+    }
+    let id = e.target.dataset.id
+    let index = e.target.dataset.index
+    let helpId = e.target.dataset.help_id
 
+    wx.showModal({
+      title: "提示",
+      content: "是否确认要删除该回答?",
+      success: (res) => {
+        if (res.confirm) {
+          const url = api.helpCenterAPI+'del-answer';
+          const data = {
+            id: id,
+            help_id: helpId
+          }
+          wxutil.request.post(url, data).then((res) => {
+            if (res.data.code === 200) {
+              wx.showToast({
+                title: '删除成功',
+                icon: 'error',
+                duration: 2000//持续的时间
+              })
+              let answerList = this.data.answer_list;
+              answerList.splice(index,1);
+              this.setData({
+                answer_list: answerList
+              })
+            }else{
+              wx.showToast({
+                title: '删除失败',
+                icon: 'error',
+                duration: 2000//持续的时间
+              })
+            }
+          })
+        }
+      },
+      fail: (res) => {
+        wx.showToast({
+          title: '删除失败',
+          icon: 'error',
+          duration: 2000//持续的时间
+        })
+      },
+    })
   },
 
   checkLogin(){
@@ -116,25 +166,10 @@ Page({
    * 获取帮助列表
    */
   getAnswerList(){
-    const page = this.data.page
-
     const url = api.helpCenterAPI+'answer-list';
     const data = {
       id: this.data.id,
-      page: page,
-      pageSize: pageSize
     }
-
-    if ((this.data.isEnd && page !== 1) || this.data.inRequest) {
-      return
-    }
-
-    // if(isSearch === 1){
-    //   wx.showToast({
-    //     title: "加载中...",
-    //     icon: "loading"
-    //   })
-    // }
 
     this.setData({
       inRequest: true
@@ -144,11 +179,7 @@ Page({
       if (res.data.code === 200) {
         const answer_list = res.data.data['list']
         this.setData({
-          page: (answer_list.length == 0 && page != 1) ? page - 1 : page,
-          loading: false,
-          inRequest: false,
-          isEnd: ((answer_list.length < pageSize) || (answer_list.length == 0 && page != 1)) ? true : false,
-          answer_list: page === 1 ? answer_list : this.data.answer_list.concat(answer_list)
+          answer_list: answer_list
         })
       }
     })
@@ -220,6 +251,8 @@ Page({
     this.getUserId();
     this.getScrollHeight()
     this.getApiData();
+
+    wx.hideToast()
   },
 
   /**
@@ -318,55 +351,6 @@ Page({
   onCancelSheetTap(e) {
     this.setData({
       showAction: false
-    })
-  },
-
-  /**
-   * 点击操作菜单按钮
-   */
-  onActionItemtap(event) {
-    const index = event.detail.index
-
-    if (index == 1) {
-      // 举报话题
-      this.reportTopic()
-    }
-    if (index == 2) {
-      // 删除话题
-      this.deleteTopic()
-    }
-  },
-
-  /**
-   * 删除话题
-   */
-  deleteTopic() {
-    wx.lin.showDialog({
-      type: "confirm",
-      title: "提示",
-      content: "确定要删除该话题？",
-      success: (res) => {
-        if (res.confirm) {
-          const topicId = this.data.topics[this.data.topicIndex].id
-          const url = api.topicAPI + topicId + "/"
-
-          wxutil.request.delete(url).then((res) => {
-            if (res.data.code == 200) {
-              this.getTopics(this.data.page, this.data.labelId)
-
-              wx.lin.showMessage({
-                type: "success",
-                content: "删除成功！"
-              })
-            } else {
-              wx.lin.showMessage({
-                type: "error",
-                content: "删除失败！"
-              })
-            }
-          })
-        }
-      }
     })
   },
 

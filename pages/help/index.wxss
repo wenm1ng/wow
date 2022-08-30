@@ -1,6 +1,24 @@
 /* pages/help/index.wxss */
 
 /*自定义*/
+.is_adopt{
+    width:15%;
+    background-color: #0b52bb;
+    color:white;
+    text-align: center;
+    font-size:25rpx;
+    margin-bottom: 10rpx;
+}
+
+.no_adopt{
+    width:15%;
+    background-color: #c1920c;
+    color:white;
+    text-align: center;
+    font-size:25rpx;
+    margin-bottom: 10rpx;
+}
+
 .add-button-view{
     position: absolute;
     top:94%;
