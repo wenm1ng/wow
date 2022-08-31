@@ -10,28 +10,38 @@ Page({
     topics: [],
     comments: [],
     wa_list: [],
+    help_list:[],
+    answer_list:[],
     pageTopic: 1,
     pageComment: 1,
     pageStar: 1,
+    pageHelp: 1,
+    pageAnswer: 1,
     tabIndex: 0,
     tabsTop: 255,
+    scrollTop: 0,
     isAuth: false,
     tabsFixed: false, // Tabs是否吸顶
     isEndTopic: false, // 话题是否到底
     isEndStar: false, // 收藏是否到底
     isEndComment: false, // 评论是否到底
+    isEndHelp: false, // 帮助是否到底
+    isEndAnswer: false, // 回答是否到底
     loading: false,
     messageBrief: null,
     inRequest: false,
     userId: 0,
-    heightComment: 200,
-    heightFavorites: 200,
+    heightComment: 800,
+    heightFavorites: 800,
+    heightHelp: 800,
+    heightAnswer: 800,
     commentNum: 0,
     favoritesNum: 0,
     noRead:'' //未读消息
   },
 
   onLoad() {
+    this.getScrollHeight()
     this.getTabsTop()
     // this.checkAuth()
     //获取wa收藏信息
@@ -76,19 +86,106 @@ Page({
     }
     return true
   },
+
+  /**
+   * 获取帮助列表
+   * @param page
+   */
+  getHelpList(page = 1){
+    if(!this.checkAuth()){
+      return;
+    }
+    const data = {
+      page: page,
+      pageSize: pageSize
+    }
+    const url = api.helpCenterAPI+'user-list?page='+ page + '&pageSize='+ pageSize;
+
+
+    if ((this.data.isEndHelp && page !== 1) || this.data.inRequest) {
+      return
+    }
+    this.setData({
+      inRequest: true,
+    })
+    wx.showLoading({
+      title: '加载中',
+    });
+    wxutil.request.get(url, data).then((res) => {
+      if (res.data.code === 200) {
+        const help_list = res.data.data['list']
+        this.setData({
+          pageHelp: (help_list.length === 0 && page !== 1) ? page - 1 : page,
+          isEndHelp: ((help_list.length < pageSize) || (help_list.length === 0 && page !== 1)),
+          help_list: page === 1 ? help_list : this.data.help_list.concat(help_list),
+        })
+      }
+      this.setData({
+        loading: false,
+        inRequest: false,
+      })
+      wx.hideLoading()
+
+    })
+  },
+
+  /**
+   * 获取回答列表
+   * @param page
+   */
+  getAnswerList(page = 1){
+    if(!this.checkAuth()){
+      return;
+    }
+    const data = {
+      page: page,
+      pageSize: pageSize
+    }
+    const url = api.helpCenterAPI+'user-answer-list?page='+ page + '&pageSize='+ pageSize;
+
+
+    if ((this.data.isEndAnswer && page !== 1) || this.data.inRequest) {
+      return
+    }
+    this.setData({
+      inRequest: true,
+    })
+    wx.showLoading({
+      title: '加载中',
+    });
+    wxutil.request.get(url, data).then((res) => {
+      if (res.data.code === 200) {
+        const answer_list = res.data.data['list']
+        this.setData({
+          pageAnswer: (answer_list.length === 0 && page !== 1) ? page - 1 : page,
+          isEndAnswer: ((answer_list.length < pageSize) || (answer_list.length === 0 && page !== 1)),
+          answer_list: page === 1 ? answer_list : this.data.answer_list.concat(answer_list),
+        })
+      }
+      this.setData({
+        loading: false,
+        inRequest: false,
+      })
+      wx.hideLoading()
+
+    })
+  },
   /**
    * 获取收藏wa列表
    */
   getWaFavoritesList(page = 1){
-    // this.checkAuth()
     if(!this.checkAuth()){
       return;
     }
-    const data = {}
+    const data = {
+      page: page,
+      pageSize: pageSize
+    }
     const url = api.waAPI+'get-wa-favorites-list?page='+ page + '&pageSize='+ pageSize;
 
 
     if ((this.data.isEndStar && page !== 1) || this.data.inRequest) {
+      console.log(222);
       return
     }
     this.setData({
@@ -100,23 +197,12 @@ Page({
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code === 200) {
         const wa_list = res.data.data['list']
-        //判断是否有加页数
-        if(page > this.data.pageStar){
-          this.setData({
-            heightFavorites: this.data.heightFavorites + 18*wa_list.length
-          })
-          this.setPageStyleFavorites()
-        }else if(page === 1){
-          this.setData({
-            heightFavorites: 200
-          })
-          this.setPageStyleFavorites()
-        }
         this.setData({
           pageStar: (wa_list.length === 0 && page !== 1) ? page - 1 : page,
           isEndStar: ((wa_list.length < pageSize) || (wa_list.length === 0 && page !== 1)),
           wa_list: page === 1 ? wa_list : this.data.wa_list.concat(wa_list),
         })
+        console.log(this.data.wa_list);
       }
       this.setData({
         loading: false,
@@ -124,6 +210,28 @@ Page({
       })
       wx.hideLoading()
 
+    })
+  },
+
+  /**
+   * 获取窗口高度
+   */
+  getScrollHeight() {
+    const that = this;
+    wx.getSystemInfo({
+      success: function (res) {
+        const windowHeight = res.windowHeight;
+        const windowWidth = res.windowWidth;
+        const ratio = 750 / windowWidth;
+        const height = windowHeight * ratio;
+        console.log(height);
+        that.setData({
+          heightComment: height - 675,
+          heightFavorites: height - 675,
+          heightHelp: height - 675,
+          heightAnswer: height - 675,
+        })
+      }
     })
   },
 
@@ -156,17 +264,6 @@ Page({
       if (res.data.code === 200) {
         const comments = res.data.data.list
         //判断是否有加页数
-        if(page > this.data.pageComment){
-          this.setData({
-            heightComment: this.data.heightComment + 25*comments.length,
-          })
-          this.setPageStyleComment()
-        }else if(page === 1){
-          this.setData({
-            heightComment: 200
-          })
-          this.setPageStyleComment()
-        }
         this.setData({
           pageComment: (comments.length === 0 && pageComment !== 1) ? pageComment - 1 : pageComment,
           isEndComment: ((comments.length < pageSizeComment) || (comments.length === 0 && pageComment !== 1)),
@@ -234,40 +331,20 @@ Page({
    */
   getUser() {
       const tabIndex = this.data.tabIndex
-      console.log(tabIndex + '--进入user')
-      if (tabIndex === 1) {
-        this.getComments()
+      switch(tabIndex){
+        case 0:
+          this.getWaFavoritesList()
+          break;
+        case 1:
+          this.getComments()
+          break;
+        case 2:
+          this.getHelpList()
+          break;
+        case 3:
+          this.getAnswerList()
+          break;
       }
-      if (tabIndex === 0) {
-        this.getWaFavoritesList()
-      }
-  },
-
-  /**
-   * 获取用户话题
-   */
-  getTopics(userId, pageTopic = 1, size = pageSize) {
-    const url = api.topicAPI + "user/" + userId + "/"
-    let data = {
-      size: size,
-      page: pageTopic
-    }
-
-    if (this.data.isEndTopic && pageTopic != 1) {
-      return
-    }
-
-    wxutil.request.get(url, data).then((res) => {
-      if (res.data.code == 200) {
-        const topics = res.data.data
-        this.setData({
-          pageTopic: (topics.length == 0 && pageTopic != 1) ? pageTopic - 1 : pageTopic,
-          loading: false,
-          isEndTopic: ((topics.length < pageSize) || (topics.length == 0 && pageTopic != 1)) ? true : false,
-          topics: pageTopic == 1 ? topics : this.data.topics.concat(topics)
-        })
-      }
-    })
   },
 
   /**
@@ -310,13 +387,17 @@ Page({
     this.setData({
       tabIndex: tabIndex
     })
-    if (tabIndex === 0) {
-      this.setPageStyleFavorites()
+    if (tabIndex === 0 && this.data.wa_list.length === 0) {
       this.getWaFavoritesList(this.data.pageStar);
     }
-    if (tabIndex === 1) {
-      this.setPageStyleComment()
+    if (tabIndex === 1 && this.data.comments.length === 0) {
       this.getComments(this.data.pageComment)
+    }
+    if (tabIndex === 2 && this.data.help_list.length === 0) {
+      this.getHelpList(this.data.pageHelp)
+    }
+    if (tabIndex === 3 && this.data.answer_list.length === 0) {
+      this.getAnswerList(this.data.pageAnswer)
     }
   },
 
@@ -324,6 +405,9 @@ Page({
    * 跳转到授权页面
    */
   gotoAuth() {
+    if(app.getUserDetailNew()){
+      return;
+    }
     wx.navigateTo({
       url: "/pages/auth/index"
     })
@@ -458,46 +542,46 @@ Page({
   /**
    * 触底加载
    */
-  onReachBottom() {
+  scrollToLower() {
     const tabIndex = this.data.tabIndex
     console.log('进入底部')
     this.setData({
       loading: true
     })
-    if (tabIndex === 1) {
-      const page = this.data.pageComment
-      this.getComments(page + 1)
-    }
     if (tabIndex === 0) {
       const page = this.data.pageStar
       this.getWaFavoritesList(page + 1)
     }
+    if (tabIndex === 1) {
+      const page = this.data.pageComment
+      this.getComments(page + 1)
+    }
   },
   setPageStyleFavorites(){
-    wx.setPageStyle({
-      style: {
-        height: this.data.heightFavorites + '%'
-      },
-      success(e) {
-        console.log(e)
-      },
-      fail(e) {
-        console.log(e)
-      }
-    })
+    // wx.setPageStyle({
+    //   style: {
+    //     height: this.data.heightFavorites + '%'
+    //   },
+    //   success(e) {
+    //     console.log(e)
+    //   },
+    //   fail(e) {
+    //     console.log(e)
+    //   }
+    // })
   },
   setPageStyleComment(){
-    wx.setPageStyle({
-      style: {
-        height: this.data.heightComment + '%'
-      },
-      success(e) {
-        console.log(e)
-      },
-      fail(e) {
-        console.log(e)
-      }
-    })
+    // wx.setPageStyle({
+    //   style: {
+    //     height: this.data.heightComment + '%'
+    //   },
+    //   success(e) {
+    //     console.log(e)
+    //   },
+    //   fail(e) {
+    //     console.log(e)
+    //   }
+    // })
   },
 
   /**
