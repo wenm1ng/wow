@@ -38,6 +38,14 @@
 				<text class="num">{{commentNum}}</text>
 				<text class="text">评论</text>
 			</view>
+			<view class="follow following">
+				<text class="num">{{helpNum}}</text>
+				<text class="text">求助</text>
+			</view>
+			<view class="follow following">
+				<text class="num">{{answerNum}}</text>
+				<text class="text">回答</text>
+			</view>
 		</view>
 	</view>
 </view>
@@ -73,10 +81,10 @@
 		</scroll-view>
 	</l-tabpanel>
 	<l-tabpanel tab="评论{{noRead}}" key="comment" slot="comment" height="{{heightComment}}">
-		<scroll-view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content profile-scroll" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{heightComment}}rpx !important;" scroll-top="{{scrollTop}}">
+		<scroll-view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content profile-scroll" lower-threshold="30" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{heightComment}}rpx !important;" scroll-top="{{scrollTop}}">
 			<nothing wx:if="{{comments.length === 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="您还没有发表评论"
 					 nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
-			<l-card data-id="{{item.wa_id}}" bindtap="gotoWaDetail" wx:for="{{comments}}" wx:key="item" l-class="card"
+			<l-card data-id="{{item.wa_id}}" bindtap="{{item.type === 1 ? 'gotoWaDetail': 'gotoAnswerDetail'}}" wx:for="{{comments}}" wx:key="item" l-class="card"
 					l-img-class="card-img-none" l-title-class="topic-title" type="primary" position="left"
 					title="{{item.create_at}}">
 				<view class="comment-top">
@@ -97,7 +105,7 @@
 		</scroll-view>
 	</l-tabpanel>
 	<l-tabpanel tab="求助" key="help" slot="help" height="{{heightHelp}}">
-		<scroll-view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content profile-scroll" lower-threshold="30" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{heightFavorites}}rpx !important;" scroll-top="{{scrollTop}}">
+		<scroll-view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content profile-scroll" lower-threshold="30" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{heightHelp}}rpx !important;" scroll-top="{{scrollTop}}">
 			<nothing wx:if="{{help_list.length === 0}}" pic="../../images/icon_nothing/pic_star.png" tip="您还没有发表求助"
 					 nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
 			<l-card data-id="{{item.id}}" bindtap="gotoHelpDetail" wx:for="{{help_list}}" wx:key="item" l-class="card"
@@ -110,30 +118,31 @@
 					{{item.description}}
 				</view>
 				<view>
-					<text class="delete-text delete-star-text" data-id="{{item.id}}" data-index="{{index}}" catchtap="deleteStar">取消收藏</text>
+<!--					<text class="delete-text delete-star-text" data-id="{{item.id}}" data-index="{{index}}" catchtap="deleteStar">取消收藏</text>-->
+					<text class="reads-text">{{item.help_num}}回答</text>
 					<text class="reads-text">{{item.read_num}}浏览</text>
-					<text class="reads-text">{{item.likes_count}}点赞</text>
+					<text class="reads-text">{{item.favorites_num}}点赞</text>
 				</view>
 			</l-card>
 		</scroll-view>
 	</l-tabpanel>
 	<l-tabpanel tab="回答" key="answer" slot="answer" height="{{heightAnswer}}">
-		<scroll-view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content profile-scroll" lower-threshold="30" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{heightFavorites}}rpx !important;" scroll-top="{{scrollTop}}">
+		<scroll-view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content profile-scroll" lower-threshold="30" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{heightAnswer}}rpx !important;" scroll-top="{{scrollTop}}">
 			<nothing wx:if="{{answer_list.length === 0}}" pic="../../images/icon_nothing/pic_star.png" tip="您还没有帮助回答"
 					 nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
-			<l-card data-id="{{item.id}}" bindtap="gotoWaDetail" wx:for="{{answer_list}}" wx:key="item" l-class="card"
+			<l-card data-id="{{item.id}}" bindtap="gotoAnswerDetail" wx:for="{{answer_list}}" wx:key="item" l-class="card"
 					l-img-class="{{item.image_url !== '' ? 'card-img' : 'card-img-none'}}"
 					l-title-class="{{'tab-anon'}}" type="primary" position="left"
-					image="{{item.image_url}}" image-mode="aspectFill"
-					title="{{item.title}}" bind:lintitle="{{''}}"
+					image="{{item.image_url}}" image-mode="aspectFill" bind:lintitle="{{''}}"
 			>
-				<view class="card-content">
+				<view class="card-content" style="margin-bottom: 30rpx;">
 					{{item.description}}
 				</view>
 				<view>
-					<text class="delete-text delete-star-text" data-id="{{item.id}}" data-index="{{index}}" catchtap="deleteStar">取消收藏</text>
-					<text class="reads-text">{{item.read_num}}浏览</text>
-					<text class="reads-text">{{item.favorites_num}}点赞</text>
+					<text wx:if="{{item.is_adopt_answer === 1}}" class="answer adopt">被采纳</text>
+					<text wx:else class="delete-text delete-answer-text" data-id="{{item.id}}" data-help_id="{{item.help_id}}" data-index="{{index}}" catchtap="deleteAnswer">删除回答</text>
+					<text class="reads-text margin-text">{{item.comment_num}}评论</text>
+					<text class="reads-text margin-text">{{item.favorites_num}}收藏</text>
 				</view>
 			</l-card>
 		</scroll-view>

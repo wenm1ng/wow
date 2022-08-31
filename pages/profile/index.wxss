@@ -1,10 +1,14 @@
 /* pages/profile/index.wxss */
 
 .profile-scroll{
-  display: block;
+  /*display: block;*/
+  position: absolute;
 }
 .el-tab{
   width:99.9% !important;
+}
+.margin-text{
+  margin-right: 100rpx;
 }
 /*image{*/
 /*  height:auto;*/
@@ -223,6 +227,7 @@ page{
   width: 0 !important;
   height: 0 !important;
   margin-right: 0 !important;
+  float:right !important;
 }
 
 .topic-title {
@@ -298,6 +303,28 @@ page{
 .delete-star-text {
   color: #ccc;
   width: 120rpx;
+  margin-right: 50rpx;
+}
+
+.delete-answer-text{
+  color: #d81e05;
+  width: 120rpx;
+  margin-right: 50rpx;
+}
+
+.answer{
+  display: block;
+  float:left;
+  width:100rpx;
+  background-color: #c1920c;
+  color:white;
+  text-align: center;
+  font-size:25rpx;
+  margin-right: 100rpx;
+}
+
+.adopt{
+  background-color: #0b52bb;
 }
 
 .reads-text{
@@ -306,7 +333,7 @@ page{
   line-height: 40rpx;
   width: 60rpx;
   margin-top: 15rpx;
-  margin-left:100rpx;
+  margin-right:50rpx;
   /*float:right*/
 }
 

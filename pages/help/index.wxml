@@ -13,7 +13,7 @@
             <l-form name="student" l-form-btn-class="l-form-btn-class" bind:linsubmit="submit">
                 <view class="bg-font">版本</view>
                 <view>
-                    <l-button wx:for="{{version_list}}" wx:key="item" size="mini"  l-class="{{searchQuery.version == item.wv_id ? 'search-hover-button' : 'search-button'}}" data-value="{{item.wv_id}}" data-type="version" bindtap="buttonClick">{{item.name}}</l-button>
+                    <l-button wx:for="{{version_list}}" wx:key="item" size="mini"  l-class="{{searchQuery.version == item.version ? 'search-hover-button' : 'search-button'}}" data-value="{{item.version}}" data-type="version" bindtap="buttonClick">{{item.name}}</l-button>
                 </view>
                 <view class="bg-font">是否采纳</view>
                 <view>

@@ -37,6 +37,8 @@ Page({
     heightAnswer: 800,
     commentNum: 0,
     favoritesNum: 0,
+    helpNum: 0,
+    answerNum: 0,
     noRead:'' //未读消息
   },
 
@@ -71,7 +73,9 @@ Page({
       if (res.data.code === 200) {
         this.setData({
           commentNum: res.data.data.comment_num,
-          favoritesNum: res.data.data.favorites_num
+          favoritesNum: res.data.data.favorites_num,
+          helpNum: res.data.data.help_num,
+          answerNum: res.data.data.answer_num
         })
       }
     })
@@ -451,6 +455,27 @@ Page({
   },
 
   /**
+   * 跳转求助详情页
+   * @param event
+   */
+  gotoHelpDetail(event) {
+    const id = event.currentTarget.dataset.id
+    wx.navigateTo({
+      url: "/pages/help-detail/index?id=" + id
+    })
+  },
+
+  /**
+   * 跳转帮助详情页
+   * @param event
+   */
+  gotoAnswerDetail(event) {
+    const id = event.currentTarget.dataset.id
+    wx.navigateTo({
+      url: "/pages/answer-detail/index?id=" + id
+    })
+  },
+  /**
    * 跳转消息页
    */
   gotoMessage() {
@@ -607,6 +632,48 @@ Page({
               this.setData({
                 comments: comments,
                 commentNum: this.data.commentNum - 1
+              })
+              wx.lin.showMessage({
+                type: "success",
+                content: "删除成功！"
+              })
+            } else {
+              wx.lin.showMessage({
+                type: "error",
+                content: "删除失败！"
+              })
+            }
+          })
+        }
+      }
+    })
+  },
+
+  /**
+   * 删除回答
+   */
+  deleteAnswer(event){
+    wx.lin.showDialog({
+      type: "confirm",
+      title: "提示",
+      content: "确定要删除该回答？",
+      success: (res) => {
+        if (res.confirm) {
+          const id = event.currentTarget.dataset.id
+          const helpId = event.currentTarget.dataset.help_id
+          const index = event.currentTarget.dataset.index
+          const url = api.helpCenterAPI + 'del-answer'
+          const data = {
+            'id' : id,
+            'help_id': helpId
+          }
+          const answer_list = this.data.answer_list
+          wxutil.request.post(url, data).then((res) => {
+            if (res.data.code === 200) {
+              app.arrRemoveObj(answer_list, answer_list[index])
+              this.setData({
+                answer_list: answer_list,
+                answerNum: this.data.answerNum - 1
               })
               wx.lin.showMessage({
                 type: "success",
