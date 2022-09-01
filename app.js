@@ -37,7 +37,130 @@ App({
     }
     return null;
   },
+  /**
+   * 获取回答modelId
+   * @returns {string}
+   */
+  setModelId(){
+    const url = api.userAPI + 'get-model-id';
+    const data = {
+      'type': 1
+    }
+    wxutil.request.get(url, data).then((rs) => {
+      if (rs.data.code === 200) {
+        wxutil.setStorage("answerModelId", rs.data.data, 172800)
+      }
+    })
+  },
+  getModelId(type){
+    let modelId = '';
+    if(type === 1){
+      modelId = wxutil.getStorage('answerModelId');
+    }
+    return modelId;
+  },
+  wxPushMessage(){
+    wx.getSetting({
+      withSubscriptions: true,
+      success: function (res) {
+        console.log(res);
+        if (res.subscriptionsSetting.mainSwitch) {
+          console.log(res.subscriptionsSetting.itemSettings);
+          if (res.subscriptionsSetting.itemSettings && res.subscriptionsSetting.itemSettings !== 'undefined') { // 用户同意总是保持是否推送消息的选择, 这里表示以后不会再拉起推送消息的授权
+            let moIdState = res.subscriptionsSetting.itemSettings;
+            // 用户同意的消息模板id
+            if (moIdState === 'accept') {
+              self.requestSubscribeMessage()
+            } else if (moIdState === 'reject') {
 
+            } else if (moIdState === 'ban') {} else {}
+          } else {
+            wx.showModal({
+              title: '提示',
+              content: '是否允许接收消息提醒',
+              success(res) {
+                if (res.confirm) {
+                  wx.setStorageSync("hasAcceptMessage", 1)
+                  // subMessage.getGuestTemplateIds()
+                  self.requestSubscribeMessage()
+                }
+              }
+            })
+          }
+        }
+      },
+      fail: function (error) {
+        console.log(error, "errror+++++++++++")
+      }
+    })
+    //监听用户点击了允许还是拒绝
+    // requestSubscribeMessage() {
+    //   let result = wx.requestSubscribeMessage({
+    //     tmplIds: '消息模板id'
+    //   })
+    //   if (result["MBdGe93b1r3hfb8i_WziD2cnAos-ZdHq0QKl_-bLg6s"] == 'accept') {
+    //
+    //     console.log("接受了不再询问")
+    //   } else if (result["MBdGe93b1r3hfb8i_WziD2cnAos-ZdHq0QKl_-bLg6s"] == 'reject') {
+    //     console.log("出错了reject")
+    //   }
+    // },
+
+  },
+  /**
+   * 添加推送数量
+   */
+  addPushNum(num, resolve){
+    const appHeader = this.getHeader()
+    console.log(appHeader);
+    num = num + 1
+    let message = '当前推送数量:'+ num;
+    const modelId = this.getModelId(1)
+    if(!modelId){
+      return;
+    }
+    this.wxPushMessage();
+    return;
+    wx.requestSubscribeMessage({
+      tmplIds: [modelId],
+      success: (res) => {
+        if (res[modelId] === 'accept') {
+          const url = api.userAPI + 'add-push-num';
+          const data = {
+            model_id: modelId,
+            'type': 1
+          }
+          let head = {
+            'content-type': 'application/json'
+          }
+          head = Object.assign(head, appHeader)
+          wxutil.request.post(url, data, head).then((rs) => {
+            if (rs.data.code === 200) {
+              wx.showToast({
+                title: message,
+                icon: 'success',
+                duration: 2000,
+                success(data) {
+                  //成功
+                  resolve()
+                }
+              })
+            } else {
+              wx.showToast({
+                title: '操作失败',
+                icon: 'error',
+                duration: 2000//持续的时间
+              })
+            }
+          })
+        }
+      },
+      fail(err) {
+        console.log(err);
+        //失败
+      }
+    })
+  },
   /**
    * 缓存图片
    */
@@ -159,6 +282,11 @@ App({
         url: "/pages/auth/index",
       })
     }
+  },
+  goAuthPage(){
+    wx.navigateTo({
+      url: "/pages/auth/index",
+    })
   },
   /**
    * 删除数组某一下标

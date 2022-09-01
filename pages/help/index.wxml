@@ -1,5 +1,7 @@
 <!-- pages/help/index.wxml -->
-
+<view class="top-push" bindtap="addPushNum">
+    <text style="height:100%">点我,有人回答我通知您！当前可推送数：{{pushNum}}</text>
+</view>
 <!--中间z-index按钮-->
 <view class="add-button-view" bindtap="gotoAddAnswer">
     <l-button size="medium" l-class="add-button" width="400">发布帮忙信息</l-button>
@@ -78,19 +80,6 @@
             搜索</l-tag>
     </view>
 </scroll-view>
-<scroll-view scroll-x enable-flex class="tag-scroll" scroll-into-view="{{toTag}}">
-    <view wx:if="{{searchValue === ''}}" wx:for="{{labels}}" wx:key="item">
-        <l-tag l-class="tag" plain="{{labelId == item ? false : true}}" shape="circle" bg-color="#337559"
-               font-color="{{labelId == item ? '#fff' : '#337559'}}" bind:lintap="onTagTap" data-label="{{item}}">
-            #{{item}}</l-tag>
-    </view>
-    <view wx:if="{{searchValue !== ''}}">
-        <l-tag l-class="tag" plain="{{false}}" shape="circle" bg-color="#337559"
-               font-color="#fff" bind:lintap="onTagTap" data-label="{{searchValue}}">
-            #{{searchValue}}</l-tag>
-    </view>
-
-</scroll-view>
 
 <nothing wx:if="{{help_list.length === 0}}" pic="../../images/icon_nothing/pic_hole.png" tip="没有内容,换个条件试试吧" />
         <!-- 动态内容 -->
@@ -151,6 +140,7 @@
     </l-card>
     <l-loadmore wx:if="{{!isEnd}}" show="{{loading}}" line l-class="loading" />
     <l-loadmore show="{{isEnd && page != 1}}" line l-class="loading" type="end" />
+    <view style="height:70rpx"></view>
 </scroll-view>
 
         <!-- 编辑按钮 -->

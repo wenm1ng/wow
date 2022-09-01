@@ -29,29 +29,51 @@ Page({
       adopt_type: 0,
     },
     pay_num: 0,
+    pushNum: 0, //当前用户可推送数
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
-    this.setData({
-      version: options.version ? options.version : 1,
-      talentName: options.talentName ? options.talentName : '',
-      type:options.type ? options.type : 1,
-      ttId:options.ttId ? options.ttId : 0,
-      occupation:options.occupation ? options.occupation : '',
-      searchValue: options.searchValue ? options.searchValue : '',
-    })
+  onLoad() {
     if(wxutil.getStorage('version_list')){
       this.setData({
         version_list: wxutil.getStorage('version_list')
       })
     }
+    this.getPushNum()
     this.getScrollHeight()
-    // this.getLabels()
-    // this.getUserId()
-    // this.getTopics()
+  },
+  /**
+   * 添加推送数量
+   */
+  addPushNum(){
+    if(!app.getUserDetailNew()){
+      app.goAuthPage()
+      return;
+    }
+    app.addPushNum(this.data.pushNum, this.setPushNum);
+  },
+  setPushNum(){
+    this.setData({
+      pushNum: this.data.pushNum + 1
+    })
+  },
+  getPushNum(){
+    if(!app.getUserDetailNew()){
+      return;
+    }
+    const url = api.userAPI + 'get-push-num'
+    const data = {
+      'type': 1
+    }
+    wxutil.request.get(url, data).then((res) => {
+      if (res.data.code === 200) {
+        this.setData({
+          pushNum: res.data.data
+        })
+      }
+    })
   },
   showRight() {
     this.setData({

@@ -28,6 +28,8 @@ Page({
       data['userInfo'] = result.userInfo
       const url = api.userAPI
 
+      app.setModelId();
+
       wxutil.request.post(url, data).then((res) => {
         if (res.data.code == 200) {
           // 缓存用户详细信息
