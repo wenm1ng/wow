@@ -274,6 +274,21 @@ Page({
     })
   },
 
+  /**
+   * 图片预览
+   */
+  previewHelpImage(event) {
+    const current = event.currentTarget.dataset.src
+
+    const urls = [];
+    var val = this.data.info.image_url
+    urls.push(val)
+
+    wx.previewImage({
+      current: current,
+      urls: urls
+    })
+  },
 
   /**
    * 图片预览
@@ -283,7 +298,7 @@ Page({
     const current = event.currentTarget.dataset.src
 
     const urls = [];
-    var val = this.data.help_list[index].image_url
+    var val = this.data.answer_list[index].image_url
     urls.push(val)
 
     wx.previewImage({

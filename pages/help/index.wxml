@@ -86,11 +86,11 @@
 <scroll-view scroll-y enable-back-to-top lower-threshold="30" class="topic-scroll"
              bindscrolltolower="scrollToLower" style="height:{{height}}rpx" scroll-top="{{scrollTop}}">
     <l-card type="avatar" l-class="card" l-title-class="card-title-anon"  image="{{item.user_info.avatar_url}}"
-            wx:for="{{help_list}}" l-img-class="l-img" wx:key="item" wx:for-index="cardIndex" title="{{item.user_info.user_name}}" describe="{{item.modify_at}} 提问">
+            wx:for="{{help_list}}" l-img-class="l-img" wx:key="item" wx:for-index="cardIndex" title="{{item.user_info.user_name}}" describe="{{item.modify_at}} 提问" data-id="{{item.id}}" bindtap="gotoDetail">
         <view class="{{item.is_adopt === 1 ? 'is_adopt': 'no_adopt'}}">{{item.is_adopt === 1 ? '已采纳': '未采纳'}}</view>
-        <view data-id="{{item.id}}" bindtap="gotoDetail">{{item.title}}</view>
+        <view >{{item.title}}</view>
         <view class="{{item.description.length > 83 && !item.flod ?  'content-close' : 'avater-content'}} description"
-              data-id="{{item.id}}" bindtap="gotoDetail">{{item.description}}</view>
+              >{{item.description}}</view>
         <view wx:if="{{item.description.length > 83}}" data-index="{{cardIndex}}" class="text-flod" bindtap="onFlodTap">
             {{item.flod ? '收起' : '全文'}}</view>
         <l-tag  shape="circle"
@@ -107,7 +107,7 @@
                 size="large" l-class="r-tag" location="left">
             {{item.help_type_name}}
         </l-tag>
-        <view class="posters" data-id="{{item.id}}" bindtap="gotoDetail">
+        <view class="posters">
             <block>
                 <image wx:if="{{item.image_url}}" src="{{item.image_url}}" mode="aspectFill" catchtap="previewImage"
                        data-src="{{item.image_url}}" lazy-load data-index="{{cardIndex}}" />
@@ -121,15 +121,15 @@
                    plain="true" data-label="{{item2}}">#{{item2}}</l-tag>
         </view>
         <view class="avater-share-container">
-            <view class="like-container" data-id="{{item.id}}" bindtap="gotoDetail">
-                <l-icon name="order" color="{{item.has_comment ? '#d81e05' : '#666'}}" size="28" />
-                <view class="{{item.has_comment ? 'has-text' : ''}} number">{{item.help_num}}</view>
+            <view class="like-container">
+                <l-icon name="order" color="{{item.has_answer ? '#d81e05' : '#666'}}" size="28" />
+                <view class="{{item.has_answer ? 'has-text' : ''}} number">{{item.help_num}}</view>
             </view>
-            <view class="like-container" data-index="{{cardIndex}}" bindtap="onStarTap">
+            <view class="like-container" data-index="{{cardIndex}}" catchtap="onStarTap">
                 <l-icon name="like" color="{{item.has_favor ? '#d81e05' : '#666'}}" size="28" />
                 <view class="{{item.has_favor ? 'has-text' : ''}} number">{{item.favorites_num}}</view>
             </view>
-            <view class="like-container" data-id="{{item.id}}" bindtap="gotoDetail">
+            <view class="like-container">
                 <l-icon name="eye" color="#666" size="28" />
                 <view class="number">{{item.read_num}}</view>
             </view>

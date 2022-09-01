@@ -41,7 +41,6 @@ Page({
         version_list: wxutil.getStorage('version_list')
       })
     }
-    this.getPushNum()
     this.getScrollHeight()
   },
   /**
@@ -191,6 +190,7 @@ Page({
   //   this.getTalentTreeList(options.version)
   // },
   onShow() {
+    this.getPushNum()
     this.getHelpList()
   },
 
@@ -470,13 +470,13 @@ Page({
 
       wxutil.request.post(url, data).then((res) => {
         if (res.data.code == 200) {
-          const hasLikes = help_list[index].has_likes
-          help_list[index].has_likes = !help_list[index].has_likes
+          const hasLikes = help_list[index].has_favor
+          help_list[index].has_favor = !help_list[index].has_favor
 
           if (hasLikes) {
-            help_list[index].likes_count--
+            help_list[index].favorites_num--
           } else {
-            help_list[index].likes_count++
+            help_list[index].favorites_num++
           }
 
           this.setData({

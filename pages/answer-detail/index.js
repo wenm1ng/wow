@@ -197,10 +197,8 @@ Page({
     const current = event.currentTarget.dataset.src
 
     const urls = [];
-    for(var key in this.data.info.images){
-      var val = this.data.info.images[key]['image_url']
-      urls.push(val)
-    }
+    var val = this.data.info.image_url
+    urls.push(val)
 
     wx.previewImage({
       current: current,

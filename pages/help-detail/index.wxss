@@ -298,7 +298,8 @@
 }
 
 .loading {
-    padding-bottom: 20rpx;
+    padding-bottom: 20rpx !important;
+    height:50rpx !important;
 }
 
 .ellipsis {
