@@ -119,8 +119,8 @@ App({
     if(!modelId){
       return;
     }
-    this.wxPushMessage();
-    return;
+    // this.wxPushMessage();
+    // return;
     wx.requestSubscribeMessage({
       tmplIds: [modelId],
       success: (res) => {
