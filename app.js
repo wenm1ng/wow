@@ -289,6 +289,19 @@ App({
     })
   },
   /**
+   * 关键词检测
+   * @param res
+   */
+  checkText(res){
+    if (res.data.code === 50003) {
+      wx.showToast({
+        title: res.data.message,
+        icon: 'error',
+        duration: 2000//持续的时间
+      })
+    }
+  },
+  /**
    * 删除数组某一下标
    * @param arr
    * @param obj

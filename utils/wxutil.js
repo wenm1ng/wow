@@ -54,6 +54,7 @@ const request = {
         method: ['GET', 'POST', 'PUT', 'DELETE'].indexOf(method) > -1 ? method : 'GET',
         success(res) {
           getApp().gotoAuthPage(res)
+          getApp().checkText(res)
           resolve(res)
         },
         fail() {
