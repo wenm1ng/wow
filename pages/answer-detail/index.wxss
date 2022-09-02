@@ -241,6 +241,10 @@ page {
     height: 88rpx;
 }
 
+page{
+    overflow: hidden;
+}
+
 .comment-bottom {
     display: flex;
     flex-direction: row;
@@ -255,7 +259,10 @@ page {
     display: flex;
     flex-direction: row;
 }
-
+.loading {
+    padding-bottom: 20rpx !important;
+    height:50rpx !important;
+}
 .delete-box {
     margin-left: 20rpx;
 }

@@ -295,8 +295,8 @@ App({
   checkText(res){
     if (res.data.code === 50003) {
       wx.showToast({
-        title: res.data.message,
-        icon: 'error',
+        title: res.data.msg,
+        icon: 'none',
         duration: 2000//持续的时间
       })
     }

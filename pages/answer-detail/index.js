@@ -8,6 +8,8 @@ Page({
   data: {
     info: {},
     id:0,
+    scrollTop:0,
+    height:400,
     comments: [],
     stars: [],
     placeholder: "评论点什么吧~",
@@ -36,6 +38,7 @@ Page({
       index: options.index,
       id: answerId
     })
+    this.getScrollHeight();
     // 评论获取焦点展开键盘
     if (focus) {
       this.setData({
@@ -45,6 +48,25 @@ Page({
     this.getDetail()
     this.getUserId()
     wx.hideToast()
+  },
+
+  /**
+   * 获取窗口高度
+   */
+  getScrollHeight() {
+    const that = this;
+    wx.getSystemInfo({
+      success: function (res) {
+        const windowHeight = res.windowHeight;
+        const windowWidth = res.windowWidth;
+        const ratio = 750 / windowWidth;
+        const height = windowHeight * ratio;
+        console.log(height);
+        that.setData({
+          height: height,
+        })
+      }
+    })
   },
 
   /**
