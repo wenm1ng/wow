@@ -121,6 +121,16 @@
   margin-left: 20rpx;
 }
 
+.btn-box .money {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 55rpx;
+  height: 55rpx;
+  border-radius: 50%;
+  margin-left: 20rpx;
+}
+
 .header .nick-name {
   display: block;
   margin-top: 10rpx;

@@ -1,0 +1,34 @@
+<!-- pages/setting/index.wxml -->
+
+<!-- 设置列表 -->
+<button hover-class="btn-list">
+	<l-list image="../../images/icon/money.png" title="我的帮币" icon="help" icon-color="#337559" icon-size="38" gap="30" bindtap="gotoWalletDetail" right-desc="余额 ：{{money}}"/>
+</button>
+<button hover-class="btn-list" bindtap="clearStorage">
+	<l-list title="清除缓存" icon="delete" icon-color="#337559" icon-size="38" gap="30" bind:lintitle="clearStorage" />
+</button>
+<button hover-class="btn-list" open-type="contact">
+	<l-list title="联系客服" icon="customer-service" icon-color="#337559" icon-size="38" gap="30" />
+</button>
+<button hover-class="btn-list" bindtap="togglePopup">
+	<l-list title="赞赏作者" icon="like" icon-color="#337559" icon-size="38" gap="30" bind:lintitle="togglePopup" />
+</button>
+<button hover-class="btn-list" open-type="share">
+	<l-list title="分享" icon="share" icon-color="#337559" icon-size="36" gap="30" />
+</button>
+
+<view class="footer">
+	<image class="github-logo" src="/images/logo/logo.png" bindtap="copyLink" />
+	<text class="github-uri" bindtap="copyLink">WOW WA仓库</text>
+</view>
+
+<!-- 下拉层 -->
+<l-popup show="{{showPopup}}" animation content-align="center" bind:lintap="togglePopup" z-index="99">
+	<view class="popup">
+		<image class="qr_like" data-src="http://wenming.online/public/uploads/20220713/8aac35efa70a488370183e4463c3e92c.png"
+			src="http://wenming.online/public/uploads/20220713/8aac35efa70a488370183e4463c3e92c.png" bindtap="previewImage" />
+	</view>
+</l-popup>
+
+<!-- 消息对话框 -->
+<l-dialog />

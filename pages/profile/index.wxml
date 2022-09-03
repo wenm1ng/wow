@@ -12,14 +12,17 @@
 <!--			</view>-->
 			<image wx:if="{{!user.avatarUrl}}" class="avatar" src="../../images/icon_tab/profile.png" bindtap="gotoAuth" mode="aspectFill" />
 <!--			<l-avatar wx:if="{{!user.avatar}}" size="80" icon="user" />-->
-			<image wx:else class="avatar" src="{{user.avatarUrl}}" bindtap="changeAvatar" mode="aspectFill" />
-			<view wx:if="{{user.gender && user.gender != 0}}" class="gender-box {{user.gender == 1 ? 'male' : 'female'}}">
-				<image class="gender-icon"
-					src="../../images/icon_gender/{{user.gender == 1 ? 'icon_male' : 'icon_female'}}.png" />
-			</view>
+			<image wx:else class="avatar" src="{{user.avatarUrl}}" bindtap="gotoAuth" mode="aspectFill" />
+<!--			<view wx:if="{{user.gender && user.gender != 0}}" class="gender-box {{user.gender == 1 ? 'male' : 'female'}}">-->
+<!--				<image class="gender-icon"-->
+<!--					src="../../images/icon_gender/{{user.gender == 1 ? 'icon_male' : 'icon_female'}}.png" />-->
+<!--			</view>-->
 			<view class="btn-box">
 <!--				<l-button shape="semicircle" size="mini" bg-color="#337559" width="180" height="55"-->
 <!--					bind:lintap="{{!isAuth ? 'gotoAuth' : 'gotoUserEdit'}}">{{!isAuth ? '用户授权' : '编辑'}}</l-button>-->
+<!--				<navigator class="money" url="/pages/setting/index">-->
+					<image style="width:55rpx" src="../../images/icon/money.png" bindtap="gotoWallet"/>
+<!--				</navigator>-->
 				<navigator class="setting" url="/pages/setting/index">
 					<l-icon name="setting" color="#fff" size="30" />
 				</navigator>

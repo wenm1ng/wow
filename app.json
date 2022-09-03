@@ -29,7 +29,10 @@
     "pages/help-add-description/index",
     "pages/help-detail/index",
     "pages/answer-add/index",
-    "pages/answer-detail/index"
+    "pages/answer-detail/index",
+    "pages/wallet/index",
+    "pages/wallet-detail/index",
+    "pages/recharge/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

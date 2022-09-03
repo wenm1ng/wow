@@ -122,6 +122,23 @@ Page({
       }
     })
   },
+
+  /**
+   * 点击显示或隐藏全文
+   */
+  onFlodTap() {
+    let info = this.data.info
+
+    if (info.flod) {
+      info.flod = false
+    } else {
+      info.flod = true
+    }
+    this.setData({
+      info: info
+    })
+  },
+
   /**
    * 获取评论
    */
@@ -417,7 +434,7 @@ Page({
     }
 
     wxutil.request.post(url, data).then((res) => {
-      if (res.data.code == 200) {
+      if (res.data.code === 200) {
         let that = this
         const has_favor = info.has_favor
         info.has_favor = !info.has_favor
@@ -425,25 +442,29 @@ Page({
         let pages = getCurrentPages();
         let prevPage = pages[pages.length - 2];
         let answer_list = prevPage.data.answer_list;
-        console.log(that.data.index)
-        console.log(answer_list)
         if (has_favor) {
           info.favorites_num--
-          answer_list[that.data.index]['favorites_num'] = answer_list[that.data.index]['favorites_num'] - 1
-        } else {
+        }else{
           info.favorites_num++
-          answer_list[that.data.index]['favorites_num'] = answer_list[that.data.index]['favorites_num'] + 1
         }
 
-        answer_list[that.data.index]['has_favor'] = info.favorites_num === 0 ? 0 : 1
         this.setData({
           info: info,
           isRequest: false
         })
 
-        prevPage.setData({
-          answer_list: answer_list
-        });
+        if(answer_list !== undefined){
+          if (has_favor) {
+            answer_list[that.data.index]['favorites_num'] = answer_list[that.data.index]['favorites_num'] - 1
+          } else {
+            answer_list[that.data.index]['favorites_num'] = answer_list[that.data.index]['favorites_num'] + 1
+          }
+
+          answer_list[that.data.index]['has_favor'] = info.favorites_num === 0 ? 0 : 1
+          prevPage.setData({
+            answer_list: answer_list
+          });
+        }
       }
     })
   },

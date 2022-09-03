@@ -37,6 +37,13 @@ App({
     }
     return null;
   },
+  checkUserDetailGoAuth(){
+    if(!this.getUserDetailNew()){
+      this.goAuthPage()
+      return false;
+    }
+    return true;
+  },
   /**
    * 获取回答modelId
    * @returns {string}

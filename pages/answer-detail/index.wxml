@@ -50,10 +50,10 @@
 <scroll-view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content profile-scroll" lower-threshold="30" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{height}}rpx !important;" scroll-top="{{scrollTop}}">
     <view wx:if="{{info.id}}" class="comment-box" wx:if="{{comments.length > 0}}">
         <view class="comment" wx:for="{{comments}}" wx:key="item">
-            <image class="avatar" src="{{item.avatar_url}}" data-user-id="{{item.user_id}}" catchtap="gotoVisitingCard" />
+            <image class="avatar" src="{{item.avatar_url}}" data-user-id="{{item.user_id}}" />
             <view class="comment-right {{index == comments.length - 1 && isEnd ? 'non-border' : ''}}">
                 <view class="comment-top">
-                    <view class="nick-name" data-user-id="{{item.user_id}}" catchtap="gotoVisitingCard">{{item.user_name}}
+                    <view class="nick-name" data-user-id="{{item.user_id}}">{{item.user_name}}
                     </view>
                     <view class="time">{{item.create_at}}</view>
                 </view>

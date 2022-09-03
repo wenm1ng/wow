@@ -230,10 +230,10 @@ Page({
         const height = windowHeight * ratio;
         console.log(height);
         that.setData({
-          heightComment: height - 675,
-          heightFavorites: height - 675,
-          heightHelp: height - 675,
-          heightAnswer: height - 675,
+          heightComment: height - 700,
+          heightFavorites: height - 700,
+          heightHelp: height - 700,
+          heightAnswer: height - 700,
         })
       }
     })
@@ -581,32 +581,24 @@ Page({
       const page = this.data.pageComment
       this.getComments(page + 1)
     }
+    if (tabIndex === 2 ) {
+      const page = this.data.pageHelp
+      this.getHelpList(page + 1)
+    }
+    if (tabIndex === 3) {
+      const page = this.data.pageAnswer
+      this.getAnswerList(page + 1)
+    }
   },
-  setPageStyleFavorites(){
-    // wx.setPageStyle({
-    //   style: {
-    //     height: this.data.heightFavorites + '%'
-    //   },
-    //   success(e) {
-    //     console.log(e)
-    //   },
-    //   fail(e) {
-    //     console.log(e)
-    //   }
-    // })
-  },
-  setPageStyleComment(){
-    // wx.setPageStyle({
-    //   style: {
-    //     height: this.data.heightComment + '%'
-    //   },
-    //   success(e) {
-    //     console.log(e)
-    //   },
-    //   fail(e) {
-    //     console.log(e)
-    //   }
-    // })
+
+  //钱包页面
+  gotoWallet(){
+    if(!app.checkUserDetailGoAuth()){
+      return;
+    }
+    wx.navigateTo({
+      url: "/pages/wallet/index"
+    })
   },
 
   /**

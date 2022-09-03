@@ -30,9 +30,7 @@
 <!-- 动态详情 -->
 <l-card wx:if="{{wa_info.id}}" type="avatar" l-class="card" l-img-class="card-img"
 		l-title-class="{{wa_info.user_id != -1 ? 'nick-name' : 'nick-name-anon'}}"
-	title="{{wa_info.title}}" describe="{{wa_info.create_at}} 由 {{wa_info.user_name}} 上传"
-	bind:linavatar="{{wa_info.user_id != 0 ? 'gotoVisitingCard' : ''}}"
-	bind:lintitle="{{wa_info.user_id != 0 ? 'gotoVisitingCard' : ''}}" data-user-id="{{wa_info.user_id}}">
+	title="{{wa_info.title}}" describe="{{wa_info.create_at}} 由 {{wa_info.user_name}} 上传" data-user-id="{{wa_info.user_id}}">
 	<view>
 		<l-button size="large" bg-color="#337559" bindtap="popWa" width="500">获取字符串</l-button>
 		<l-button size="large" bg-color="#337559" open-type='share' width="150" l-class="margin-lefts">分享</l-button>
@@ -134,10 +132,10 @@
 <!-- 评论 -->
 <view wx:if="{{wa_info.id}}" class="comment-box" wx:if="{{comments.length > 0}}">
 	<view class="comment" wx:for="{{comments}}" wx:key="item">
-		<image class="avatar" src="{{item.avatar_url}}" data-user-id="{{item.user_id}}" catchtap="gotoVisitingCard" />
+		<image class="avatar" src="{{item.avatar_url}}" data-user-id="{{item.user_id}}"/>
 		<view class="comment-right {{index == comments.length - 1 && isEnd ? 'non-border' : ''}}">
 			<view class="comment-top">
-				<view class="nick-name" data-user-id="{{item.user_id}}" catchtap="gotoVisitingCard">{{item.user_name}}
+				<view class="nick-name" data-user-id="{{item.user_id}}">{{item.user_name}}
 				</view>
 				<view class="time">{{item.create_at}}</view>
 			</view>
