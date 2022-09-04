@@ -597,7 +597,7 @@ Page({
       return;
     }
     wx.navigateTo({
-      url: "/pages/wallet/index"
+      url: "/pages/wallet-detail/index"
     })
   },
 

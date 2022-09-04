@@ -2,7 +2,7 @@
 <!--账户金额-->
 <view class="header">
 	<text class="text">帮币余额</text>
-	<text class="money-text">￥{{money}}</text>
+	<text class="money-text">￥{{walletMoney}}</text>
 	<view class="user-box">
 		<image class="money" src="../../images/icon/money2.png" bindtap="gotoAuth" mode="aspectFill" />
 
@@ -13,15 +13,21 @@
 		<view style="height:100rpx;width:20%;float: left;text-align: center;line-height: 100rpx">
 			<text>自定义金额</text>
 		</view>
-		<view style="height:100rpx;width:30%;float: left;line-height: 100rpx">
+		<view style="height:100rpx;width:80%;float: left;line-height: 100rpx">
 			<input placeholder="自定义金额"  value="{{money}}" style="height: 100rpx;margin-left:20rpx" bindinput="formatMoney" bindfocus="focusMoney" bindblur="checkMoney" type="number" maxlength="3"/>
 		</view>
-		<view style="color:red;float:right;height:100rpx;width:50%;line-height: 100rpx;font-size: 20rpx;text-align: right">
-			<text wx:show="{{errMessage !== ''}}" style="margin-right: 20rpx">{{errMessage}}</text>
-		</view>
+<!--		<view style="color:red;float:right;height:100rpx;width:50%;line-height: 100rpx;font-size: 20rpx;text-align: right">-->
+<!--			<text wx:show="{{errMessage !== ''}}" style="margin-right: 20rpx">{{errMessage}}</text>-->
+<!--		</view>-->
 	</label>
 <!--	<l-input label="自定义金额" placeholder="请输入自定义金额" rules="{{moneyRule}}" tipType="text"/>-->
 </view>
 <view class="rechargelist">
 	<view wx:for="{{rechargelist}}" class="item {{index === Select ? active: ''}}"  bindtap="recharge" data-id="{{index}}"  wx:key="index">￥{{item.sum}}</view>
+</view>
+<view style="margin-left:10%;margin-top: 10rpx">
+	<text style="color:#00ACFF;font-size: 60rpx">{{lastMoney}}</text><text style="margin-left:10rpx">元</text>
+</view>
+<view style="margin-top: 60rpx;margin-left:2.5%">
+	<l-button size="large" bg-color="#00ACFF" bindtap="toRecharge">充值</l-button>
 </view>
