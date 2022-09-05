@@ -9,7 +9,7 @@
 <!--</scroll-view>-->
 <scroll-view scroll-y="{{isScroll}}" enable-back-to-top lower-threshold="30" class="topic-scroll"
              bindscrolltolower="scrollToLower" style="height:{{height}}rpx" scroll-top="{{scrollTop}}">
-    <view class="comment-box" wx:if="{{logList}}">
+    <view wx:if="{{logList}}" class="comment-box">
         <view wx:for="{{logList}}" wx:key="item" wx:for-index="dates">
             <view class="section" style="display: block">
                 <picker mode="date" value="{{dates}}" fields="month" start="{{startDate}}" end="{{endDate}}" bindchange="bindDateChange">
@@ -40,6 +40,15 @@
                 </view>
             </view>
         </view>
+    </view>
+    <nothing wx:else pic="../../images/icon_nothing/pic_hole.png" tip="暂时还没有账单哦" />
+    <view wx:if="{{!logList && date !== ''}}" class="section" style="display: block">
+        <picker mode="date" value="{{date}}" fields="month" start="{{startDate}}" end="{{endDate}}" bindchange="bindDateChange">
+            <view class="picker">
+                <text>{{date}}</text>
+                <l-icon name="pull-down" l-class="icon" size="20"/>
+            </view>
+        </picker>
     </view>
 </scroll-view>
 <l-loadmore wx:if="{{!isEnd}}" show="{{loading}}" line l-class="loading" />

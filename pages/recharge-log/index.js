@@ -8,9 +8,9 @@ Page({
   data: {
     startDate: '2020-01',
     endDate: wxutil.getYearMonth(),
-    date: wxutil.getYearMonth(),
+    date: '',
     dateFormat: '',
-    logList: [],
+    logList: false,
     page: 1,
     isScroll: true,
     height:1300,
@@ -23,6 +23,7 @@ Page({
     this.setData({
       dateFormat: this.getDateFormat(this.data.date)
     })
+    console.log(Boolean(this.data.logList));
     this.getLogList();
   },
   /**
@@ -34,7 +35,8 @@ Page({
     const url = api.orderAPI+'log-list'
     const data = {
       page: page,
-      pageSize: pageSize
+      pageSize: pageSize,
+      month: this.data.date
     }
 
     if ((this.data.isEnd && page !== 1) || this.data.inRequest) {
@@ -48,12 +50,30 @@ Page({
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code === 200) {
         const logList = res.data.data['list']
+        let num = 0;
+        let tmpLogList = this.data.logList;
+        if(page !== 1){
+          Object.keys(logList).map(key => {
+            if(num === 0){
+              console.log(Boolean(tmpLogList[key]))
+              if(Boolean(tmpLogList[key]) !== false){
+                tmpLogList[key] = tmpLogList[key].concat(logList[key]);
+                num++
+              }else{
+                tmpLogList = {...this.data.logList, ...logList}
+                return false;
+              }
+            }else{
+              tmpLogList[key] = logList[key]
+            }
+          })
+        }
         this.setData({
           page: (logList.length === 0 && page !== 1) ? page - 1 : page,
           loading: false,
           inRequest: false,
           isEnd: ((logList.length < pageSize) || (logList.length === 0 && page !== 1)),
-          logList: page === 1 ? logList : this.data.logList.concat(logList)
+          logList: page === 1 ? logList : tmpLogList
         })
       }
     })
@@ -75,8 +95,10 @@ Page({
     console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       date: e.detail.value,
-      dateFormat: this.getDateFormat(e.detail.value)
+      dateFormat: this.getDateFormat(e.detail.value),
+      page: 1
     })
+    this.getLogList()
   },
   getDateFormat(date){
     return date.replace('-', '年') + '月'
