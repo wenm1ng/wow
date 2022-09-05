@@ -586,6 +586,12 @@ const getDateTime = (date = new Date()) => {
  * getTimestamp()
  * @param {Date} date
  */
+const getYearMonth = (date = new Date()) => {
+  var year = date.getFullYear()
+  var month = '0' + (date.getMonth() + 1)
+  return year + '-' + month
+}
+
 const getTimestamp = (date = new Date()) => {
   return date.getTime()
 }
@@ -609,5 +615,6 @@ module.exports = {
   isNotNull: isNotNull,
   getDateTime: getDateTime,
   getTimestamp: getTimestamp,
+  getYearMonth: getYearMonth,
   getUserProfile: getUserProfile
 }

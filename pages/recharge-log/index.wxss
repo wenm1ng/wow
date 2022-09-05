@@ -1,0 +1,89 @@
+/* pages/recharge-log/index.wxss */
+.icon{
+    display: inline;
+    margin-left:10rpx;
+}
+
+.section{
+    height:80rpx;
+    line-height: 80rpx;
+    background-color: #d4cdcd;
+}
+
+.comment-box {
+    width: 100%;
+    background: #fff;
+    height:100%;
+}
+
+.comment-box .comment {
+    display: flex;
+    flex-direction: row;
+    padding: 0 30rpx;
+}
+
+.avatar {
+    height: 90%;
+    width: 90%;
+    border-radius: 50%;
+    margin-top:5rpx;
+}
+
+.comment-right {
+    display: block;
+    flex-direction: column;
+    margin-left: 30rpx;
+    padding: 10rpx 0;
+    height:150rpx;
+    border-bottom: 1px #d4cdcd solid;
+}
+
+.text-left{
+    float:left;
+    margin-top:20rpx;
+}
+
+.comment-top {
+    display: block;
+    float:left;
+    width:80%;
+    height:50%;
+    /*line-height: 50%;*/
+    /*justify-content: space-between;*/
+    /*align-items: center;*/
+    padding-bottom: 8rpx;
+}
+
+.comment-bottom {
+    display: block;
+    float: left;
+    margin-top:10rpx;
+    width:80%;
+    height:50%;
+    flex-direction: row;
+}
+
+.yellow{
+    color: #dcc44f;
+}
+
+.time {
+    color: #666;
+    font-size: 24rpx;
+}
+
+.comment-content {
+    display: flex;
+    flex-direction: row;
+}
+
+.left{
+    display:block;
+    float:left;
+    width:20%;
+    height:100%
+}
+
+.non-border {
+    border-bottom: none !important;
+}

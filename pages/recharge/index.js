@@ -12,7 +12,15 @@ Page({
     select:'',
     errMessage: ''
   },
-  onLoad() { },
+  onLoad(options) {
+    if(options.money !== undefined){
+      this.setData({
+        walletMoney: options.money
+      })
+    }else{
+      this.getMoney();
+    }
+  },
 
   recharge(e) {
     for(var i=0;i<this.data.rechargelist.length;i++){
@@ -27,6 +35,17 @@ Page({
         })
       }
     }
+  },
+
+  getMoney() {
+    const url = api.userAPI + 'wallet/get-money?type=' + 1
+    wxutil.request.get(url).then((res) => {
+      if (res.data.code === 200) {
+        this.setData({
+          walletMoney: res.data.data['money']
+        })
+      }
+    })
   },
 
   toRecharge(){
@@ -64,7 +83,7 @@ Page({
             })
           },
           complete(rs){
-            console.log('回调结果：',rs);          
+            console.log('回调结果：',rs);
           }
         })
       }else{

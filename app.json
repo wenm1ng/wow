@@ -32,7 +32,8 @@
     "pages/answer-detail/index",
     "pages/wallet/index",
     "pages/wallet-detail/index",
-    "pages/recharge/index"
+    "pages/recharge/index",
+    "pages/recharge-log/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

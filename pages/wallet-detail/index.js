@@ -20,20 +20,40 @@ Page({
     wx.openSetting({})
   },
 
-  getMoney(){
-
+  getMoney() {
+    const url = api.userAPI + 'wallet/get-money?type=' + 1
+    wxutil.request.get(url).then((res) => {
+      if (res.data.code === 200) {
+        this.setData({
+          money: res.data.data['money']
+        })
+      }
+    })
   },
 
   /**
-   * 充值
+   * 去充值页面
    */
-  gotoRecharge(){
-    // const url = api.orderAPI + 'add-order'
+  gotoRecharge(event){
     if(!app.checkUserDetailGoAuth()){
       return;
     }
+
     wx.navigateTo({
-      url: "/pages/recharge/index"
+      url: "/pages/recharge/index?money="+ this.data.money
+    })
+  },
+
+  /**
+   * 去日志页面
+   */
+  gotoLog(){
+    if(!app.checkUserDetailGoAuth()){
+      return;
+    }
+
+    wx.navigateTo({
+      url: "/pages/recharge-log/index"
     })
   },
 
