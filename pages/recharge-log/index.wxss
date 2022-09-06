@@ -1,4 +1,6 @@
 /* pages/recharge-log/index.wxss */
+
+
 .icon{
     display: inline;
     margin-left:10rpx;
@@ -22,6 +24,14 @@
     padding: 0 30rpx;
 }
 
+.bottom{
+    display:block;
+}
+
+.background-grey{
+    background-color: darkgray;
+}
+
 .avatar {
     height: 90%;
     width: 90%;
@@ -32,8 +42,9 @@
 .comment-right {
     display: block;
     flex-direction: column;
-    margin-left: 30rpx;
+    /*margin-left: 30rpx;*/
     padding: 10rpx 0;
+    padding-left: 30rpx;
     height:150rpx;
     border-bottom: 1px #d4cdcd solid;
 }

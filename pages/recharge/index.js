@@ -49,6 +49,9 @@ Page({
   },
 
   toRecharge(){
+    if(!app.checkUserDetailGoAuth()){
+      return;
+    }
     const url = api.orderAPI + 'add-order'
     const money = Number(this.data.lastMoney)
     if(money <= 0){
@@ -73,11 +76,13 @@ Page({
           signType: res.data.data['signType'],
           paySign: res.data.data['paySign'],
           success (rs) {
-            console.log(rs)
+            wx.navigateTo({
+              url: "/pages/wallet-detail/index"
+            })
           },
           fail (rs) {
             wx.showToast({
-              title: '充值失败',
+              title: '取消充值',
               icon: 'error',
               duration: 2000//持续的时间
             })
@@ -88,7 +93,7 @@ Page({
         })
       }else{
         wx.showToast({
-          title: '取消充值',
+          title: '充值失败',
           icon: 'error',
           duration: 2000//持续的时间
         })

@@ -1,4 +1,6 @@
 //app.js
+import {hexMD5} from "./utils/md5";
+
 const api = require("./config/api")
 const wxutil = require("./utils/wxutil")
 const { image } = require("./utils/wxutil")
@@ -9,7 +11,7 @@ App({
 
   globalData: {
     appId: wx.getAccountInfoSync().miniProgram.appId,
-    githubURL: "https://github.com/YYJeffrey/july_client",
+    githubURL: "",
     userDetail: null
   },
 
@@ -35,7 +37,7 @@ App({
     if (userDetail) {
       return userDetail
     }
-    return null;
+    return false;
   },
   checkUserDetailGoAuth(){
     if(!this.getUserDetailNew()){
@@ -229,11 +231,23 @@ App({
   getHeader() {
     let header = {}
     if (this.getUserDetailNew()) {
+      let time = this.getTimeSign();
+      header['time'] = time
       header["Authorization"] = "Token " + this.getUserDetailNew().token
+      header['signs'] = hexMD5(api.signs + '_' + time)
     }
     return header
   },
 
+  getTimestamp(date = new Date()){
+    return date.getTime()
+  },
+
+  getTimeSign(){
+    let time = this.getTimestamp() - 10
+    time = time.toString();
+    return time.slice(0, -1) + '0';
+  },
   //默认显示tarBar新消息数量
   showMessageNum(){
     if(this.globalData.userDetail){

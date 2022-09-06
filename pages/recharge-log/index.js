@@ -50,6 +50,7 @@ Page({
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code === 200) {
         const logList = res.data.data['list']
+        const logCount = res.data.data['count'];
         let num = 0;
         let tmpLogList = this.data.logList;
         if(page !== 1){
@@ -69,10 +70,10 @@ Page({
           })
         }
         this.setData({
-          page: (logList.length === 0 && page !== 1) ? page - 1 : page,
+          page: (logCount === 0 && page !== 1) ? page - 1 : page,
           loading: false,
           inRequest: false,
-          isEnd: ((logList.length < pageSize) || (logList.length === 0 && page !== 1)),
+          isEnd: ((logCount < pageSize) || (logCount === 0 && page !== 1)),
           logList: page === 1 ? logList : tmpLogList
         })
       }
@@ -89,6 +90,22 @@ Page({
       page:page + 1
     })
     this.getLogList()
+  },
+
+  /**
+   * 跳转到账单详情
+   */
+  gotoLogDetail(e){
+    if(!app.checkUserDetailGoAuth()){
+      return;
+    }
+    const pay_type = e.currentTarget.dataset.pay_type
+    const amount = e.currentTarget.dataset.amount
+    const order_id = e.currentTarget.dataset.order_id
+    const time = e.currentTarget.dataset.time
+    wx.navigateTo({
+      url: "/pages/recharge-log-detail/index?pay_type="+ pay_type + '&amount='+amount+'&order_id='+order_id+'&time='+time
+    })
   },
 
   bindDateChange: function(e) {

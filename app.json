@@ -33,7 +33,8 @@
     "pages/wallet/index",
     "pages/wallet-detail/index",
     "pages/recharge/index",
-    "pages/recharge-log/index"
+    "pages/recharge-log/index",
+    "pages/recharge-log-detail/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

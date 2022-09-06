@@ -1,0 +1,32 @@
+<!-- pages/setting/index.wxml -->
+
+<!-- 设置列表 -->
+<view class="header">
+	<view  wx:if="{{pay_type === '1'}}">
+		<image class="github-logo" src="/images/icon/money2.png"/>
+		<text class="github-uri margin-40">充值</text>
+	</view>
+	<view  wx:elif="{{pay_type === '2'}}">
+		<image class="github-logo" src="/images/icon/adoption.png"/>
+		<text class="github-uri margin-10">求助采纳</text>
+	</view>
+	<view  wx:elif="{{pay_type === '3'}}">
+		<image class="github-logo" src="/images/icon/award.png"/>
+		<text class="github-uri margin-10">回答奖励</text>
+	</view>
+	<view  wx:elif="{{pay_type === '4'}}">
+		<image class="github-logo" src="/images/icon/refund.png"/>
+		<text class="github-uri margin-40">退款</text>
+	</view>
+	<text class="font {{amount > 0 ? 'yellow' : ''}}">{{amount > 0 ? '+'+ amount : amount}}</text>
+	<text style="margin-top:30rpx;" selectable='true'>交易单号：{{order_id}}</text>
+	<text style="margin-top:30rpx;">交易时间：{{time}}</text>
+	<button style="margin-top:30rpx;color:#1f7dd0" open-type="contact" hover-class="hover-color">对订单有疑问<l-icon name="help" size="30" color="#1f7dd0" l-class="inline"/>请点我</button>
+</view>
+<view class="footer">
+	<image class="github-logo" src="/images/logo/logo.png"/>
+	<text class="github-uri">WOW WA仓库</text>
+</view>
+
+<!-- 消息对话框 -->
+<l-dialog />

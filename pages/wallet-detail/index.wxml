@@ -39,8 +39,8 @@
 <!-- 下拉层 -->
 <l-popup show="{{showPopup}}" animation content-align="center" bind:lintap="togglePopup" z-index="99">
 	<view class="popup">
-		<image class="qr_like" data-src="http://wenming.online/public/uploads/20220713/8aac35efa70a488370183e4463c3e92c.png"
-			src="http://wenming.online/public/uploads/20220713/8aac35efa70a488370183e4463c3e92c.png" bindtap="previewImage" />
+		<image class="qr_like" data-src="https://mingtongct.com/images/other/8aac35efa70a488370183e4463c3e92c.png"
+			src="https://mingtongct.com/images/other/8aac35efa70a488370183e4463c3e92c.png" bindtap="previewImage" />
 	</view>
 </l-popup>
 

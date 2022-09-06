@@ -14,6 +14,9 @@
  * @param {JSON Object} data
  * @param {JSON Object} header
  */
+import { hexMD5 } from "./md5.js"
+const api = require("../config/api")
+
 const request = {
   get(url, data = {}, header = {}) {
     const handler = { url, data, header }
@@ -594,6 +597,11 @@ const getYearMonth = (date = new Date()) => {
 
 const getTimestamp = (date = new Date()) => {
   return date.getTime()
+}
+
+const getTimeSign = () => {
+  let time = this.getTimestamp() - 10
+  return time.slice(0, -1) + '0';
 }
 
 module.exports = {

@@ -68,22 +68,6 @@ Page({
     })
   },
 
-  /**
-   * 复制仓库地址
-   */
-  copyLink() {
-    wx.setClipboardData({
-      data: app.globalData.githubURL,
-      success(res) {
-        wx.getClipboardData({
-          success(res) {
-            wxutil.showToast("GitHub地址已复制")
-          }
-        })
-      }
-    })
-  },
-
   onShareAppMessage() {
     return {
       title: "主页",

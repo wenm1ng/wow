@@ -21,7 +21,7 @@
 <!--				<l-button shape="semicircle" size="mini" bg-color="#337559" width="180" height="55"-->
 <!--					bind:lintap="{{!isAuth ? 'gotoAuth' : 'gotoUserEdit'}}">{{!isAuth ? '用户授权' : '编辑'}}</l-button>-->
 <!--				<navigator class="money" url="/pages/setting/index">-->
-					<image style="width:55rpx" src="../../images/icon/money.png" bindtap="gotoWallet"/>
+					<image style="width:55rpx" src="../../images/icon/money2.png" bindtap="gotoWallet"/>
 <!--				</navigator>-->
 				<navigator class="setting" url="/pages/setting/index">
 					<l-icon name="setting" color="#fff" size="30" />

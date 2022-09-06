@@ -9,6 +9,7 @@
 <!--</scroll-view>-->
 <scroll-view scroll-y="{{isScroll}}" enable-back-to-top lower-threshold="30" class="topic-scroll"
              bindscrolltolower="scrollToLower" style="height:{{height}}rpx" scroll-top="{{scrollTop}}">
+<!--    bindscroll="scrollToScroll"-->
     <view wx:if="{{logList}}" class="comment-box">
         <view wx:for="{{logList}}" wx:key="item" wx:for-index="dates">
             <view class="section" style="display: block">
@@ -19,12 +20,12 @@
                     </view>
                 </picker>
             </view>
-            <view wx:for="{{item}}" wx:for-item="item2" class="comment-right {{index === item.length - 1 && isEnd ? 'non-border' : ''}}">
+            <view wx:for="{{item}}" data-pay_type="{{item2.pay_type}}" data-amount="{{item2.amount}}" data-order_id="{{item2.order_id}}" data-time="{{item2.success_at}}" bindtap="gotoLogDetail" hover-class="background-grey" hover-stay-time="150" wx:for-item="item2" class="comment-right {{index === item.length - 1 && isEnd ? 'non-border' : ''}}">
                 <view class="left">
                     <image wx:if="{{item2.pay_type === 1}}" class="avatar" src="../../images/icon/money2.png"/>
                     <image wx:elif="{{item2.pay_type === 2}}" class="avatar" src="../../images/icon/adoption.png"/>
                     <image wx:elif="{{item2.pay_type === 3}}" class="avatar" src="../../images/icon/award.png"/>
-                    <image wx:else class="avatar" src="../../images/icon/refund.png"/>
+                    <image wx:elif="{{item2.pay_type === 4}}" class="avatar" src="../../images/icon/refund.png"/>
                 </view>
                 <view class="comment-top">
 <!--                    <view class="nick-name" data-user-id="{{item.user_id}}">{{item.user_name}}-->
@@ -32,7 +33,7 @@
                     <text wx:if="{{item2.pay_type === 1}}" class="text-left">充值</text>
                     <text wx:elif="{{item2.pay_type === 2}}" class="text-left">求助采纳</text>
                     <text wx:elif="{{item2.pay_type === 3}}" class="text-left">回答奖励</text>
-                    <text wx:else class="text-left">退款</text>
+                    <text wx:elif="{{item2.pay_type === 4}}" class="text-left">退款</text>
                     <text style="float:right;margin-right: 60rpx;margin-top:20rpx" class="{{item2.amount > 0 ? 'yellow' : ''}}">{{item2.amount > 0 ? '+'+ item2.amount : item2.amount}}</text>
                 </view>
                 <view class="comment-bottom">
@@ -40,6 +41,7 @@
                 </view>
             </view>
         </view>
+        <l-loadmore show="{{isEnd && page !== 1}}" line l-class="loading bottom" type="end" />
     </view>
     <nothing wx:else pic="../../images/icon_nothing/pic_hole.png" tip="暂时还没有账单哦" />
     <view wx:if="{{!logList && date !== ''}}" class="section" style="display: block">
@@ -52,4 +54,4 @@
     </view>
 </scroll-view>
 <l-loadmore wx:if="{{!isEnd}}" show="{{loading}}" line l-class="loading" />
-<l-loadmore show="{{isEnd && page !== 1}}" line l-class="loading" type="end" />
+

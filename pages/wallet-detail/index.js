@@ -51,7 +51,6 @@ Page({
     if(!app.checkUserDetailGoAuth()){
       return;
     }
-
     wx.navigateTo({
       url: "/pages/recharge-log/index"
     })
@@ -92,22 +91,6 @@ Page({
     wx.previewImage({
       current: "",
       urls: urls
-    })
-  },
-
-  /**
-   * 复制仓库地址
-   */
-  copyLink() {
-    wx.setClipboardData({
-      data: app.globalData.githubURL,
-      success(res) {
-        wx.getClipboardData({
-          success(res) {
-            wxutil.showToast("GitHub地址已复制")
-          }
-        })
-      }
     })
   },
 
