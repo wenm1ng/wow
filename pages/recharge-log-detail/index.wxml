@@ -21,7 +21,7 @@
 	<text class="font {{amount > 0 ? 'yellow' : ''}}">{{amount > 0 ? '+'+ amount : amount}}</text>
 	<text style="margin-top:30rpx;" selectable='true'>交易单号：{{order_id}}</text>
 	<text style="margin-top:30rpx;">交易时间：{{time}}</text>
-	<button style="margin-top:30rpx;color:#1f7dd0" open-type="contact" hover-class="hover-color">对订单有疑问<l-icon name="help" size="30" color="#1f7dd0" l-class="inline"/>请点我</button>
+	<button style="margin-top:30rpx;color:#1f7dd0;font-size: 25rpx" open-type="contact" hover-class="hover-color">对订单有疑问<l-icon name="help" size="30" color="#1f7dd0" l-class="inline"/>请点我</button>
 </view>
 <view class="footer">
 	<image class="github-logo" src="/images/logo/logo.png"/>

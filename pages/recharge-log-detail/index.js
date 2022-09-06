@@ -17,19 +17,4 @@ Page({
       time: options.time,
     })
   },
-  /**
-   * 展开或收起弹出层
-   */
-  togglePopup() {
-    this.setData({
-      showPopup: !this.data.showPopup
-    })
-  },
-
-  onShareAppMessage() {
-    return {
-      title: "主页",
-      path: "/pages/topic/index"
-    }
-  }
 })

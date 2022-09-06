@@ -18,18 +18,6 @@
 <!--<button hover-class="btn-list">-->
 <!--	<l-list image="../../images/icon/withdrawal.png" title="提现" icon="help" icon-color="#337559" icon-size="38" gap="30" bindtap="tapWithdrawal"/>-->
 <!--</button>-->
-<button hover-class="btn-list" bindtap="clearStorage">
-	<l-list title="清除缓存" icon="delete" icon-color="#337559" icon-size="38" gap="30" bind:lintitle="clearStorage" />
-</button>
-<button hover-class="btn-list" open-type="contact">
-	<l-list title="联系客服" icon="customer-service" icon-color="#337559" icon-size="38" gap="30" />
-</button>
-<button hover-class="btn-list" bindtap="togglePopup">
-	<l-list title="赞赏作者" icon="like" icon-color="#337559" icon-size="38" gap="30" bind:lintitle="togglePopup" />
-</button>
-<button hover-class="btn-list" open-type="share">
-	<l-list title="分享" icon="share" icon-color="#337559" icon-size="36" gap="30" />
-</button>
 
 <view class="footer">
 	<image class="github-logo" src="/images/logo/logo.png" bindtap="copyLink" />

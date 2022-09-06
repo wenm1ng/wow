@@ -13,7 +13,7 @@ Page({
     logList: false,
     page: 1,
     isScroll: true,
-    height:1300,
+    height:1200,
     scrollTop: 0,
     inRequest: false,
     isEnd: false,
@@ -25,6 +25,7 @@ Page({
     })
     console.log(Boolean(this.data.logList));
     this.getLogList();
+    this.getScrollHeight()
   },
   /**
    * 获取日志列表
@@ -119,5 +120,24 @@ Page({
   },
   getDateFormat(date){
     return date.replace('-', '年') + '月'
-  }
+  },
+
+  /**
+   * 获取窗口高度
+   */
+  getScrollHeight() {
+    const that = this;
+    wx.getSystemInfo({
+      success: function (res) {
+        const windowHeight = res.windowHeight;
+        const windowWidth = res.windowWidth;
+        const ratio = 750 / windowWidth;
+        const height = windowHeight * ratio;
+        console.log(height);
+        that.setData({
+          height: height
+        })
+      }
+    })
+  },
 })

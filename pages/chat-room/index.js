@@ -203,6 +203,7 @@ Page({
         console.log('webSocket关闭成功')
       }
     })
+    wx.closeSocket();
     // wx.sendSocketMessage({
     //   data:JSON.stringify({
     //     action: 'leaveRoom',

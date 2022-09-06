@@ -231,11 +231,11 @@ App({
   getHeader() {
     let header = {}
     if (this.getUserDetailNew()) {
-      let time = this.getTimeSign();
-      header['time'] = time
       header["Authorization"] = "Token " + this.getUserDetailNew().token
-      header['signs'] = hexMD5(api.signs + '_' + time)
     }
+    let time = this.getTimeSign();
+    header['time'] = time
+    header['signs'] = hexMD5(api.signs + '_' + time)
     return header
   },
 

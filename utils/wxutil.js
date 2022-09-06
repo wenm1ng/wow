@@ -1,7 +1,6 @@
 /**
- * @Author: Jeffrey
+ * @Author: WenMing
  * @Date: 2019-04
- * @Github: https://github.com/YYJeffrey/wxutil
  */
 
 /**
@@ -14,9 +13,6 @@
  * @param {JSON Object} data
  * @param {JSON Object} header
  */
-import { hexMD5 } from "./md5.js"
-const api = require("../config/api")
-
 const request = {
   get(url, data = {}, header = {}) {
     const handler = { url, data, header }

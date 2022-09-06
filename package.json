@@ -1,5 +1,5 @@
 {
-  "name": "july_client",
+  "name": "wow",
   "version": "0.0.1",
   "description": "A WeChat Mini-Program for SaaS social platform.",
   "main": "app.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YYJeffrey/july_client.git"
+    "url": "git+https://github.com/wenm1ng/wow.git"
   },
-  "author": "Jeffrey",
+  "author": "WenMing",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/YYJeffrey/july_client/issues"
+    "url": "https://github.com/wenm1ng/wow/issues"
   },
-  "homepage": "https://github.com/YYJeffrey/july_client#readme",
+  "homepage": "https://github.com/wenm1ng/wow#readme",
   "dependencies": {
     "lin-ui": "^0.7.6"
   }
