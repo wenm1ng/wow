@@ -77,8 +77,9 @@
 <view style="height:150rpx"></view>
 <scroll-view scroll-y="{{isScroll}}" enable-back-to-top lower-threshold="40" class="topic-scroll"
 	bindscrolltolower="scrollToLower" style="height:{{height}}rpx" scroll-top="{{scrollTop}}">
-	<l-card type="avatar" l-class="card" l-title-class="card-title-anon"
+	<l-card type="avatar" l-class="card {{cardIndex === 0 ? 'card-top' : ''}}" l-title-class="card-title-anon"
 		wx:for="{{wa_list}}" l-img-class="l-img" wx:key="item" wx:for-index="cardIndex" title="{{item.title}}" describe="{{item.create_at}} 由 {{item.user_name}} 上传">
+
 		<view class="{{item.description.length >= 50 && !item.flod ? 'content-close' : 'avater-content'}}"
 			data-id="{{item.id}}" bindtap="gotoDetail" data-indexs="{{cardIndex}}">{{item.description}}</view>
 		<view wx:if="{{item.description.length >= 50}}" data-index="{{cardIndex}}" class="text-flod" bindtap="onFlodTap">
@@ -103,8 +104,10 @@
 		<view class="popup" wx:if="{{item.tips}}">
 			<!-- <l-tag wx:for="{{wa_info.label}}" wx:key="item" l-class="tag" shape="circle" bg-color="#337559" font-color="#337559"
 				plain bind:lintap="gotowa_info" data-label="{{item}}">#{{item}}</l-tag> -->
-			<l-tag l-class="tag" wx:for="{{item.tips}}" wx:for-item="item2" shape="circle" bg-color="#337559" font-color="#337559"
+			<l-tag l-class="tag" wx:for="{{item.tips}}" wx:if="{{index <= 2}}" wx:for-item="item2" shape="circle" bg-color="#337559" font-color="#337559"
 				   plain="true" data-label="{{item2}}">#{{item2}}</l-tag>
+			<l-tag l-class="tag" wx:if="{{item.tips.length > 2}}" shape="circle" bg-color="#337559" font-color="#337559"
+				   plain="true">.....</l-tag>
 		</view>
 		<view class="avater-share-container">
 			<view class="like-container" data-id="{{item.id}}" bindtap="gotoDetail" data-indexs="{{cardIndex}}">

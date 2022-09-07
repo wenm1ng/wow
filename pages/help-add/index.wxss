@@ -36,3 +36,20 @@
     left:30%;
     width:60%;
 }
+
+.inside-input{
+    border:1rpx #0f6945 solid;
+    width: 140rpx;
+    height: 60rpx;
+    border-radius: 6rpx;
+    display: inline-flex;
+    align-items: center;
+    text-align:center
+}
+
+.placeholder {
+    /* placeholder颜色 */
+    color: #0f6945;
+    /* placeholder字体大小 */
+    font-size: 22rpx;
+}

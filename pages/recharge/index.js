@@ -49,7 +49,7 @@ Page({
   },
 
   toRecharge(){
-    if(!app.checkUserDetailGoAuth()){
+    if(!app.checkUserDetailGformatMoneyoAuth()){
       return;
     }
     const url = api.orderAPI + 'add-order'

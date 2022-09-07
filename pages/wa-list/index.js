@@ -208,7 +208,7 @@ Page({
         const height = windowHeight * ratio;
         console.log(height);
         that.setData({
-          height: height - 200
+          height: height - 170
         })
       }
     })

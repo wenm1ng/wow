@@ -15,7 +15,9 @@ Page({
     hasCoin:false,
     isMaxSize: false,
     imageUrl: [],
-    isClear: false
+    isClear: false,
+    money: '',
+    selectMoney: ''
   },
 
   /**
@@ -50,8 +52,16 @@ Page({
 
   buttonClick(e) {
     let type = e.target.dataset.type;
-    type = 'formData.'+ type;
     let value = e.target.dataset.value;
+
+    if(type === 'coin'){
+      this.setData({
+        selectMoney: value,
+        money: ''
+      })
+    }
+
+    type = 'formData.'+ type;
     this.setData({
       [type]: value
     })
@@ -61,6 +71,11 @@ Page({
     console.log(description);
     wx.navigateTo({
       url: '/pages/help-add-description/index?description=' + description
+    })
+  },
+  clickMoneyButton(){
+    this.setData({
+      money: ''
     })
   },
   /**
@@ -190,6 +205,26 @@ Page({
       ['formData.title']: e.detail.value
     })
   },
+
+  formatMoney(e){
+    let money = e.detail.value
+    if(money < 1){
+      this.setData({
+        money: ''
+      })
+    }
+    if(money > 50){
+      this.setData({
+        money: 50
+      })
+      money = '50'
+    }
+    this.setData({
+      selectMoney: ''
+    })
+    return money.replace(/[^\d]/g,'')
+  },
+
   /**
    * 字段校验
    */

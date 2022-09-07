@@ -1,8 +1,8 @@
 /* pages/topic/index.wxss */
-page{
-  overflow: hidden;
-  height:100vh;
-}
+/*page{*/
+/*  overflow: hidden;*/
+/*  height:100vh;*/
+/*}*/
 .search-column{
   display: block;
   float:left;
@@ -98,12 +98,21 @@ page{
   margin-top: 10rpx;
 }
 
+.card-img-avatar{
+  width:0 !important;
+  height:0 !important;
+}
+
 .card {
   width: 100% !important;
   margin-bottom: 20rpx !important;
   border-radius: 0 !important;
   padding: 20rpx 30rpx !important;
   box-shadow: none !important;
+}
+
+.card-top{
+  margin-top: 20rpx !important;
 }
 
 .card-title {
@@ -226,5 +235,6 @@ page{
   opacity: 0.9;
 }
 .l-img {
-  width:0rpx !important;
+  width: 0rpx !important;
+  margin-right: 0 !important;
 }

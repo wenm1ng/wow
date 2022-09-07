@@ -28,10 +28,10 @@
 </l-popup>
 
 <!-- 动态详情 -->
-<l-card wx:if="{{wa_info.id}}" type="avatar" l-class="card" l-img-class="card-img"
-		l-title-class="{{wa_info.user_id != -1 ? 'nick-name' : 'nick-name-anon'}}"
+<l-card wx:if="{{wa_info.id}}" type="avatar" l-class="card" l-img-class="l-img"
+		l-title-class="{{wa_info.user_id != -1 ? 'nick-name' : 'nick-name-anon'}} l-card"
 	title="{{wa_info.title}}" describe="{{wa_info.create_at}} 由 {{wa_info.user_name}} 上传" data-user-id="{{wa_info.user_id}}">
-	<view>
+	<view style="margin-top:40rpx;">
 		<l-button size="large" bg-color="#337559" bindtap="popWa" width="500">获取字符串</l-button>
 		<l-button size="large" bg-color="#337559" open-type='share' width="150" l-class="margin-lefts">分享</l-button>
 	</view>
@@ -81,54 +81,38 @@
 <!--	<l-icon l-class="ellipsis" slot="more" name="ellipsis" color="#777" size="32" bindtap="onMoreTap" />-->
 </l-card>
 <!-- 收藏 -->
-<!-- <view wx:if="{{waInfo.id}}" class="star-box" wx:if="{{waInfo.likes_num.length > 0}}">
-	<view class="star-content">
-		<image wx:for="{{waInfo.likes_num}}" wx:key="item" class="avatar" src="{{item.user.avatar}}" data-user-id="{{item.user.id}}"
-			bindtap="gotoVisitingCard" />
-	</view>
-	<view class="star-icon-box">
-		收藏
-		<l-icon l-class="star-icon" name="like" size="28" color="#777" />
-	</view>
-</view> -->
+
 <!--历史版本-->
-<view wx:if="{{wa_info.history_version}}">
+<view wx:if="{{wa_info.history_version}}" class="history">
 	<view class="comment" id="version" wx:for="{{wa_info.history_version}}" wx:key="item">
-		<view class="comment-bottom">
+		<view class="comment-bottom" style="height:100rpx">
 			<view class="content">
-				版本
+				<text style="float:left;height:50rpx;width:100%">版本</text>
+				<text style="float:left;height:50rpx;width:100%">{{item.version_number}}</text>
 			</view>
 			<view class="content">
-				修改时间
+				<text style="float:left;height:50rpx;width:100%">修改时间</text>
+				<text style="float:left;height:50rpx;width:100%">{{item.create_at}}</text>
 			</view>
-			<view class="content" style="margin-right: -50rpx">
-				字符串
+			<view class="content">
+				<text style="float:left;height:50rpx;width:100%">字符串</text>
+				<view style="float:left;height:50rpx;width:100%" class="delete-text" data-wa="{{item.wa_content}}" bindtap="copyWaStr">获取</view>
 			</view>
 		</view>
-		<view class="comment-bottom">
-			<view class="content">
-				{{item.version_number}}
-			</view>
-			<view class="content">
-				{{item.create_at}}
-			</view>
-			<view class="content">
-				<view class="delete-text" data-wa="{{item.wa_content}}" bindtap="copyWaStr">获取</view>
-			</view>
-		</view>
-	</view>
-</view>
-<!--<view wx:if="{{wa_info.history_version}}" class="comment-box" wx:if="{{comments.length > 0}}">-->
-<!--	<view class="comment" wx:for="{{comments}}" wx:key="item">-->
-<!--		<view class="comment-right {{index == comments.length - 1 && isEnd ? 'non-border' : ''}}">-->
-<!--			<view class="comment-bottom">-->
-<!--				<view class="content">-->
-<!--					{{item.content}}-->
-<!--				</view>-->
+<!--		<view class="comment-bottom">-->
+<!--			<view class="content">-->
+<!--				{{item.version_number}}-->
+<!--			</view>-->
+<!--			<view class="content">-->
+<!--				{{item.create_at}}-->
+<!--			</view>-->
+<!--			<view class="content">-->
+<!--				<view class="delete-text" data-wa="{{item.wa_content}}" bindtap="copyWaStr">获取</view>-->
 <!--			</view>-->
 <!--		</view>-->
-<!--	</view>-->
-<!--</view>-->
+	</view>
+</view>
+<view style="height:200rpx"></view>
 <!-- 评论 -->
 <view wx:if="{{wa_info.id}}" class="comment-box" wx:if="{{comments.length > 0}}">
 	<view class="comment" wx:for="{{comments}}" wx:key="item">

@@ -5,8 +5,8 @@ page {
   padding-bottom: 88rpx;
 }
 
-#version view{
-  margin:0 0 0 40rpx;
+.history{
+  text-align: center;
 }
 
 .card {
@@ -248,7 +248,16 @@ page {
 
 .content {
   width: 100%;
-  text-align: justify;
+  text-align: center;
+}
+
+.l-img {
+  width: 0rpx !important;
+  margin-right: 0 !important;
+}
+
+.l-card{
+  margin-bottom: 20rpx !important;
 }
 
 .reply {
@@ -265,6 +274,6 @@ page {
   font-size: 26rpx;
   font-weight: bold;
   line-height: 40rpx;
-  width: 60rpx;
-  text-align: right;
+  /*width: 60rpx;*/
+  /*text-align: right;*/
 }
