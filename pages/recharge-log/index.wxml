@@ -31,7 +31,7 @@
 <!--                    <view class="nick-name" data-user-id="{{item.user_id}}">{{item.user_name}}-->
 <!--                    </view>-->
                     <text wx:if="{{item2.pay_type === 1}}" class="text-left">充值</text>
-                    <text wx:elif="{{item2.pay_type === 2}}" class="text-left">求助采纳</text>
+                    <text wx:elif="{{item2.pay_type === 2}}" class="text-left">发布求助</text>
                     <text wx:elif="{{item2.pay_type === 3}}" class="text-left">回答奖励</text>
                     <text wx:elif="{{item2.pay_type === 4}}" class="text-left">退款</text>
                     <text style="float:right;margin-right: 60rpx;margin-top:20rpx" class="{{item2.amount > 0 ? 'yellow' : ''}}">{{item2.amount > 0 ? '+'+ item2.amount : item2.amount}}</text>

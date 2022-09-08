@@ -25,7 +25,8 @@ Page({
       //直接给上一个页面赋值
       ['formData.description']: e.detail.value.description,
     });
-    console.log(prevPage.data.formData)
+    console.log(e.detail.value.description)
+    // console.log(prevPage.data.formData)
     wx.navigateBack({
       //返回
       delta: 1

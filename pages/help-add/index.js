@@ -11,13 +11,18 @@ Page({
    */
   data: {
     version_list:[],
-    formData:{},
+    formData:{
+      // title: '',
+      // description: ''
+    },
     hasCoin:false,
     isMaxSize: false,
     imageUrl: [],
     isClear: false,
     money: '',
-    selectMoney: ''
+    selectMoney: '',
+    walletMoney: 0,
+    moneyCheck: false
   },
 
   /**
@@ -36,7 +41,7 @@ Page({
     if (options.src) {
       cropperOpt.src = options.src
     }
-
+    this.getMoney()
     // 实例化WeCropper
     this.cropper = new WeCropper(cropperOpt)
     .on("beforeImageLoad", (ctx) => {
@@ -50,6 +55,17 @@ Page({
     })
   },
 
+  getMoney() {
+    const url = api.userAPI + 'wallet/get-money?type=' + 1
+    wxutil.request.get(url).then((res) => {
+      if (res.data.code === 200) {
+        this.setData({
+          walletMoney: parseFloat(res.data.data['money'])
+        })
+      }
+    })
+  },
+
   buttonClick(e) {
     let type = e.target.dataset.type;
     let value = e.target.dataset.value;
@@ -59,6 +75,8 @@ Page({
         selectMoney: value,
         money: ''
       })
+      this.getMoney()
+      this.showToastMoney(value)
     }
 
     type = 'formData.'+ type;
@@ -140,6 +158,9 @@ Page({
                 wx.navigateBack({
                   delta:1
                 })
+                // wx.navigateTo({
+                //   url: "/pages/help/index"
+                // })
               }
             })
           }
@@ -189,16 +210,27 @@ Page({
 
   },
   onAddAnswer(){
-    // if(!this.onChek()){
-    //   return;
-    // }
-    if(this.data.imageUrl.length !== 0){
-      //有上传图片，进行上传图片请求
-      this.addHelpUploadImage(this.data.formData, this.data.imageUrl);
-    }else{
-      //普通post请求
-      this.addHelpNoImage(this.data.formData);
+    if(!this.onChek()){
+      return;
     }
+
+    wx.showModal({
+      title: "提示",
+      content: "为了社区的良好环境,请您及时采纳回答!",
+      success: (res) => {
+        if (res.confirm) {
+          if(this.data.imageUrl.length !== 0){
+            //有上传图片，进行上传图片请求
+            this.addHelpUploadImage(this.data.formData, this.data.imageUrl);
+          }else{
+            //普通post请求
+            this.addHelpNoImage(this.data.formData);
+          }
+        }
+      },
+      fail: (res) => {
+      },
+    })
   },
   setAnswerTitle(e){
     this.setData({
@@ -223,6 +255,46 @@ Page({
       selectMoney: ''
     })
     return money.replace(/[^\d]/g,'')
+  },
+
+  /**
+   * 去充值页面
+   */
+  gotoRecharge(event){
+    if(!app.checkUserDetailGoAuth()){
+      return;
+    }
+
+    wx.navigateTo({
+      url: "/pages/recharge/index?money="+ this.data.walletMoney
+    })
+  },
+
+  checkMoney(e){
+    this.getMoney()
+    let money = parseFloat(e.detail.value)
+    if(money <= 0){
+      return
+    }
+    this.setData({
+      money: money
+    })
+    this.showToastMoney(money)
+  },
+
+  showToastMoney(money){
+    let moneyCheck = true;
+    if(money > this.data.walletMoney){
+      wx.showToast({
+        title: '帮币余额不足',
+        icon: 'error',
+        duration: 2000//持续的时间
+      })
+      moneyCheck = false;
+    }
+    this.setData({
+      moneyCheck: moneyCheck
+    })
   },
 
   /**
@@ -274,10 +346,31 @@ Page({
       })
       return false;
     }
+    if(this.data.money !== '') {
+      this.setData({
+        ['formData.coin']: this.data.money
+      })
+    }else if(this.data.is_pay === '1'){
+      if(this.data.formData.coin === undefined){
+        wx.showToast({
+          title: '请选择奖励币数',
+          icon: 'error',
+          duration: 2000//持续的时间
+        })
+        return false;
+      }else if(!this.data.moneyCheck){
+        wx.showToast({
+          title: '帮币余额不足',
+          icon: 'error',
+          duration: 2000//持续的时间
+        })
+        return false;
+      }
+    }
 
     if(this.data.isMaxSize){
       wx.showToast({
-        title: '图片不能大于2M',
+        title: '图片不能大于10M',
         icon: 'error',
         duration: 2000//持续的时间
       })

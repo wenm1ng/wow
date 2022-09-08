@@ -8,7 +8,7 @@
 	</view>
 	<view  wx:elif="{{pay_type === '2'}}">
 		<image class="github-logo" src="/images/icon/adoption.png"/>
-		<text class="github-uri margin-10">求助采纳</text>
+		<text class="github-uri margin-10">发布求助</text>
 	</view>
 	<view  wx:elif="{{pay_type === '3'}}">
 		<image class="github-logo" src="/images/icon/award.png"/>

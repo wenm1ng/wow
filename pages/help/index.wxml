@@ -20,7 +20,7 @@
                 <view class="bg-font">是否采纳</view>
                 <view>
                     <l-button size="mini" l-class="{{searchQuery.adopt_type === '1' ? 'search-hover-button' : 'search-button'}}" data-type="adopt_type" data-value="1" bindtap="buttonClick">已采纳</l-button>
-                    <l-button size="mini" l-class="{{searchQuery.adopt_type === '2' ? 'search-hover-button' : 'search-button'}}" data-type="adopt_type" data-value="2" bindtap="buttonClick">未采纳</l-button>
+                    <l-button size="mini" l-class="{{searchQuery.adopt_type === '0' ? 'search-hover-button' : 'search-button'}}" data-type="adopt_type" data-value="0" bindtap="buttonClick">未采纳</l-button>
                 </view>
                 <view class="bg-font">是否有偿</view>
                 <view>
@@ -45,7 +45,7 @@
                 </view>
                 <view style="margin-left:20%;margin-top:30%">
                     <l-button size="mini" l-class="search-button" l-hover-class="search-hover-button" bindtap="reset">重置</l-button>
-                    <l-button size="mini" l-hover-class="search-button2" l-class="search-hover-button" bindtap="submit">提交</l-button>
+                    <l-button size="mini" l-hover-class="search-button2" l-class="search-hover-button" bindtap="submit">搜索</l-button>
                 </view>
             </l-form>
 
@@ -87,8 +87,11 @@
              bindscrolltolower="scrollToLower" style="height:{{height}}rpx" scroll-top="{{scrollTop}}">
     <l-card type="avatar" l-class="card" l-title-class="card-title-anon"  image="{{item.user_info.avatar_url}}"
             wx:for="{{help_list}}" l-img-class="l-img" wx:key="item" wx:for-index="cardIndex" title="{{item.user_info.user_name}}" describe="{{item.modify_at}} 提问" data-id="{{item.id}}" bindtap="gotoDetail">
-        <view class="{{item.is_adopt === 1 ? 'is_adopt': 'no_adopt'}}">{{item.is_adopt === 1 ? '已采纳': '未采纳'}}</view>
-        <view >{{item.title}}</view>
+        <view class="answer-view">
+            <text class="answer {{item.is_adopt === 1 ? 'adopt' : ''}}">{{item.is_adopt === 1 ? '已采纳': '未采纳'}}</text>
+            <text wx:if="{{item.is_pay === 1}}" class="answer adopt">奖励:{{item.coin}}币</text>
+        </view>
+        <view style="margin-top:10rpx;">{{item.title}}</view>
         <view class="{{item.description.length > 83 && !item.flod ?  'content-close' : 'avater-content'}} description"
               >{{item.description}}</view>
         <view wx:if="{{item.description.length > 83}}" data-index="{{cardIndex}}" class="text-flod" bindtap="onFlodTap">

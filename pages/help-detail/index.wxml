@@ -9,8 +9,11 @@
              l-img-class="l-img"  title="{{info.user_info.user_name}}" describe="{{info.modify_at}} 提问">
 <!--        <view wx:if="{{info.is_adopt == 1}}" class="adopt">已采纳</view>-->
 <!--        <view wx:else class="no_adopt">未采纳</view>-->
-        <view class="help">提问</view>
-        <view>{{info.title}}</view>
+        <view class="answer-view">
+            <text class="answer adopt">提问</text>
+            <text wx:if="{{info.is_pay === 1}}" class="answer adopt">奖励:{{info.coin}}币</text>
+        </view>
+        <view style="margin-top:10rpx">{{info.title}}</view>
         <view class="{{info.description.length > 83 && !info.flod ?  'content-close' : 'avater-content'}} description"
               data-id="{{info.id}}">{{info.description}}</view>
         <view wx:if="{{info.description.length > 83}}" data-index="{{cardIndex}}" class="text-flod" bindtap="onFlodTap">

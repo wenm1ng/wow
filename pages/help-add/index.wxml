@@ -9,13 +9,14 @@
     <l-button size="mini" l-class="{{formData.is_pay === '2' ? 'search-hover-button' : 'search-button'}}" data-type="is_pay" data-value="2" bindtap="buttonClick">普通帮忙</l-button>
 </view>
 <view wx:if="{{formData.is_pay === '1'}}">
-    <view class="bg-font"><text style="color:red">*</text>奖励币数</view>
+    <view class="bg-font"><text style="color:red">*</text>奖励币数(当前帮币数：{{walletMoney}})</view>
     <l-button size="mini" l-class="{{selectMoney === '5' ? 'search-hover-button' : 'search-button'}}" data-type="coin" data-value="5" bindtap="buttonClick">5</l-button>
     <l-button size="mini" l-class="{{selectMoney === '10' ? 'search-hover-button' : 'search-button'}}" data-type="coin" data-value="10" bindtap="buttonClick">10</l-button>
-    <l-button size="mini" l-class="{{selectMoney === '20' ? 'search-hover-button' : 'search-button'}}" data-type="coin" data-value="20" bindtap="buttonClick">20</l-button>
-    <input type="number" class="inside-input" placeholder="自定义金额" placeholder-class="placeholder" bindinput="formatMoney" value="{{money}}"/>
+    <input type="number" class="inside-input" placeholder="自定义金额" placeholder-class="placeholder" bindinput="formatMoney" value="{{money}}" bindblur="checkMoney"/>
+    <l-button size="medium" l-class="recharge-button" bindtap="gotoRecharge">补充帮币</l-button>
+
 </view>
-<view class="bg-font"><text style="color:red">*</text>帮助类型</view>
+<view class="bg-font" style="margin-top:10rpx;"><text style="color:red">*</text>帮助类型</view>
 <view>
     <l-button size="mini" l-class="{{formData.help_type === '1' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="1" bindtap="buttonClick">插件研究</l-button>
     <l-button size="mini" l-class="{{formData.help_type === '2' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="2" bindtap="buttonClick">副本专区</l-button>
@@ -35,7 +36,8 @@
 </view>
 <view class="bg-font" style="margin-top:20rpx;margin-bottom: 20rpx"><text style="color:red">*</text>帮忙标题</view>
 <view style="border-radius: 4rpx;border: 1rpx solid #d8dee5;">
-    <l-input placeholder="请输入帮忙标题" data-type="title" hide-label="{{true}}"  bind:linblur="setAnswerTitle"/>
+<!--    <l-input placeholder="请输入帮忙标题" data-type="title" hide-label="{{true}}" clear="{{true}}" maxlength="30" bind:linblur="setAnswerTitle"/>-->
+    <l-textarea indicator="{{true}}"  maxlength="30" placeholder="请输入帮忙标题"  data-type="title" bind:linblur="setAnswerTitle" value="{{formData.title}}" />
 </view>
 
 <view class="bg-font" style="margin-top:20rpx;margin-bottom: 20rpx"><text style="color:red">*</text>帮忙信息</view>
@@ -52,7 +54,6 @@
 <!--        </view>-->
 <!--    </l-image-picker>-->
 </view>
-<view style="height:10rpx;"></view>
 <view class="z-index-submit">
     <l-button size="mini" l-class="search-button" l-hover-class="search-hover-button" bindtap="onResetAnswer">重置</l-button>
     <l-button size="mini" l-hover-class="search-button2" l-class="search-hover-button" bindtap="onAddAnswer">提交</l-button>

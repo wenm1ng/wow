@@ -10,7 +10,8 @@ Page({
     lastMoney: 0,
     rechargelist:[{id:0,sum:'5'},{id:1,sum:'10'},{id:2,sum:'20'},{id:3,sum:'50'},{id:4,sum:'100'},{id:5,sum:'200'}],
     select:'',
-    errMessage: ''
+    errMessage: '',
+    isIos: false
   },
   onLoad(options) {
     if(options.money !== undefined){
@@ -20,6 +21,46 @@ Page({
     }else{
       this.getMoney();
     }
+    this.checkSystem();
+  },
+
+  showloading(){
+    wx.showLoading({
+      title:'加载中',
+      mask:true,
+      success(res){
+        console.log(res);
+      }
+    })
+    // 两秒之后关闭loading
+    setTimeout(()=>{
+      wx.hideLoading({
+        success: (res) => {},
+      })
+    },1000)
+  },
+
+  checkSystem(){
+    let isIos = false
+    try {
+      const res = wx.getSystemInfoSync()
+      if(res.platform === 'ios'){
+        isIos = true;
+        wx.setNavigationBarTitle({
+          title: '补充帮币'
+        })
+      }else{
+        wx.setNavigationBarTitle({
+          title: '充值'
+        })
+      }
+    } catch (e) {
+      // Do something when catch error
+      isIos = false;
+    }
+    this.setData({
+      isIos: isIos
+    })
   },
 
   recharge(e) {

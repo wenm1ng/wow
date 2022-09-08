@@ -46,7 +46,7 @@
     background-color: #c1920c;
     color:white;
     text-align: center;
-    font-size:25rpx;
+    font-size:20rpx;
     margin-right: 5%;
 }
 

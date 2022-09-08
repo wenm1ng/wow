@@ -26,7 +26,7 @@ Page({
       version: 0,
       help_type: 0,
       is_pay: 0,
-      adopt_type: 0,
+      adopt_type: -1,
     },
     pay_num: 0,
     pushNum: 0, //当前用户可推送数
@@ -43,6 +43,22 @@ Page({
     }
     this.getScrollHeight()
   },
+
+  /**
+   * 获取有偿帮忙数量
+   */
+  getPayHelpNum(){
+    const url = api.helpCenterAPI + 'get-pay-help-num'
+    wxutil.request.get(url).then((res) => {
+      if (res.data.code === 200) {
+        const pay_num = res.data.data['count']
+        this.setData({
+          pay_num: pay_num
+        })
+      }
+    })
+  },
+
   /**
    * 添加推送数量
    */
@@ -122,7 +138,7 @@ Page({
       ['searchQuery.version']: 0,
       ['searchQuery.help_type']: 0,
       ['searchQuery.is_pay']: 0,
-      ['searchQuery.adopt_type']: 0,
+      ['searchQuery.adopt_type']: -1,
     })
   },
   /**
@@ -190,6 +206,7 @@ Page({
   //   this.getTalentTreeList(options.version)
   // },
   onShow() {
+    this.getPayHelpNum()
     this.getPushNum()
     this.getHelpList()
   },

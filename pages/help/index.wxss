@@ -19,6 +19,25 @@ page{
     /*left:0;*/
 }
 
+.answer-view{
+    width:40%;
+}
+
+.answer{
+    display: block;
+    float:left;
+    width:35%;
+    background-color: #c1920c;
+    color:white;
+    text-align: center;
+    font-size:20rpx;
+    margin-right: 5%;
+}
+
+.adopt{
+    background-color: #0b52bb;
+}
+
 .tag-scroll2 view{
     background: none;
     border:0

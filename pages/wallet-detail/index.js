@@ -6,11 +6,14 @@ const wxutil = app.wxutil
 Page({
   data: {
     showPopup: false,
-    money:0
+    money:0,
+    isIos: false,
+    isShowIos: false
   },
   onLoad() { },
 
   onShow() {
+    this.checkSystem()
     this.getMoney();
   },
   /**
@@ -31,11 +34,35 @@ Page({
     })
   },
 
+  checkSystem(){
+    let isIos = false
+    try {
+      const res = wx.getSystemInfoSync()
+      if(res.platform === 'ios'){
+        isIos = true;
+      }
+    } catch (e) {
+      // Do something when catch error
+      isIos = false;
+    }
+    this.setData({
+      isIos: isIos
+    })
+  },
+
   /**
    * 去充值页面
    */
   gotoRecharge(event){
     if(!app.checkUserDetailGoAuth()){
+      return;
+    }
+
+    if(this.data.isIos){
+      //如果是ios系统，提示不支持
+      this.setData({
+        isShowIos: true
+      })
       return;
     }
 

@@ -129,7 +129,7 @@ Page({
           const url = api.helpCenterAPI+'adopt-answer';
           const data = {
             id: id,
-            help: helpId
+            help_id: helpId
           }
           wxutil.request.post(url, data).then((res) => {
             if (res.data.code === 200) {
@@ -154,11 +154,6 @@ Page({
         }
       },
       fail: (res) => {
-        wx.showToast({
-          title: '采纳失败',
-          icon: 'error',
-          duration: 2000//持续的时间
-        })
       },
     })
   },

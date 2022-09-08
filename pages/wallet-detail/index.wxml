@@ -10,7 +10,7 @@
 </view>
 <!-- 设置列表 -->
 <button hover-class="btn-list">
-	<l-list image="../../images/icon/recharge.png" title="充值" icon-color="#337559" icon-size="38" gap="30" data-money="{{money}}" bindtap="gotoRecharge"/>
+	<l-list image="../../images/icon/recharge.png" title="{{isIos ? '补充帮币' : '充值'}}" icon-color="#337559" icon-size="38" gap="30" data-money="{{money}}" bindtap="gotoRecharge"/>
 </button>
 <button hover-class="btn-list">
 	<l-list image="../../images/icon/log.png" title="账单" icon-color="#337559" icon-size="38" gap="30" bindtap="gotoLog"/>
@@ -34,3 +34,7 @@
 
 <!-- 消息对话框 -->
 <l-dialog />
+<l-dialog
+	show="{{isShowIos}}"
+	locked="{{false}}"
+	content="由于相关规范，iOS功能暂不可用" />
