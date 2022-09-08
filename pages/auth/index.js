@@ -62,6 +62,12 @@ Page({
     })
   },
 
+  goBack(){
+    wx.navigateBack({
+      delta:1
+    })
+  },
+
   onShareAppMessage() {
     return {
       title: "授权",

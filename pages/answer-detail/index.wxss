@@ -1,9 +1,9 @@
 /* pages/topic-detail/index.wxss */
 
 
-page {
-    padding-bottom: 88rpx;
-}
+/*page {*/
+/*    padding-bottom: 88rpx;*/
+/*}*/
 
 #version view{
     margin:0 0 0 40rpx;
@@ -251,7 +251,7 @@ page{
 }
 
 .content {
-    width: 100%;
+    width: 80%;
     text-align: justify;
 }
 

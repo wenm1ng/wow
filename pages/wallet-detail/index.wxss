@@ -1,4 +1,9 @@
 /* pages/setting/index.wxss */
+
+page{
+  overflow-y: hidden;
+}
+
 .header .text {
   position: relative;
   left:50rpx;

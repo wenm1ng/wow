@@ -31,8 +31,8 @@
 
 .z-index-submit{
     z-index:99;
-    position: absolute;
-    top:90%;
+    position: fixed;
+    bottom:5%;
     left:30%;
     width:60%;
 }
@@ -44,7 +44,8 @@
     border-radius: 6rpx;
     display: inline-flex;
     align-items: center;
-    text-align:center
+    text-align:center;
+    position: relative;
 }
 
 .placeholder {

@@ -24,3 +24,10 @@
 .btn-auth {
   margin-top: 85rpx;
 }
+
+.btn-back{
+  margin-top: 20rpx;
+  background-color:white !important;
+  color:#0f6945 !important;
+  border:1rpx #0f6945 solid;
+}

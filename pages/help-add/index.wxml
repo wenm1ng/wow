@@ -3,9 +3,9 @@
 <view>
     <l-button wx:for="{{version_list}}" wx:key="item" size="mini"  l-class="{{formData.version == item.wv_id ? 'search-hover-button' : 'search-button'}}" data-value="{{item.wv_id}}" data-type="version" bindtap="buttonClick">{{item.name}}</l-button>
 </view>
-<view class="bg-font"><text style="color:red">*</text>是否有偿</view>
+<view class="bg-font"><text style="color:red">*</text>帮助类型</view>
 <view>
-    <l-button size="mini" l-class="{{formData.is_pay === '1' ? 'search-hover-button' : 'search-button'}}" data-type="is_pay" data-value="1" bindtap="buttonClick">有偿帮忙</l-button>
+    <l-button size="mini" l-class="{{formData.is_pay === '1' ? 'search-hover-button' : 'search-button'}}" data-type="is_pay" data-value="1" bindtap="buttonClick">帮币帮忙</l-button>
     <l-button size="mini" l-class="{{formData.is_pay === '2' ? 'search-hover-button' : 'search-button'}}" data-type="is_pay" data-value="2" bindtap="buttonClick">普通帮忙</l-button>
 </view>
 <view wx:if="{{formData.is_pay === '1'}}">
@@ -16,7 +16,7 @@
     <l-button size="medium" l-class="recharge-button" bindtap="gotoRecharge">补充帮币</l-button>
 
 </view>
-<view class="bg-font" style="margin-top:10rpx;"><text style="color:red">*</text>帮助类型</view>
+<view class="bg-font" style="margin-top:10rpx;"><text style="color:red">*</text>帮助分类</view>
 <view>
     <l-button size="mini" l-class="{{formData.help_type === '1' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="1" bindtap="buttonClick">插件研究</l-button>
     <l-button size="mini" l-class="{{formData.help_type === '2' ? 'search-hover-button' : 'search-button'}}" data-type="help_type" data-value="2" bindtap="buttonClick">副本专区</l-button>

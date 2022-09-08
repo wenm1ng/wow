@@ -90,7 +90,7 @@ Page({
   },
 
   toRecharge(){
-    if(!app.checkUserDetailGformatMoneyoAuth()){
+    if(!app.checkUserDetailGoAuth()){
       return;
     }
     const url = api.orderAPI + 'add-order'
@@ -117,9 +117,21 @@ Page({
           signType: res.data.data['signType'],
           paySign: res.data.data['paySign'],
           success (rs) {
-            wx.navigateTo({
-              url: "/pages/wallet-detail/index"
-            })
+            let pages = getCurrentPages();
+            let prevPage = pages[pages.length - 2];
+            let lastPage = prevPage.route
+            if(lastPage === 'pages/help-add/index'){
+              wx.navigateBack({
+                delta: 1,
+                success: function(){
+                  prevPage.getMoney()
+                }
+              })
+            }else{
+              wx.navigateTo({
+                url: "/pages/wallet-detail/index"
+              })
+            }
           },
           fail (rs) {
             wx.showToast({

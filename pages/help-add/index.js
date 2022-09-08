@@ -155,8 +155,13 @@ Page({
               icon: 'success',
               duration: 2000,//持续的时间
               success() {
+                let pages = getCurrentPages();
+                let prevPage = pages[pages.length - 2];
                 wx.navigateBack({
-                  delta:1
+                  delta: 1,
+                  success: function(){
+                    prevPage.getHelpList()
+                  }
                 })
                 // wx.navigateTo({
                 //   url: "/pages/help/index"
@@ -185,8 +190,13 @@ Page({
           icon: 'success',
           duration: 2000,//持续的时间
           success() {
+            let pages = getCurrentPages();
+            let prevPage = pages[pages.length - 2];
             wx.navigateBack({
-              delta:1
+              delta: 1,
+              success: function(){
+                prevPage.getHelpList()
+              }
             })
           }
         })

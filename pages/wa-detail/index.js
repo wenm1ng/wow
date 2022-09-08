@@ -21,7 +21,9 @@ Page({
     showAction: false, // 是否显示操作菜单
     isEnd: false, // 是否到底onStarTap
     isShowWa: false, //是否弹出wa字符串复制
-    index: -1
+    index: -1,
+    height: 900,
+    scrollTop: 0
   },
 
   onLoad(options) {
@@ -61,6 +63,7 @@ Page({
       }
     })
   },
+
 
   /**
    * 弹出wa字符串复制层

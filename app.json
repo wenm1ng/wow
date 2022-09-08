@@ -64,8 +64,8 @@
       {
         "pagePath": "pages/chat-room/index",
         "text": "吹吹水",
-        "iconPath": "images/icon_tab/topic.png",
-        "selectedIconPath": "images/icon_tab/topic_hl.png"
+        "iconPath": "images/icon_tab/chat.png",
+        "selectedIconPath": "images/icon_tab/chat_hl.png"
       },
       {
         "pagePath": "pages/profile/index",

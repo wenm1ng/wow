@@ -2,6 +2,7 @@
 
 page {
   padding-bottom: 88rpx;
+  overflow-x: hidden;
 }
 
 /**自定义**/
