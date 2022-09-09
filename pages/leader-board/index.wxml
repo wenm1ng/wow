@@ -28,17 +28,11 @@
 <!--    </picker>-->
 <!--</view>-->
 <view class="section">
-<!--    <view class="section__title">选择榜期:{{date}}</view>-->
-    <picker  bindchange="bindPickerChange" value="{{date - 1}}" range="{{weekArr}}">
-        <text style="margin-left:30rpx;">{{weekData.option[date-1].text}}</text>
-        <l-icon name="pull-down" l-class="icon" size="20"/>
-    </picker>
-</view>
-<view class="section">
 <!--    <view class="section__title">多列选择器</view>-->
     <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
         <view class="picker">
-            当前选择：{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
+            <text style="margin-left:30rpx;">{{multiArray[0][multiIndex[0]]}}-{{multiArray[1][multiIndex[1]]}}</text>
+            <l-icon name="pull-down" l-class="icon" size="20"/>
         </view>
     </picker>
 </view>

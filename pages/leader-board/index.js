@@ -6,7 +6,7 @@ const api = app.api
 const wxutil = app.wxutil
 
 export function setweekOption(year) { //传入年份,字符串类型年份,'2020'
-  year = new Date().getFullYear()
+  // year = new Date().getFullYear()
   let days = getDay(year)
   // console.log(days)
   let weeks = {};
@@ -39,18 +39,20 @@ export function setweekOption(year) { //传入年份,字符串类型年份,'2020
     obj.s = weeks[i][0]
     obj.e = weeks[i][weeks[i].length - 1]
 
-    var startArr = weeks[i][0].split('/');
-    var endArr = obj.e.split('/');
-    console.log(obj.s,startArr, obj.e, endArr, 1111111);
-    if(new Date(year, parseInt(startArr[0]), parseInt(startArr[1])).getTime() <= nowTime <= new Date(year, parseInt(endArr[0]), parseInt(endArr[1])).getTime()){
-      nowWeek = i
-    }
+    var startTime = new Date(year+'/'+obj.s).getTime();
+    var endTime = new Date(year+'/'+obj.e).getTime();
+    // console.log(obj.s,startArr, obj.e, endArr, 1111111);
     obj.text = "第" + i + "周" + '(' + weeks[i][0] + '-' + weeks[i][weeks[i].length - 1] + ')';
     obj.value = i;
     iWeek = option.length;
     link[iWeek] = obj.text;
 
     option.push(obj)
+    if(startTime <= nowTime && nowTime <= endTime){
+      // console.log(startTime, nowTime, endTime)
+      nowWeek = i
+      break;
+    }
 
   }
   return {option, link, nowWeek};
@@ -86,15 +88,6 @@ Page({
   onLoad() {
     this.getYear();
     this.getWeekData();
-    console.log(this.data.nowWeek);
-    let weekArr = []
-    for (let i = 1;i <= this.data.nowWeek;i++){
-      weekArr.push(this.data.weekData.option[i-1].text);
-    }
-    this.setData({
-      weekArr: weekArr,
-      date: this.data.nowWeek
-    })
   },
 
   onShow() {
@@ -103,6 +96,8 @@ Page({
   getYear(){
     let nowYear = (new Date()).getFullYear();
     let years = [];
+    years.push(2021);
+
     for(var i=2022;i <= nowYear; i++){
       years.push(i);
     }
@@ -125,20 +120,40 @@ Page({
       multiArray: this.data.multiArray,
       multiIndex: this.data.multiIndex
     };
+    //判断
+    if(e.detail.column === 0){
+      //年份
+      data.multiIndex[1] = this.data.weekData[this.data.years[e.detail.value]].link.length - 1;
+      data.multiArray[1] = this.data.weekData[this.data.years[e.detail.value]].link
+    }
     data.multiIndex[e.detail.column] = e.detail.value;
 
     this.setData(data);
   },
   getWeekData: function(year){
-    year = year | this.data.multiArray[0][0]
-    let weekData = setweekOption(year);
     let multiArray = this.data.multiArray
-    console.log(year, weekData, multiArray);
-    multiArray[1] = weekData.link
+
+    if(year === undefined){
+      let num = this.data.multiArray[0].length
+      let weekData = [];
+      for (var i = 0;i <= num - 1;i++){
+        weekData[this.data.multiArray[0][i]] = setweekOption(this.data.multiArray[0][i]);
+      }
+      //默认取最近的一周
+      year = this.data.multiArray[0][num-1];
+      var data = {
+        weekData: weekData,
+        multiIndex: this.data.multiIndex,
+        nowWeek: weekData[year].nowWeek
+      };
+      data.multiIndex[0] = num-1;
+      data.multiIndex[1] = weekData[year].nowWeek - 1
+
+      this.setData(data)
+    }
+    multiArray[1] = this.data.weekData[year].link
     this.setData({
-      weekData: weekData,
-      multiArray: multiArray,
-      nowWeek: weekData.nowWeek
+      multiArray: multiArray
     })
   },
 
