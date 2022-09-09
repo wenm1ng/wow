@@ -1,4 +1,4 @@
-/* pages/topic/index.wxss */
+/* pages/wa/index.wxss */
 
 .tag-scroll {
     display: flex;

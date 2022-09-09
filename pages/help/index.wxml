@@ -4,9 +4,11 @@
 </view>
 <!--中间z-index按钮-->
 <view class="add-button-view" bindtap="gotoAddAnswer">
-    <l-button size="medium" l-class="add-button" width="400">发布帮忙信息</l-button>
+    <l-button size="medium" l-class="add-button" width="200">发布帮忙信息</l-button>
 </view>
-
+<view class="add-image">
+    <image src="../../images/icon/trophy.png" style="height: 120rpx;width: 120rpx;" bindtap="gotoLeaderboard"/>
+</view>
 <!--右侧弹出层-->
 <view class="leftBox '{{leftView?'leftActive':''}}'" data-item="1" bindtap='hideLeft'>
 <!--    bindtap='hideLeft'-->

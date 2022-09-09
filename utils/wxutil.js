@@ -595,6 +595,113 @@ const getTimestamp = (date = new Date()) => {
   return date.getTime()
 }
 
+//获取现在的周数
+const getWeekInYear = () => {
+  var endDate = new Date(),
+      curYear = endDate.getFullYear(),
+      startDate = new Date(curYear, 0, 1);
+
+  var startWeek = startDate.getDay(), // 1月1号是星期几:0-6
+      offsetWeek = 0; //用来计算不完整的第一周，如果1月1号为星期一则为0，否则为1
+
+  if (startWeek !== 1) {
+    offsetWeek = 1;
+    if (!startWeek) {
+      startDate.setDate(1);
+    } else {
+      startDate.setDate(8 - startWeek); // (7 - startWeek + 1)
+    }
+
+  }
+  var distanceTimestamp = endDate - startDate;
+  var days = Math.ceil(distanceTimestamp / (24 * 60 * 60 * 1000)) + startWeek;
+  return Math.ceil(days / 7) + offsetWeek;
+}
+
+//获取当前周的开始日期和结束日期
+const getWeekDate = () => {
+  const one_day = 86400000;// 24 * 60 * 60 * 1000;
+  const date = new Date();
+  const day = date.getDay();// 返回0-6,0表示周日
+  // 设置时间为当天的0点
+  date.setHours(0);
+  date.setMinutes(0);
+  date.setSeconds(0);
+  date.setMilliseconds(0);
+  const week_start_time = date.getTime() - (day - 1) * one_day;
+  const week_end_time = date.getTime() + (7 - day) * one_day;
+
+  let startDate = new Date(week_start_time);
+  let endDate = new Date(week_end_time);
+
+  startDate = startDate.getFullYear() + '年' + (startDate.getMonth()+1 < 10 ? '0'+(startDate.getMonth()+1) : startDate.getMonth()+1) + '月' + startDate.getDate() + '日';
+  endDate = endDate.getFullYear() + '年' + (endDate.getMonth()+1 < 10 ? '0'+(endDate.getMonth()+1) : endDate.getMonth()+1) + '月' + endDate.getDate() + '日';
+  return {
+    startDate,
+    endDate
+  }
+}
+
+function yearDay(long){
+  var time = new Date(long * 1000)
+  var year = time.getFullYear();
+  var month = (time.getMonth()+1) < 10 ? '0' + (time.getMonth()+1) : (time.getMonth()+1);
+  var date = time.getDate() < 10 ? '0' + time.getDate() : time.getDate() ;
+  return {year,month,date}
+}
+//计算一年中的每一周都是从几号到几号
+//第一周为1月1日到 本年的 第一个周日
+//第二周为 本年的 第一个周一 往后推到周日
+//以此类推 再往后推52周。。。
+//如果最后一周在12月31日之前，则本年有垮了54周，反之53周
+//12月31 日不论是周几，都算为本周的最后一天
+//参数年份 ，函数返回一个数组，数组里的对象包含 这一周的开始日期和结束日期
+const whichWeek = (year) => {
+  var d = new Date(year, 0, 1);
+  while (d.getDay() !== 1) {
+    d.setDate(d.getDate() + 1);
+  }
+  let arr = []
+  let longnum = d.setDate(d.getDate())
+  if(longnum > +new Date(year, 0, 1)){
+    let obj = yearDay(+new Date(year, 0, 1) / 1000)
+    obj.last = yearDay( longnum / 1000 - 86400)
+    arr.push(obj)
+  }
+  let oneitem = yearDay(longnum / 1000)
+  oneitem.last = yearDay( longnum / 1000 + 86400 * 6)
+  arr.push(oneitem)
+  var lastStr
+  for(var i = 0 ; i<51 ;i++){
+    let long = d.setDate(d.getDate() + 7)
+    let obj = yearDay( long / 1000)
+    obj.last = yearDay( long / 1000 + 86400 * 6)
+    lastStr = long + 86400000 * 6
+    arr.push(obj)
+  }
+  if(lastStr < +new Date(year + 1, 0, 1)){
+    let obj = yearDay(lastStr / 1000 + 86400)
+    obj.last = yearDay(+new Date(year + 1, 0, 1) / 1000 - 86400)
+    arr.push(obj)
+  }else{
+    arr[arr.length-1].last = yearDay(+new Date(year + 1, 0, 1) / 1000 - 86400)
+  }
+  return arr
+}
+
+
+const timestampToData = (timestamp) => {
+  var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+  var Y = date.getFullYear() + '-';
+  var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+  var D = date.getDate() + ' ';
+  var h = date.getHours() + ':';
+  var m = date.getMinutes() + ':';
+  var s = date.getSeconds();
+  return Y+M+D+h+m+s;
+}
+
+
 const getTimeSign = () => {
   let time = this.getTimestamp() - 10
   return time.slice(0, -1) + '0';
@@ -620,5 +727,8 @@ module.exports = {
   getDateTime: getDateTime,
   getTimestamp: getTimestamp,
   getYearMonth: getYearMonth,
+  getWeekInYear: getWeekInYear,
+  getWeekDate: getWeekDate,
+  whichWeek: whichWeek,
   getUserProfile: getUserProfile
 }

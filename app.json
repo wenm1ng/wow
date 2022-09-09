@@ -1,22 +1,15 @@
 {
   "pages": [
     "pages/wa/index",
-    "pages/topic/index",
     "pages/stake-man-entry/index",
     "pages/attribute-edit/index",
     "pages/select-occupation/index",
     "pages/select-version/index",
     "pages/select-skill/index",
     "pages/profile/index",
-    "pages/topic-detail/index",
-    "pages/topic-edit/index",
-    "pages/hole-detail/index",
     "pages/chat-room/index",
-    "pages/visiting-card/index",
     "pages/message/index",
     "pages/images-cropper/index",
-    "pages/following/index",
-    "pages/follower/index",
     "pages/auth/index",
     "pages/setting/index",
     "pages/select-talent/index",
@@ -34,7 +27,8 @@
     "pages/wallet-detail/index",
     "pages/recharge/index",
     "pages/recharge-log/index",
-    "pages/recharge-log-detail/index"
+    "pages/recharge-log-detail/index",
+    "pages/leader-board/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

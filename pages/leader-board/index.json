@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "答题排行榜",
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#0396FF",
+  "navigationBarTextStyle": "white",
+  "component": true,
+  "usingComponents": {}
+}

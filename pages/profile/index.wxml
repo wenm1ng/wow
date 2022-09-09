@@ -10,7 +10,7 @@
 <!--			<view wx:if="{{!user.avatar}}" class="avatar-box">-->
 <!--				<open-data class="avatar" type="userAvatarUrl"></open-data>-->
 <!--			</view>-->
-			<image wx:if="{{!user.avatarUrl}}" class="avatar" src="../../images/icon_tab/profile.png" bindtap="gotoAuth" mode="aspectFill" />
+			<image wx:if="{{!user.avatarUrl}}" class="avatar" src="../../images/icon/circle.png" bindtap="gotoAuth" mode="aspectFill" />
 <!--			<l-avatar wx:if="{{!user.avatar}}" size="80" icon="user" />-->
 			<image wx:else class="avatar" src="{{user.avatarUrl}}" bindtap="gotoAuth" mode="aspectFill" />
 <!--			<view wx:if="{{user.gender && user.gender != 0}}" class="gender-box {{user.gender == 1 ? 'male' : 'female'}}">-->

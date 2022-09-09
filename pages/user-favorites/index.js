@@ -1,4 +1,4 @@
-// pages/topic/index.js
+// pages/wa/index.js
 const app = getApp()
 const api = app.api
 const wxutil = app.wxutil
@@ -467,7 +467,7 @@ Page({
     }
     return {
       title: "主页",
-      path: "/pages/topic/index"
+      path: "/pages/wa/index"
     }
   }
 })

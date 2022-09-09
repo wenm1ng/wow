@@ -1,4 +1,4 @@
-// pages/topic/index.js
+// pages/wa/index.js
 Page({
 
   /**

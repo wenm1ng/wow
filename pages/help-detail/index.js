@@ -521,7 +521,7 @@ Page({
     }
     return {
       title: "主页",
-      path: "/pages/topic/index"
+      path: "/pages/wa/index"
     }
   }
 })

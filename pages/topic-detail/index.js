@@ -275,7 +275,7 @@ Page({
     const labelId = event.currentTarget.dataset.label
     wxutil.setStorage("labelId", labelId)
     wx.switchTab({
-      url: "/pages/topic/index"
+      url: "/pages/wa/index"
     })
   },
 

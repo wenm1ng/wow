@@ -1,4 +1,4 @@
-<!-- pages/topic/index.wxml -->
+<!-- pages/wa/index.wxml -->
 
         <!-- 标签栏 -->
 <scroll-view scroll-x enable-flex class="tag-scroll" scroll-into-view="{{toTag}}">
