@@ -1,0 +1,103 @@
+/* pages/setting/index.wxss */
+
+.btn-list {
+    background: #f1f1f1;
+}
+
+button {
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    font-size: 18px;
+    text-align: center;
+    text-decoration: none;
+    line-height: 2.55555556;
+    -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
+    border: none;
+    border-radius: 0;
+    padding: 0 !important;
+    font-weight: 500 !important;
+}
+
+button::after {
+    border: none;
+}
+
+.footer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    bottom: 100rpx;
+}
+
+.header{
+    top:40rpx;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /*align-items: center;*/
+    position: relative;
+    left: 10rpx;
+}
+
+.popup {
+    width: 350rpx;
+    height: 350rpx;
+    background: #fff;
+}
+
+.popup .qr_like {
+    width: 350rpx;
+    height: 350rpx;
+}
+
+
+.footer .github-logo {
+    width: 120rpx;
+    height: 120rpx;
+    border-radius: 50%;
+}
+
+.footer .github-uri {
+    margin-top: 15rpx;
+    font-size: 24rpx;
+    color: #999;
+}
+
+.header .view {
+    height: 50rpx;
+    line-height: 50rpx;
+}
+
+.header .github-uri {
+    margin: 0, 30rpx;
+    font-size: 24rpx;
+    color: black;
+}
+
+.margin-10{
+    margin-left:10rpx;
+}
+.margin-40{
+    margin-left:40rpx;
+}
+
+.yellow{
+    color: #dcc44f;
+}
+.font{
+    font-size:60rpx;
+}
+.hover-color{
+    background-color: #999;
+}
+.inline{
+    margin:10rpx 0;
+    display: inline;
+}

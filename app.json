@@ -28,7 +28,8 @@
     "pages/recharge/index",
     "pages/recharge-log/index",
     "pages/recharge-log-detail/index",
-    "pages/leader-board/index"
+    "pages/leader-board/index",
+    "pages/board-caption/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

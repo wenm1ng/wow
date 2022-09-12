@@ -17,7 +17,7 @@
 <l-popup show="{{isShowWa}}" content-align="center" >
 	<view class='mask-content'>
 		<view>
-			<text style="color:white;">pc端：复制后ctrl+c；移动端：长按黏贴</text>
+			<text style="color:white;">pc端：复制后ctrl+v；移动端：长按黏贴</text>
 		</view>
 		<l-button size="large" bg-color="#337559" bindtap="copyWaStr" style="margin-bottom: 20rpx">复制字符串</l-button>
 		<view>

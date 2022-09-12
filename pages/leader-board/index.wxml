@@ -15,8 +15,12 @@
         </view>
     </view>
     <view class="board-title">
-        答题排行榜
+        采纳排行榜
     </view>
+    <view class="board-caption" bindtap="gotoBoardCaption">
+        排行榜说明
+    </view>
+<!--    <button style="margin-top:30rpx;color:#1f7dd0;font-size: 25rpx" open-type="contact" class="board-caption" hover-class="hover-color">排行榜说明<l-icon name="help" size="30" color="#1f7dd0" l-class="inline"/></button>-->
 </view>
 
 <!--<view class="section" style="display: block">-->
@@ -39,26 +43,38 @@
 <scroll-view class="tab-content profile-scroll" scroll-y="{{true}}" style="height:{{height}}rpx !important;" scroll-top="0">
     <view wx:if="{{boardList.length > 0}}" class="comment-box">
         <view class="comment" wx:for="{{boardList}}" wx:key="item">
-            <image class="avatar" src="{{item.avatar_url}}" data-user-id="{{item.user_id}}" />
-            <view class="comment-right {{index === comments.length - 1? 'non-border' : ''}}">
+            <view style="width: 120rpx;height:120rpx;text-align: center;line-height: 120rpx;">
+                <image wx:if="{{index === 0}}" class="rank" src="../../images/icon/first.png" />
+                <image wx:elif="{{index === 1}}" class="rank" src="../../images/icon/second.png" />
+                <image wx:elif="{{index === 2}}" class="rank" src="../../images/icon/third.png" />
+                <text wx:else >{{index + 1}}</text>
+            </view>
+            <image class="avatar" src="{{item.avatarUrl}}" />
+            <view class="comment-right {{index === boardList.length - 1? 'non-border' : ''}}">
                 <view class="comment-top">
-                    <view class="nick-name" data-user-id="{{item.user_id}}">{{item.user_name}}
+                    <view class="nick-name" data-user-id="{{item.user_id}}">{{item.nickName}}
                     </view>
-                    <view class="time">1111</view>
+                    <text wx:if="{{index <= 2}}" style="margin-right: 20rpx;">奖励:{{item.description !== null ? item.description : '尽请期待'}}</text>
                 </view>
-<!--                <view class="comment-bottom">-->
-<!--                    <view class="content">-->
-<!--                        <text wx:if="{{item.reply_user_id}}">回复</text>-->
-<!--                        <text class="nick-name">{{item.reply_user_name}}: </text>{{item.content}}-->
-<!--                    </view>-->
-<!--                    <view class="delete-box" wx:if="{{userId == item.user_id}}">-->
-<!--                        <view class="delete-text" data-id="{{item.id}}" catchtap="deleteComment">删除</view>-->
-<!--                    </view>-->
+                <view class="comment-bottom">
+                    <view class="content">
+                        <text>积分:<text wx:if="{{index === 0}}" class="first">{{item.score}}</text>
+                            <text wx:elif="{{index === 1}}" class="second">{{item.score}}</text>
+                            <text wx:elif="{{index === 2}}" class="third">{{item.score}}</text>
+                            <text wx:else >{{item.score}}</text>
+                        </text>
+                        <text style="margin-left:30rpx">回答数:{{item.answer_num}}</text>
+                        <text style="margin-left:30rpx">采纳数:{{item.adopt_num}}</text>
+                    </view>
+
 <!--                    <view class="delete-box" wx:if="{{userId != item.user_id}}">-->
 <!--                        <view class="delete-text" data-id="{{item.id}}" data-index="{{index}}" bindtap="onCommentItemTap">回复</view>-->
 <!--                    </view>-->
-<!--                </view>-->
+                </view>
             </view>
+<!--            <view class="comment-dibu">-->
+<!--                <text wx:if="{{index <= 2}}">奖励:{{item.description !== null ? item.description : '尽请期待'}}</text>-->
+<!--            </view>-->
         </view>
         <!--    <view style=""></view>-->
         <l-loadmore line l-class="loading" type="end" />

@@ -95,6 +95,18 @@
     z-index:99;
 }
 
+.board-caption{
+    position: relative;
+    left:2%;
+    top: 90%;
+    font-size: 25rpx;
+    z-index:99;
+    color:#1f7dd0;
+}
+
+.hover-color{
+    background-color: #999;
+}
 
 .history{
     text-align: center;
@@ -258,14 +270,34 @@
 .comment-box .comment {
     display: flex;
     flex-direction: row;
-    padding: 0 30rpx;
+    padding: 0 10rpx;
+    height:160rpx;
+}
+
+.first{
+    font-size: 40rpx;
+    color: #CF5B42;
+}
+.second{
+    font-size: 35rpx;
+    color: #5C96D7;
+}
+.third{
+    font-size: 30rpx;
+    color: #E6C63C;
 }
 
 .avatar {
-    height: 60rpx;
-    width: 60rpx;
+    height: 100rpx;
+    width: 120rpx;
     border-radius: 50%;
-    margin-top: 30rpx;
+    margin-top: 15rpx;
+}
+
+.rank{
+    margin-top: 15rpx;
+    height: 100rpx;
+    width: 100rpx;
 }
 
 .comment .comment-right {
@@ -335,6 +367,12 @@
 .comment-bottom {
     display: flex;
     flex-direction: row;
+}
+
+.comment-dibu{
+    display: block;
+    width:100%;
+    float:left;
 }
 
 .content {

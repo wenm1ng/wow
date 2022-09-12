@@ -1,0 +1,45 @@
+<!--pages/board-caption/index.wxml-->
+        <!-- 设置列表 -->
+<view class="header">
+    <view class="view">1、按积分高低排定名次，积分高者名次列前。</view>
+    <view class="view">2、1采纳=3积分，1回答=1积分。</view>
+    <view class="view" style="height:200rpx;">3、如果在名次排列中有2位及2位以上的用户积分相同，则以以下规则标准排列名次：
+        <view class="view">
+            （1）按照采纳数，高者列前。
+        </view>
+        <view class="view">
+            （2）采纳数一致，按照总回答字数，高者列前。
+        </view>
+    </view>
+    <view class="view" style="height:100rpx;">4、排行榜前三名有对应奖励，领取奖励请联系客服，具体奖励内容以当前实际展示为准。</view>
+    <view class="view" style="height:100rpx;">5、本小程序对于用户所拥有的积分不提供任何形式的官方回购、直接兑换现金、相互赠予转让等服务相关的功能。</view>
+    <view class="view" style="height:150rpx;">6、任何破坏论坛公平性或其他影响论坛正常秩序的行为，如刷榜、利用BUG(漏洞或缺陷)来获得不正当的非法利益的行为将永久封号。 </view>
+    <view class="view">7、排行榜最终解释权归本小程序所有。</view>
+<!--    <view  wx:if="{{pay_type === '1'}}">-->
+<!--        <image class="github-logo" src="/images/icon/money2.png"/>-->
+<!--        <text class="github-uri margin-40">充值</text>-->
+<!--    </view>-->
+<!--    <view  wx:elif="{{pay_type === '2'}}">-->
+<!--        <image class="github-logo" src="/images/icon/adoption.png"/>-->
+<!--        <text class="github-uri margin-10">发布求助</text>-->
+<!--    </view>-->
+<!--    <view  wx:elif="{{pay_type === '3'}}">-->
+<!--        <image class="github-logo" src="/images/icon/award.png"/>-->
+<!--        <text class="github-uri margin-10">回答奖励</text>-->
+<!--    </view>-->
+<!--    <view  wx:elif="{{pay_type === '4'}}">-->
+<!--        <image class="github-logo" src="/images/icon/refund.png"/>-->
+<!--        <text class="github-uri margin-40">退款</text>-->
+<!--    </view>-->
+<!--    <text class="font {{amount > 0 ? 'yellow' : ''}}">{{amount > 0 ? '+'+ amount : amount}}</text>-->
+<!--    <text style="margin-top:30rpx;" selectable='true'>交易单号：{{order_id}}</text>-->
+<!--    <text style="margin-top:30rpx;">交易时间：{{time}}</text>-->
+<!--    <button style="margin-top:30rpx;color:#1f7dd0;font-size: 25rpx" open-type="contact" hover-class="hover-color">对订单有疑问<l-icon name="help" size="30" color="#1f7dd0" l-class="inline"/>请点我</button>-->
+</view>
+<view class="footer">
+    <image class="github-logo" src="/images/logo/logo.png"/>
+    <text class="github-uri">WOW WA仓库</text>
+</view>
+
+        <!-- 消息对话框 -->
+<l-dialog />

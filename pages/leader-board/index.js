@@ -83,11 +83,14 @@ Page({
     boardList: [],
     multiArray: [],
     multiIndex: [],
-    years: []
+    years: [],
+    height:1000
   },
   onLoad() {
+    this.getScrollHeight();
     this.getYear();
     this.getWeekData();
+    this.getLeaderBoardList();
   },
 
   onShow() {
@@ -109,10 +112,10 @@ Page({
   ,
   bindMultiPickerChange: function (e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
-    this.getWeekData(e.detail.value)
     this.setData({
       multiIndex: e.detail.value
     })
+    this.getLeaderBoardList()
   },
   bindMultiPickerColumnChange: function (e) {
     console.log('修改的列为', e.detail.column, '，值为', e.detail.value);
@@ -157,29 +160,57 @@ Page({
     })
   },
 
-  bindPickerChange: function(e) {
-    console.log('picker发送选择改变，携带值为', e.detail.value)
-    this.getLeaderBoardList()
-  },
+  // bindPickerChange: function(e) {
+  //   console.log('picker发送选择改变，携带值为', e.detail.value)
+  //   this.getLeaderBoardList()
+  // },
   getDateFormat(date){
     return date.replace('-', '年') + '月'
   },
 
   getLeaderBoardList() {
     let data = {
-
+      nowWeek: this.data.nowWeek,
     }
     if(this.data.multiIndex[1] !== undefined){
       data.week = this.data.multiIndex[1] + 1
+      data.year = this.data.years[this.data.multiIndex[0]]
     }
 
-    const url = api.userAPI + 'user/leader-board-list'
+    const url = api.userAPI + 'leader-board-list'
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code === 200) {
         this.setData({
-          boardList: res.data.data['list']
+          boardList: res.data.data
         })
       }
+    })
+  },
+
+  /**
+   * 获取窗口高度
+   */
+  getScrollHeight() {
+    const that = this;
+    wx.getSystemInfo({
+      success: function (res) {
+        const windowHeight = res.windowHeight;
+        console.log(windowHeight)
+        const windowWidth = res.windowWidth;
+        const ratio = 750 / windowWidth;
+        const height = windowHeight * ratio;
+        console.log(height);
+        that.setData({
+          height: height - 180
+        })
+      }
+    })
+  },
+
+  //去排行榜说明页面
+  gotoBoardCaption(){
+    wx.navigateTo({
+      url: '/pages/board-caption/index'
     })
   },
 
