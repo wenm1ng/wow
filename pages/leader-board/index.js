@@ -159,10 +159,6 @@ Page({
 
   bindPickerChange: function(e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
-    let num = parseInt(e.detail.value)
-    this.setData({
-      date: num + 1,
-    })
     this.getLeaderBoardList()
   },
   getDateFormat(date){
@@ -170,12 +166,18 @@ Page({
   },
 
   getLeaderBoardList() {
+    let data = {
 
-    const url = api.userAPI + 'wallet/get-money?type=' + 1
-    wxutil.request.get(url).then((res) => {
+    }
+    if(this.data.multiIndex[1] !== undefined){
+      data.week = this.data.multiIndex[1] + 1
+    }
+
+    const url = api.userAPI + 'user/leader-board-list'
+    wxutil.request.get(url, data).then((res) => {
       if (res.data.code === 200) {
         this.setData({
-          money: res.data.data['money']
+          boardList: res.data.data['list']
         })
       }
     })
