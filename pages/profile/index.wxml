@@ -81,6 +81,7 @@
 					<text class="reads-text">{{item.likes_count}}点赞</text>
 				</view>
 			</l-card>
+			<l-loadmore show="{{isEndStar}}" line type="end"/>
 		</scroll-view>
 	</l-tabpanel>
 	<l-tabpanel tab="评论{{noRead}}" key="comment" slot="comment" height="{{heightComment}}">
@@ -105,6 +106,7 @@
 					</view>
 				</view>
 			</l-card>
+			<l-loadmore show="{{isEndComment}}" line type="end"/>
 		</scroll-view>
 	</l-tabpanel>
 	<l-tabpanel tab="求助" key="help" slot="help" height="{{heightHelp}}">
@@ -127,6 +129,7 @@
 					<text class="reads-text">{{item.favorites_num}}点赞</text>
 				</view>
 			</l-card>
+			<l-loadmore show="{{isEndHelp}}" line type="end"/>
 		</scroll-view>
 	</l-tabpanel>
 	<l-tabpanel tab="回答" key="answer" slot="answer" height="{{heightAnswer}}">
@@ -148,6 +151,7 @@
 					<text class="reads-text margin-text">{{item.favorites_num}}收藏</text>
 				</view>
 			</l-card>
+			<l-loadmore show="{{isEndAnswer}}" line type="end"/>
 		</scroll-view>
 	</l-tabpanel>
 <!--	</scroll-view>-->

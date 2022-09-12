@@ -418,3 +418,9 @@
     display: inline;
     margin-left:10rpx;
 }
+
+.loading {
+    padding-bottom: 20rpx !important;
+    height:50rpx !important;
+    display:block;
+}

@@ -15,7 +15,7 @@
         </view>
     </view>
     <view class="board-title">
-        采纳排行榜
+        积分排行榜
     </view>
     <view class="board-caption" bindtap="gotoBoardCaption">
         排行榜说明
@@ -76,8 +76,14 @@
 <!--                <text wx:if="{{index <= 2}}">奖励:{{item.description !== null ? item.description : '尽请期待'}}</text>-->
 <!--            </view>-->
         </view>
+        <l-loadmore show line l-class="loading" type="end" />
+<!--        <view style="height:70rpx"></view>-->
         <!--    <view style=""></view>-->
-        <l-loadmore line l-class="loading" type="end" />
     </view>
 </scroll-view>
+<!--<view class="loading l-class">-->
+<!--    <view class="line loading-view"></view>-->
+<!--    <view style="font-size:15px" class="loading-text l-end-class loading-view">我是有底线的~</view>-->
+<!--    <view class="line loading-view"></view>-->
+<!--</view>-->
 <nothing wx:if="{{boardList.length === 0}}" pic="../../images/icon_nothing/pic_hole.png" tip="暂时还没有内容哦" />
