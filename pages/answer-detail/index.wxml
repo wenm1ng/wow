@@ -19,6 +19,10 @@
           data-id="{{info.id}}" data-index="{{index}}" bindtap="gotoDetail">{{info.description}}</view>
     <view wx:if="{{info.description.length > 83}}" data-index="{{cardIndex}}" class="text-flod" bindtap="onFlodTap">
         {{info.flod ? '收起' : '全文'}}</view>
+    <view class="{{info.wa_content_show.length > 0 ?  'content-close' : 'avater-content'}} description">{{info.wa_content_show}}</view>
+    <view wx:if="{{info.wa_content_show.length > 0}}">
+        <l-button bg-color="#337559" bindtap="copyWaStr" style="margin-bottom: 20rpx">复制字符串</l-button>
+    </view>
     <!--        <l-tag  shape="circle"-->
     <!--                bg-color="#f3f3f3"-->
     <!--                font-color="#0f6945"-->
@@ -72,7 +76,7 @@
             </view>
         </view>
     <!--    <view style=""></view>-->
-        <l-loadmore line l-class="loading" type="end" />
+        <l-loadmore show="{{comments.length !== 0 && isEnd}}" line l-class="loading" type="end" />
 
         <view class="more" wx:if="{{!isEnd}}" bindtap="getMoreComments">
             <text>展开更多评论</text>
@@ -93,6 +97,7 @@
 
         <!-- nothing -->
 <nothing wx:if="{{!info.id}}" pic="../../images/icon_nothing/pic_topic.png" tip="该回答消失了" />
+<nothing wx:if="{{comments.length === 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="暂时还没有人评论哦" />
 
         <!-- 操作菜单 -->
 <l-action-sheet show-cancel open-api="{{false}}" item-list="{{actionList}}" show="{{showAction}}"

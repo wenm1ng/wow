@@ -88,7 +88,7 @@ Page({
     let description = this.data.formData.description ? this.data.formData.description : ''
     console.log(description);
     wx.navigateTo({
-      url: '/pages/help-add-description/index?description=' + description
+      url: '/pages/help-add-description/index?description=' + description + '&from=help'
     })
   },
   clickMoneyButton(){
@@ -168,6 +168,12 @@ Page({
                 // })
               }
             })
+          }else{
+            wx.showToast({
+              title: res.data.code !== 400 ? res.data.msg : '发布失败',
+              icon: 'error',
+              duration: 2000//持续的时间
+            })
           }
         }).catch((error) => {
           reject(error)
@@ -202,7 +208,7 @@ Page({
         })
       }else{
         wx.showToast({
-          title: '发布失败',
+          title: res.data.code !== 400 ? res.data.msg : '发布失败',
           icon: 'error',
           duration: 2000//持续的时间
         })
@@ -347,6 +353,16 @@ Page({
       })
       return false;
     }
+    const title = this.data.formData.title.replace(/(^\s*)|(\s*$)/g, "");
+    if(title === ''){
+      wx.showToast({
+        title: '请输入帮忙标题',
+        icon: 'error',
+        duration: 2000//持续的时间
+      })
+      return false;
+    }
+
 
     if(this.data.formData.description === undefined){
       wx.showToast({
@@ -356,6 +372,18 @@ Page({
       })
       return false;
     }
+
+    const description = this.data.formData.description.replace(/(^\s*)|(\s*$)/g, "");
+    console.log(description);
+    if(description === ''){
+      wx.showToast({
+        title: '请输入帮忙描述',
+        icon: 'error',
+        duration: 2000//持续的时间
+      })
+      return false;
+    }
+
     if(this.data.money !== '') {
       this.setData({
         ['formData.coin']: this.data.money

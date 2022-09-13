@@ -48,6 +48,8 @@ Page({
   },
 
   setAnswerWa(e){
+    // console.log(e,1111111111111111111)
+    // console.log(e.detail.value)
     this.setData({
       ['formData.wa_content']: e.detail.value
     })
@@ -65,7 +67,7 @@ Page({
     let description = this.data.formData.description ? this.data.formData.description : ''
     console.log(description);
     wx.navigateTo({
-      url: '/pages/help-add-description/index?description=' + description
+      url: '/pages/help-add-description/index?description=' + description + '&from=answer'
     })
   },
   /**
@@ -134,7 +136,7 @@ Page({
             })
           }else{
             wx.showToast({
-              title: '发布失败',
+              title: res.data.code !== 400 ? res.data.msg : '发布失败',
               icon: 'error',
               duration: 2000//持续的时间
             })
@@ -167,7 +169,7 @@ Page({
         })
       }else{
         wx.showToast({
-          title: '发布失败',
+          title: res.data.code !== 400 ? res.data.msg : '发布失败',
           icon: 'error',
           duration: 2000//持续的时间
         })
@@ -206,6 +208,7 @@ Page({
    * 字段校验
    */
   onChek(){
+
     if(this.data.formData.description === undefined){
       wx.showToast({
         title: '请输入帮忙描述',
@@ -214,7 +217,15 @@ Page({
       })
       return false;
     }
-
+    const description = this.data.formData.description.replace(/(^\s*)|(\s*$)/g, "");
+    if(description === ''){
+      wx.showToast({
+        title: '请输入帮忙描述',
+        icon: 'error',
+        duration: 2000//持续的时间
+      })
+      return false;
+    }
     if(this.data.isMaxSize){
       wx.showToast({
         title: '图片不能大于10M',

@@ -47,14 +47,14 @@
       {
         "pagePath": "pages/wa/index",
         "text": "首页",
-        "iconPath": "images/icon_tab/hole.png",
-        "selectedIconPath": "images/icon_tab/hole_hl.png"
+        "iconPath": "images/icon_tab/index.png",
+        "selectedIconPath": "images/icon_tab/index_hl.png"
       },
       {
         "pagePath": "pages/help/index",
         "text": "帮帮忙",
-        "iconPath": "images/icon_tab/topic.png",
-        "selectedIconPath": "images/icon_tab/topic_hl.png"
+        "iconPath": "images/icon_tab/help.png",
+        "selectedIconPath": "images/icon_tab/help_hl.png"
       },
       {
         "pagePath": "pages/chat-room/index",
@@ -65,8 +65,8 @@
       {
         "pagePath": "pages/profile/index",
         "text": "我的",
-        "iconPath": "images/icon_tab/profile.png",
-        "selectedIconPath": "images/icon_tab/profile_hl.png"
+        "iconPath": "images/icon_tab/user.png",
+        "selectedIconPath": "images/icon_tab/user_hl.png"
       }
     ]
   },

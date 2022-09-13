@@ -62,8 +62,12 @@ App({
     })
   },
   getModelId(type){
-    let modelId = '';
+    let modelId = null;
     if(type === 1){
+      modelId = wxutil.getStorage('answerModelId');
+      if(modelId === null){
+        this.setModelId();
+      }
       modelId = wxutil.getStorage('answerModelId');
     }
     return modelId;

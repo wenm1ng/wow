@@ -411,7 +411,7 @@ Page({
       }else{
         wx.showToast({
           title: '收藏失败！',
-          icon: 'success',
+          icon: 'error',
           duration: 2000//持续的时间
         })
       }

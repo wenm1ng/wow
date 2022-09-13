@@ -107,6 +107,7 @@ Page({
       money: this.data.lastMoney,
       type: 1
     }
+    const that = this;
     wxutil.request.post(url, data).then((res) => {
       if (res.data.code === 200) {
         wx.requestPayment({
@@ -128,9 +129,7 @@ Page({
                 }
               })
             }else{
-              wx.navigateTo({
-                url: "/pages/wallet-detail/index"
-              })
+              that.getMoney();
             }
           },
           fail (rs) {

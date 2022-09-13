@@ -55,6 +55,11 @@
     margin: 10rpx 0;
 }
 
+.description{
+    color: #a09a9a !important;
+    font-size: 27rpx !important;
+}
+
 .text-flod {
     color: #0f6945;
     font-weight: bold;

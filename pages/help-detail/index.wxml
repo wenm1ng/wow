@@ -1,5 +1,5 @@
 <!--pages/help-detail/index.wxml-->
-<view class="add-button-view" bindtap="gotoAddAnswer">
+<view class="add-button-view" bindtap="gotoAddAnswer" wx:if="{{userId !== info.user_id && is_answer === 0}}">
     <l-button size="medium" l-class="add-button" width="400">我来帮忙</l-button>
 </view>
         <!-- 动态内容 -->
@@ -74,6 +74,7 @@
         <view class="{{item.description.length > 83 && !info.flod ?  'content-close' : 'avater-content'}} description">{{item.description}}</view>
         <view wx:if="{{item.description.length > 83}}" data-index="{{cardIndex}}" class="text-flod" catchtap="onFlodTap">
             {{item.flod ? '收起' : '全文'}}</view>
+        <view class="{{item.wa_content_show.length > 0 ?  'content-close' : 'avater-content'}} description">{{item.wa_content_show}}</view>
         <l-tag  shape="circle"
                 bg-color="#f3f3f3"
                 font-color="#0f6945"
@@ -123,8 +124,9 @@
 
     </l-card>
 <!--    <l-loadmore wx:if="{{!isEnd}}" show="{{loading}}" line l-class="loading" />-->
-<!--    <l-loadmore line l-class="loading" type="end" />-->
+    <l-loadmore wx:if="{{answer_list.length !== 0}}" show line l-class="loading" type="end" />
 </scroll-view>
+<nothing wx:if="{{answer_list.length === 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="暂时还没有人回答哦" />
 
         <!-- 操作菜单 -->
 <l-action-sheet show-cancel open-api="{{false}}" item-list="{{actionList}}" show="{{showAction}}"

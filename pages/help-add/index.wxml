@@ -42,7 +42,7 @@
 
 <view class="bg-font" style="margin-top:20rpx;margin-bottom: 20rpx"><text style="color:red">*</text>帮忙信息</view>
 <view bindtap="gotoDescription">
-    <l-textarea indicator="{{true}}"  maxlength="500" placeholder="建议详细描述一下你的帮忙信息噢..."  disabled="true" data-type="description" bindinput="setDescription" value="{{formData.description}}" />
+    <l-textarea indicator="{{true}}"  maxlength="500" placeholder="详细描述一下你的帮忙信息噢，建议不少于15个字..."  disabled="true" data-type="description" bindinput="setDescription" value="{{formData.description}}" />
 </view>
 <!--        bind:linfocus="gotoDescription"-->
 <view class="bg-font" style="margin-top:20rpx;margin-bottom: 20rpx">图片信息</view>

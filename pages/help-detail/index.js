@@ -15,6 +15,7 @@ Page({
     answer_list: [],
     page: 1,
     userId: 0,
+    is_answer: 0 //是否有回答过
   },
 
   /**
@@ -73,14 +74,15 @@ Page({
             if (res.data.code === 200) {
               wx.showToast({
                 title: '删除成功',
-                icon: 'error',
+                icon: 'success',
                 duration: 2000//持续的时间
               })
-              let answerList = this.data.answer_list;
-              answerList.splice(index,1);
-              this.setData({
-                answer_list: answerList
-              })
+              // let answerList = this.data.answer_list;
+              // answerList.splice(index,1);
+              // this.setData({
+              //   answer_list: answerList
+              // })
+              this.getAnswerList();
             }else{
               wx.showToast({
                 title: '删除失败',
@@ -135,13 +137,17 @@ Page({
             if (res.data.code === 200) {
               wx.showToast({
                 title: '采纳成功',
-                icon: 'error',
+                icon: 'success',
                 duration: 2000//持续的时间
               })
+              // this.getAnswerList();
               let answerList = this.data.answer_list;
               answerList[index].is_adopt_answer = 1;
+              let info = this.data.info;
+              info.is_adopt = 1;
               this.setData({
-                answer_list: answerList
+                answer_list: answerList,
+                info: info
               })
             }else{
               wx.showToast({
@@ -173,8 +179,10 @@ Page({
     wxutil.request.get(url, data).then((res) => {
       if (res.data.code === 200) {
         const answer_list = res.data.data['list']
+        const is_answer = res.data.data['is_answer']
         this.setData({
-          answer_list: answer_list
+          answer_list: answer_list,
+          is_answer: is_answer
         })
       }
     })
@@ -263,7 +271,7 @@ Page({
         const height = windowHeight * ratio;
         console.log(height);
         that.setData({
-          height: height - 150
+          height: height
         })
       }
     })

@@ -71,8 +71,10 @@ Page({
   addPushNum(){
     if(!app.getUserDetailNew()){
       app.goAuthPage()
+      console.log('未登录')
       return;
     }
+    console.log('已登录')
     app.addPushNum(this.data.pushNum, this.setPushNum);
   },
   setPushNum(){
