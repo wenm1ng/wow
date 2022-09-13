@@ -123,10 +123,11 @@
         <!--			bindtap="onMoreTap" />-->
 
     </l-card>
-<!--    <l-loadmore wx:if="{{!isEnd}}" show="{{loading}}" line l-class="loading" />-->
+    <l-loadmore wx:if="{{answer_list.length === 0}}" show line l-class="loading" type="end" end-text="暂时还没有人回答哦"/>
+    <!--    <l-loadmore wx:if="{{!isEnd}}" show="{{loading}}" line l-class="loading" />-->
     <l-loadmore wx:if="{{answer_list.length !== 0}}" show line l-class="loading" type="end" />
 </scroll-view>
-<nothing wx:if="{{answer_list.length === 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="暂时还没有人回答哦" />
+<!--<nothing wx:if="{{answer_list.length === 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="暂时还没有人回答哦" />-->
 
         <!-- 操作菜单 -->
 <l-action-sheet show-cancel open-api="{{false}}" item-list="{{actionList}}" show="{{showAction}}"

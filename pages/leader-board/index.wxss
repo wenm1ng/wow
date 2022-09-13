@@ -102,6 +102,20 @@
     font-size: 25rpx;
     z-index:99;
     color:#1f7dd0;
+    width:200rpx;
+}
+
+.board-caption-btn{
+    position: relative;
+    left:75%;
+    top: 65%;
+    font-size: 25rpx;
+    z-index:99;
+    color:#1f7dd0;
+    width:200rpx;
+    display: inline;
+    background-color: #fff;
+    height:30rpx;
 }
 
 .hover-color{

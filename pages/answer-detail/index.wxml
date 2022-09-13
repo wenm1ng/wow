@@ -85,6 +85,7 @@
             </view>
         </view>
     </view>
+    <l-loadmore show="{{comments.length === 0}}" line l-class="loading" type="end" end-text="暂时还没有人评论哦"/>
 </scroll-view>
 
         <!-- 评论编辑区 -->
@@ -97,7 +98,7 @@
 
         <!-- nothing -->
 <nothing wx:if="{{!info.id}}" pic="../../images/icon_nothing/pic_topic.png" tip="该回答消失了" />
-<nothing wx:if="{{comments.length === 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="暂时还没有人评论哦" />
+<!--<nothing wx:if="{{comments.length === 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="暂时还没有人评论哦" />-->
 
         <!-- 操作菜单 -->
 <l-action-sheet show-cancel open-api="{{false}}" item-list="{{actionList}}" show="{{showAction}}"

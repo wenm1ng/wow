@@ -20,6 +20,9 @@
     <view class="board-caption" bindtap="gotoBoardCaption">
         排行榜说明
     </view>
+    <button hover-class="btn-list" class="board-caption-btn" open-type="contact">
+        联系客服
+    </button>
 <!--    <button style="margin-top:30rpx;color:#1f7dd0;font-size: 25rpx" open-type="contact" class="board-caption" hover-class="hover-color">排行榜说明<l-icon name="help" size="30" color="#1f7dd0" l-class="inline"/></button>-->
 </view>
 

@@ -81,7 +81,7 @@
 					<text class="reads-text">{{item.likes_count}}点赞</text>
 				</view>
 			</l-card>
-			<l-loadmore show="{{isEndStar}}" line type="end"/>
+			<l-loadmore show="{{wa_list.length !== 0 && isEndStar}}" line type="end"/>
 		</scroll-view>
 	</l-tabpanel>
 	<l-tabpanel tab="评论{{noRead}}" key="comment" slot="comment" height="{{heightComment}}">
@@ -106,12 +106,12 @@
 					</view>
 				</view>
 			</l-card>
-			<l-loadmore show="{{isEndComment}}" line type="end"/>
+			<l-loadmore show="{{comments.length !== 0 && isEndComment}}" line type="end"/>
 		</scroll-view>
 	</l-tabpanel>
 	<l-tabpanel tab="求助" key="help" slot="help" height="{{heightHelp}}">
 		<scroll-view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content profile-scroll" lower-threshold="30" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{heightHelp}}rpx !important;" scroll-top="{{scrollTop}}">
-			<nothing wx:if="{{help_list.length === 0}}" pic="../../images/icon_nothing/pic_star.png" tip="您还没有发表求助"
+			<nothing wx:if="{{help_list.length === 0}}" pic="../../images/icon_nothing/pic_topic.png" tip="您还没有发表求助"
 					 nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
 			<l-card data-id="{{item.id}}" bindtap="gotoHelpDetail" wx:for="{{help_list}}" wx:key="item" l-class="card"
 					l-img-class="{{item.image_url !== '' ? 'card-img' : 'card-img-none'}}"
@@ -129,12 +129,12 @@
 					<text class="reads-text">{{item.favorites_num}}点赞</text>
 				</view>
 			</l-card>
-			<l-loadmore show="{{isEndHelp}}" line type="end"/>
+			<l-loadmore show="{{help_list.length !== 0 && isEndHelp}}" line type="end"/>
 		</scroll-view>
 	</l-tabpanel>
 	<l-tabpanel tab="回答" key="answer" slot="answer" height="{{heightAnswer}}">
 		<scroll-view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content profile-scroll" lower-threshold="30" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{heightAnswer}}rpx !important;" scroll-top="{{scrollTop}}">
-			<nothing wx:if="{{answer_list.length === 0}}" pic="../../images/icon_nothing/pic_star.png" tip="您还没有帮助回答"
+			<nothing wx:if="{{answer_list.length === 0}}" pic="../../images/icon_nothing/pic_comment.png" tip="您还没有帮助回答"
 					 nothing-class="{{messageBrief ? 'nothing-message' : 'nothing'}}" />
 			<l-card data-id="{{item.id}}" bindtap="gotoAnswerDetail" wx:for="{{answer_list}}" wx:key="item" l-class="card"
 					l-img-class="{{item.image_url !== '' ? 'card-img' : 'card-img-none'}}"
@@ -151,7 +151,7 @@
 					<text class="reads-text margin-text">{{item.favorites_num}}收藏</text>
 				</view>
 			</l-card>
-			<l-loadmore show="{{isEndAnswer}}" line type="end"/>
+			<l-loadmore show="{{answer_list.length !== 0 && isEndAnswer}}" line type="end"/>
 		</scroll-view>
 	</l-tabpanel>
 <!--	</scroll-view>-->
