@@ -140,4 +140,10 @@ Page({
       }
     })
   },
+  onShareAppMessage() {
+    return {
+      title: "主页",
+      path: "/pages/wa/index"
+    }
+  }
 })

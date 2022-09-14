@@ -70,8 +70,8 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: "授权",
-      path: "/pages/auth/index"
+      title: "主页",
+      path: "/pages/wa/index"
     }
   }
 })

@@ -56,11 +56,10 @@ Page({
   onReachBottom() {
 
   },
-
-  /**
-   * 用户点击右上角分享
-   */
   onShareAppMessage() {
-
+    return {
+      title: "主页",
+      path: "/pages/wa/index"
+    }
   }
 })

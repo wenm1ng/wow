@@ -98,6 +98,7 @@ Page({
   },
   getYear(){
     let nowYear = (new Date()).getFullYear();
+    // nowYear = '2026';
     let years = [];
     years.push(2021);
 
@@ -227,10 +228,5 @@ Page({
     })
   },
 
-  onShareAppMessage() {
-    return {
-      title: "主页",
-      path: "/pages/wa/index"
-    }
-  }
+  onShareAppMessage() {}
 })

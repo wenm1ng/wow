@@ -639,9 +639,9 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: this.data.info.title,
-      imageUrl: this.data.info.images[0].image_url ? this.data.info.images[0].image_url : '',
-      path: "/pages/wa-detail/index?id=" + this.data.info.id
+      title: this.data.info.description.substr(0,6) + '...',
+      imageUrl: this.data.info.image_url ? this.data.info.image_url : '',
+      path: "/pages/answer-detail/index?id=" + this.data.info.id
     }
   }
 })

@@ -557,20 +557,6 @@ Page({
       })
     }
   },
-
-  onShareAppMessage(res) {
-    if (res.from == "button") {
-      const topicIndex = this.data.topicIndex
-      const topics = this.data.topics
-      return {
-        title: topics[topicIndex].content,
-        imageUrl: topics[topicIndex].images ? topics[topicIndex].images[0] : '',
-        path: "/pages/topic-detail/index?topicId=" + topics[topicIndex].id
-      }
-    }
-    return {
-      title: "主页",
-      path: "/pages/wa/index"
-    }
+  onShareAppMessage() {
   }
 })
