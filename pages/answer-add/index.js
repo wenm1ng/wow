@@ -15,7 +15,8 @@ Page({
     helpType:0,
     isMaxSize: false,
     imageUrl: [],
-    isClear: false
+    isClear: false,
+    isLoadingAddAnswer: false
   },
 
   /**
@@ -107,10 +108,7 @@ Page({
    * 多图上传
    */
   addHelpUploadImage(curlData, imageFiles) {
-    wx.showToast({
-      title: "发布中...",
-      icon: "loading"
-    })
+    const that = this;
     const url = api.helpCenterAPI + "add-answer"
     return Promise.all(imageFiles.map((imageFile) => {
       return new Promise(function (resolve, reject) {
@@ -121,7 +119,6 @@ Page({
           data:curlData
         }).then((res) => {
           const data = JSON.parse(res.data);
-          wx.hideToast()
           if (data.code === 200) {
             // resolve(data.data.url)
             wx.showToast({
@@ -141,6 +138,9 @@ Page({
               duration: 2000//持续的时间
             })
           }
+          that.setData({
+            isLoadingAddAnswer: false
+          })
         }).catch((error) => {
           reject(error)
         })
@@ -149,13 +149,9 @@ Page({
   },
 
   addHelpNoImage(data){
-    wx.showToast({
-      title: "发布中...",
-      icon: "loading"
-    })
+    const that = this
     const url = api.helpCenterAPI + "add-answer"
     wxutil.request.post(url, data).then((res) => {
-      wx.hideToast()
       if (res.data.code === 200) {
         wx.showToast({
           title: '发布成功',
@@ -170,10 +166,13 @@ Page({
       }else{
         wx.showToast({
           title: res.data.code !== 400 ? res.data.msg : '发布失败',
-          icon: 'error',
+          icon: 'none',
           duration: 2000//持续的时间
         })
       }
+      that.setData({
+        isLoadingAddAnswer: false
+      })
     })
   },
   /**
@@ -190,14 +189,29 @@ Page({
     if(!this.onChek()){
       return;
     }
-    const data = {...this.data.formData, ...{"help_id":this.data.helpId}}
-    if(this.data.imageUrl.length !== 0){
-      //有上传图片，进行上传图片请求
-      this.addHelpUploadImage(data, this.data.imageUrl);
-    }else{
-      //普通post请求
-      this.addHelpNoImage(data);
-    }
+    getApp().preventActive(()=>{
+      wx.showModal({
+        title: "提示",
+        content: '确定要提交吗?',
+        success: (res) => {
+          if (res.confirm) {
+            const data = {...this.data.formData, ...{"help_id":this.data.helpId}}
+            this.setData({
+              isLoadingAddAnswer: true
+            })
+            if(this.data.imageUrl.length !== 0){
+              //有上传图片，进行上传图片请求
+              this.addHelpUploadImage(data, this.data.imageUrl);
+            }else{
+              //普通post请求
+              this.addHelpNoImage(data);
+            }
+          }
+        },
+        fail: (res) => {
+        },
+      })
+    })
   },
   setAnswerTitle(e){
     this.setData({

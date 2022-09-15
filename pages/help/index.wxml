@@ -144,7 +144,7 @@
 
     </l-card>
     <l-loadmore wx:if="{{!isEnd}}" show="{{loading}}" line l-class="loading" />
-    <l-loadmore show="{{isEnd && page != 1}}" line l-class="loading" type="end" />
+    <l-loadmore show="{{isEnd && help_list.length !== 0}}" line l-class="loading" type="end" />
     <view style="height:70rpx"></view>
 </scroll-view>
 

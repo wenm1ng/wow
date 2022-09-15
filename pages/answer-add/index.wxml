@@ -21,5 +21,5 @@
 </view>
 <view class="z-index-submit">
     <l-button size="mini" l-class="search-button" l-hover-class="search-hover-button" bindtap="onResetAnswer">重置</l-button>
-    <l-button size="mini" l-hover-class="search-button2" l-class="search-hover-button" bindtap="onAddAnswer">提交</l-button>
+    <l-button size="mini" l-hover-class="search-button2" l-class="search-hover-button" loading="{{isLoadingAddAnswer}}" bindtap="onAddAnswer">提交</l-button>
 </view>

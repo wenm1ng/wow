@@ -578,7 +578,7 @@ Page({
           } else {
             wx.lin.showMessage({
               type: "error",
-              content: "评论失败！"
+              content: res.data.code !== 400 ? res.data.msg : '评论失败！'
             })
           }
         })

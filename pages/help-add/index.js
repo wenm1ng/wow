@@ -171,7 +171,7 @@ Page({
           }else{
             wx.showToast({
               title: res.data.code !== 400 ? res.data.msg : '发布失败',
-              icon: 'error',
+              icon: 'none',
               duration: 2000//持续的时间
             })
           }
@@ -209,7 +209,7 @@ Page({
       }else{
         wx.showToast({
           title: res.data.code !== 400 ? res.data.msg : '发布失败',
-          icon: 'error',
+          icon: 'none',
           duration: 2000//持续的时间
         })
       }
