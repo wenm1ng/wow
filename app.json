@@ -29,7 +29,8 @@
     "pages/recharge-log/index",
     "pages/recharge-log-detail/index",
     "pages/leader-board/index",
-    "pages/board-caption/index"
+    "pages/board-caption/index",
+    "pages/lottery/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -53,6 +54,12 @@
       {
         "pagePath": "pages/help/index",
         "text": "帮帮忙",
+        "iconPath": "images/icon_tab/help.png",
+        "selectedIconPath": "images/icon_tab/help_hl.png"
+      },
+      {
+        "pagePath": "pages/lottery/index",
+        "text": "抽奖",
         "iconPath": "images/icon_tab/help.png",
         "selectedIconPath": "images/icon_tab/help_hl.png"
       },
