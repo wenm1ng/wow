@@ -14,6 +14,18 @@ view{
     float: left;
     position: relative;
 }
+.button-one{
+    width: 30%;
+    height: 80rpx;
+    line-height: 80rpx;
+    background-color: #fadbd9;
+    color: #e54d42;
+    text-align: center;
+    border-radius: 10rpx;
+    margin: 30rpx 10%;
+    float: left;
+    position: relative;
+}
 .curin-index{
     width: 100%;
     float: left;

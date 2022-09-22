@@ -8,6 +8,8 @@ Page({
     surplus:false,
     biutin:'点击翻牌',
   },
+  onLoad(options) {
+  },
   again:function(e){
     if (this.data.implement == 3 || this.data.implement == 0){
       this.setData({

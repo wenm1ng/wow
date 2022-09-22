@@ -1,5 +1,9 @@
 <!--pages/lottery/index.wxml-->
+
+<view class="button-one" bindtap="again">单刷</view>
+<view class="button-one" bindtap="again">十连刷</view>
 <view class="button" bindtap="again">重新翻牌</view>
+<!--<l-button plain="{{true}}" l-class="button" bg-color="fadbd9">重新翻牌</l-button>-->
 <view class="curin-index">
     <view bindtap="{{whether?'':'tamin'}}" wx:for="{{9}}" wx:key="index" data-index="{{index+1}}" class="currin {{really == index+1?'animt':''}} {{really != index+1 && surplus?'animt':''}} {{really == ''?'cinton'+(index+1):''}}" style="{{really == index+1 && implement > 1?'background-image: linear-gradient(45deg, #f43f3b, #ec008c);':''}}{{really != index+1 && surplus && implement > 2?'background-image: linear-gradient(45deg, #39b54a, #8dc63f);':''}}">
         {{really == index+1?flop:''}}{{really != index+1 && really != ''?biutin:''}}{{really == ''?'点击翻牌':''}}
