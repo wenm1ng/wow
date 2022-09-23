@@ -25,6 +25,11 @@ const request = {
     return this.Request('POST', handler)
   },
 
+  postLoad(url, data = {}, header = {}) {
+    const handler = { url, data, header }
+    return this.Request('POST', handler, 1)
+  },
+
   put(url, data = {}, header = {}) {
     const handler = { url, data, header }
     return this.Request('PUT', handler)
@@ -36,12 +41,15 @@ const request = {
   },
 
   // RequestHandler
-  Request(method, handler) {
-    ajaxTime++;//调用异步请求方法就加一
-    wx.showLoading({//显示loading效果
-      title: '加载中...',
-      mask:true
-    })
+  Request(method, handler, isLoading = 0) {
+    if(isLoading){
+      ajaxTime++;//调用异步请求方法就加一
+      wx.showLoading({//显示loading效果
+        title: '加载中...',
+        mask:true
+      })
+    }
+
     const { url, data, header } = handler
     let head = {
       'content-type': 'application/json'
@@ -67,9 +75,11 @@ const request = {
         },
         complete() {
           wx.hideNavigationBarLoading()
-          ajaxTime--;
-          if(ajaxTime === 0){
-            wx.hideLoading()//关闭loading效果
+          if(isLoading){
+            ajaxTime--;
+            if(ajaxTime === 0){
+              wx.hideLoading()//关闭loading效果
+            }
           }
         }
       })

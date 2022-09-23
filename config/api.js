@@ -21,6 +21,7 @@ module.exports = {
   socketAPI: socketAPI, // Socket接口
   chatAPI: baseAPI2 + 'chat-room/', // 聊天接口
   orderAPI: baseAPI2 + 'order/', //订单接口
+  mountAPI: baseAPI2 + 'mount/', //订单接口
   signs: signs,
   imageBgUrl,
   imageIconUrl,
