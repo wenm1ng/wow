@@ -1,12 +1,28 @@
 <!--pages/lottery/index.wxml-->
 
-<view class="button-one" bindtap="doLottery" data-type="1">单刷</view>
-<view class="button-one" bindtap="doLottery" data-type="2">十连刷</view>
+<view class="button-one" bindtap="doLottery" data-type="1" data-one="0">单刷</view>
+<view class="button-one" bindtap="doLottery" data-type="2" data-one="0">十连刷</view>
+<view class="button-one" bindtap="doLottery" data-type="2" data-one="1">一键十连刷</view>
+<view class="button-one" bindtap="gotoLotteryLog">一键十连刷</view>
 <view class="button" bindtap="again">重新翻牌</view>
 <!--<l-button plain="{{true}}" l-class="button" bg-color="fadbd9">重新翻牌</l-button>-->
 <view class="curin-index">
-    <view bindtap="{{whether?'':'tamin'}}" wx:for="{{lotteryList}}" wx:key="index" data-index="{{index}}" class="currin {{item.is_open === 1?'animt':''}} {{item.is_open === 1 ?'cinton'+(index+1):''}}" style="{{item.is_open === 1 && item.is_show_image === 1?'background-image: url('+item.image_url+');':''}}{{really != index+1 && surplus && implement > 2?'background-image: linear-gradient(45deg, #39b54a, #8dc63f);':''}}">
+    <view bindtap="{{whether?'':'tamin'}}" wx:for="{{lotteryList}}" wx:key="index" data-index="{{index}}" class="currin {{item.is_open === 1?'animt':''}} {{item.is_open === 1 ?'cinton'+(index+1):''}}" style="{{item.is_open === 1 && item.is_show_image === 1 && item.image_url !== ''?'background-image: url('+item.image_url+');':(item.is_show_image === 1 ? 'background-image: linear-gradient(45deg, #fff, #fff);color:black':'')}}">
         {{really == index+1?flop:''}}{{really != index+1 && really != ''?biutin:''}}{{item.title}}
     </view>
 </view>
 <!--        background-image: linear-gradient(45deg, #f43f3b, #ec008c)-->
+<!--        {{really != index+1 && surplus && implement > 2?'background-image: linear-gradient(45deg, #39b54a, #8dc63f);':''}}-->
+<l-popup show="{{modalShow}}"  locked="{{false}}">
+    <l-card type="primary"
+            image="{{nowImageUrl}}"
+            title="{{nowName}}">
+        <!-- 此处为content -->
+<!--        <view class="content">-->
+<!--            新疆苹果,又名塞威氏苹果,蔷微科,落叶乔木。原产新疆西部天山北山麓,-->
+<!--            主要集中分布于伊犁河谷果子沟,新源县境内的那拉提野果林,巩留的莫合-->
+<!--            林场,垂直分布区域海拔在1000～1300m的山顶、山坡、河谷区域。-->
+<!--        </view>-->
+    </l-card>
+</l-popup>
+<!--<l-popup show="{{true}}"> </l-popup>-->

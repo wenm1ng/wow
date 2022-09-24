@@ -1,0 +1,37 @@
+<!--pages/lottery-log/index.wxml-->
+<scroll-view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content profile-scroll" lower-threshold="30" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{height}}rpx !important;" scroll-top="{{scrollTop}}">
+    <view wx:if="{{info.id}}" class="comment-box" wx:if="{{comments.length > 0}}">
+        <view class="comment" wx:for="{{comments}}" wx:key="item">
+            <image class="avatar" src="{{item.avatar_url}}" data-user-id="{{item.user_id}}" />
+            <view class="comment-right {{index == comments.length - 1 && isEnd ? 'non-border' : ''}}">
+                <view class="comment-top">
+                    <view class="nick-name" data-user-id="{{item.user_id}}">{{item.user_name}}
+                    </view>
+                    <view class="time">{{item.create_at}}</view>
+                </view>
+                <view class="comment-bottom">
+                    <view class="content">
+                        <text wx:if="{{item.reply_user_id}}">回复</text>
+                        <text class="nick-name">{{item.reply_user_name}}: </text>{{item.content}}
+                    </view>
+                    <view class="delete-box" wx:if="{{userId == item.user_id}}">
+                        <view class="delete-text" data-id="{{item.id}}" catchtap="deleteComment">删除</view>
+                    </view>
+                    <view class="delete-box" wx:if="{{userId != item.user_id}}">
+                        <view class="delete-text" data-id="{{item.id}}" data-index="{{index}}" bindtap="onCommentItemTap">回复</view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <!--    <view style=""></view>-->
+        <l-loadmore show="{{comments.length !== 0 && isEnd}}" line l-class="loading" type="end" />
+
+        <view class="more" wx:if="{{!isEnd}}" bindtap="getMoreComments">
+            <text>展开更多评论</text>
+            <view class="more-icon">
+                <l-icon name="down" color="#337559" size="22" />
+            </view>
+        </view>
+    </view>
+    <l-loadmore show="{{comments.length === 0}}" line l-class="loading" type="end" end-text="暂时还没有人评论哦"/>
+</scroll-view>

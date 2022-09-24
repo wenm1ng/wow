@@ -36,7 +36,7 @@ view{
     width: 28%;
     float: left;
     background-image: linear-gradient(45deg, #0081ff, #1cbbb4);
-    background-size: 200rpx 200rpx;
+    background-size: 210rpx 200rpx;
     color: #fff;
     text-align: center;
     height: 200rpx;
@@ -181,4 +181,11 @@ view{
 
 page{
     background-color: #dbdbdb
+}
+
+/*************************************************自定义css**********************************************/
+.modal-view{
+    width:500rpx;
+    height:400rpx;
+    background-color: #fff;
 }
