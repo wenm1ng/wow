@@ -15,10 +15,16 @@ Page({
     is_all: 0,
     type: 0,
     lotteryList: [],
-    modalShow: true,
+    modalShow: false,
     nowImageUrl: 'https://mingtongct.com/images/mount/argusfelstalkermountred.jpg',
-    nowName: '赤红兽',
-    one: 0
+    nowName: '奥利瑟拉佐尔的烈焰之爪',
+    one: 0,
+    bingoList: [], //中奖坐骑
+    lengths: 0,
+    mountView: 200,
+    mountWidth: 150,
+    mountHeight: 150,
+    isLotterying: false, //正在抽奖
   },
   onLoad(options) {
     this.setData({
@@ -35,6 +41,16 @@ Page({
     })
   },
   doLottery(event){
+    if(!app.checkUserDetailGoAuth()){
+      return;
+    }
+    if(this.data.isLotterying){
+      return;
+    }
+    this.setData({
+      isLotterying: true,
+
+    })
     wx.showLoading({
       title: '刷坐骑中...',
     });
@@ -49,19 +65,51 @@ Page({
     let that = this;
     wxutil.request.post(url, data).then((res) => {
       if (res.data.code === 200) {
-        this.setData({
+        const length = res.data.data.length
+        that.setData({
           lotteryList: res.data.data,
           type: type,
-          one: one
+          one: one,
+          lengths: length
         })
         if(one === '1'){
-          //一键十连刷
-          const length = res.data.data.length
-          setTimeout(function(){
-            for (var i = 0;i < length; i++){
-              that.turnOver(i)
+          let bingoList = [];
+          for (let i = 0;i < length; i++){
+            if(res.data.data[i].is_bingo === 1){
+              bingoList.push(res.data.data[i])
             }
-          },500)
+          }
+          let mountView
+          let mountWidth
+          let mountHeight
+          let bingoLength = bingoList.length
+          if(bingoLength === 1){
+            mountView = 600
+            mountWidth = 500
+            mountHeight = 500
+          } else if(bingoLength === 2 ){
+            mountView = 300
+            mountWidth = 300
+            mountHeight = 300
+          }else{
+            mountView = 200
+            mountWidth = 150
+            mountHeight = 150
+          }
+          that.setData({
+            bingoList: bingoList,
+            mountView: mountView,
+            mountWidth: mountWidth,
+            mountHeight: mountHeight
+          })
+          console.log(that.data.mountView)
+          //一键十连刷
+          for (let i = 0;i < length; i++){
+            that.turnOver(i)
+            if(res.data.data[i].is_bingo === 1){
+              bingoList.push(res.data.data[i])
+            }
+          }
         }
       }else if(res.data.code === 40001){
         wx.showToast({
@@ -145,17 +193,18 @@ Page({
     if(lotteryList[index].is_open === 1){
       return;
     }
-    lotteryList[index].is_open = 1;
 
     that.setData({
       lotteryList: lotteryList,
     })
+    let time = 500 * (index + 1);
     setTimeout(function () {
-      lotteryList[index].title = '';
+      lotteryList[index].is_open = 1;
+      // lotteryList[index].title = '';
       that.setData({
         lotteryList: lotteryList,
       })
-    }, 500)
+    }, time)
     setTimeout(function () {
       lotteryList[index].is_show_image = 1;
       lotteryList[index].title = lotteryList[index].name;
@@ -163,7 +212,17 @@ Page({
       that.setData({
         lotteryList: lotteryList,
       })
-    }, 1200)
+      if(index === that.data.lengths - 1 && that.data.bingoList.length !== 0){
+        that.setData({
+          modalShow: true
+        })
+      }
+      if(index === that.data.lengths - 1){
+        that.setData({
+          isLotterying: false
+        })
+      }
+    }, time + 700)
   },
   onShareAppMessage(options) {
   }

@@ -1,9 +1,9 @@
 <!--pages/lottery/index.wxml-->
 
-<view class="button-one" bindtap="doLottery" data-type="1" data-one="0">单刷</view>
-<view class="button-one" bindtap="doLottery" data-type="2" data-one="0">十连刷</view>
+<view class="button-one" bindtap="doLottery" data-type="1" data-one="1">一键刷坐骑</view>
+<!--<view class="button-one" bindtap="doLottery" data-type="2" data-one="0">十连刷</view>-->
 <view class="button-one" bindtap="doLottery" data-type="2" data-one="1">一键十连刷</view>
-<view class="button-one" bindtap="gotoLotteryLog">一键十连刷</view>
+<view class="button-one" bindtap="gotoLotteryLog">手气日志</view>
 <view class="button" bindtap="again">重新翻牌</view>
 <!--<l-button plain="{{true}}" l-class="button" bg-color="fadbd9">重新翻牌</l-button>-->
 <view class="curin-index">
@@ -13,16 +13,46 @@
 </view>
 <!--        background-image: linear-gradient(45deg, #f43f3b, #ec008c)-->
 <!--        {{really != index+1 && surplus && implement > 2?'background-image: linear-gradient(45deg, #39b54a, #8dc63f);':''}}-->
-<l-popup show="{{modalShow}}"  locked="{{false}}">
-    <l-card type="primary"
-            image="{{nowImageUrl}}"
-            title="{{nowName}}">
-        <!-- 此处为content -->
-<!--        <view class="content">-->
-<!--            新疆苹果,又名塞威氏苹果,蔷微科,落叶乔木。原产新疆西部天山北山麓,-->
-<!--            主要集中分布于伊犁河谷果子沟,新源县境内的那拉提野果林,巩留的莫合-->
-<!--            林场,垂直分布区域海拔在1000～1300m的山顶、山坡、河谷区域。-->
+<l-popup show="{{modalShow}}"  locked="{{false}}" bind:lintap="nextMount">
+    <view style="width:600rpx;height:650rpx;background-color: #fff">
+        <view style="width: 600rpx;height:150rpx;text-align: center">
+            <text style="font-size:80rpx;">坐骑出炉!</text>
+        </view>
+        <view wx:for="{{bingoList}}" class="mount-view" style="width:{{mountView}}rpx;">
+            <image src="{{item.image_url}}" style="width:{{mountWidth}}rpx;height:{{mountHeight}}rpx;margin:0 auto;"/>
+            <view style="text-align: center;">
+                <text>{{item.name}}</text>
+            </view>
+        </view>
+<!--        <view class="mount-view" style="width:200rpx;">-->
+<!--            <image src="{{nowImageUrl}}" style="width:150rpx;height:150rpx;margin:0 auto;"/>-->
+<!--            <view style="text-align: center;">-->
+<!--                <text>{{nowName}}</text>-->
+<!--            </view>-->
 <!--        </view>-->
-    </l-card>
+<!--        <view class="mount-view" style="width:200rpx;">-->
+<!--            <image src="{{nowImageUrl}}" style="width:150rpx;height:150rpx;margin:0 auto;"/>-->
+<!--            <view style="text-align: center;">-->
+<!--                <text>{{nowName}}</text>-->
+<!--            </view>-->
+<!--        </view>-->
+<!--        <view class="mount-view" style="width:200rpx;">-->
+<!--            <image src="{{nowImageUrl}}" style="width:150rpx;height:150rpx;margin:0 auto;"/>-->
+<!--            <view style="text-align: center;">-->
+<!--                <text>{{nowName}}</text>-->
+<!--            </view>-->
+<!--        </view>-->
+    </view>
+
+<!--    <l-card type="primary"-->
+<!--            image="{{nowImageUrl}}"-->
+<!--            describe="{{nowName}}" title="{{nowName}}" l-class="mount-modal" l-title-class="mount-name" l-img-class="mount-img">-->
+<!--        &lt;!&ndash; 此处为content &ndash;&gt;-->
+<!--&lt;!&ndash;        <view class="content">&ndash;&gt;-->
+<!--&lt;!&ndash;            新疆苹果,又名塞威氏苹果,蔷微科,落叶乔木。原产新疆西部天山北山麓,&ndash;&gt;-->
+<!--&lt;!&ndash;            主要集中分布于伊犁河谷果子沟,新源县境内的那拉提野果林,巩留的莫合&ndash;&gt;-->
+<!--&lt;!&ndash;            林场,垂直分布区域海拔在1000～1300m的山顶、山坡、河谷区域。&ndash;&gt;-->
+<!--&lt;!&ndash;        </view>&ndash;&gt;-->
+<!--    </l-card>-->
 </l-popup>
 <!--<l-popup show="{{true}}"> </l-popup>-->

@@ -189,3 +189,7 @@ page{
     height:400rpx;
     background-color: #fff;
 }
+
+.mount-view{
+    float:left;
+}
