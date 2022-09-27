@@ -2,7 +2,7 @@
 const app = getApp()
 const api = app.api
 const wxutil = app.wxutil
-const pageSize = 7 // 每页显示条数
+const pageSize = 15 // 每页显示条数
 
 Page({
   data: {
@@ -11,6 +11,13 @@ Page({
     userId: -1,
     page: 1,
     list: [],
+    orderColumn: 'times',
+    sort: 'desc',
+    orderObj:{
+      timesOrder: 'desc',
+      sucTimesOrder: 'desc',
+      rateOrder: 'desc',
+    },
     showAction: false, // 是否显示操作菜单
     isEnd: false, // 是否到底onStarTap
     index: -1,
@@ -25,6 +32,35 @@ Page({
     this.getUserId()
   },
 
+  onOrder(event){
+    const orderColumn = event.currentTarget.dataset.order
+
+    let sort;
+    let sortName;
+    if(orderColumn === 'times'){
+      sort = this.setSort(this.data.orderObj.timesOrder)
+      sortName = 'orderObj.timesOrder';
+    }else if(orderColumn === 'suc_times'){
+      sort = this.setSort(this.data.orderObj.sucTimesOrder)
+      sortName = 'orderObj.sucTimesOrder';
+    }else{
+      sort = this.setSort(this.data.orderObj.rateOrder)
+      sortName = 'orderObj.rateOrder';
+    }
+    this.setData({
+      orderColumn: orderColumn,
+      sort: sort,
+      [sortName]: sort,
+      page: 1
+    })
+    this.getLotteryLogList()
+  },
+  setSort(str){
+    if(str === 'desc'){
+      return 'asc'
+    }
+    return 'desc'
+  },
   /**
    * 获取窗口高度
    */
@@ -38,20 +74,47 @@ Page({
         const height = windowHeight * ratio;
         console.log(height);
         that.setData({
-          height: height - 600,
+          height: height - 100,
         })
       }
     })
   },
+
+  /**
+   * 搜索
+   */
+  doSearch(e){
+    this.setData({
+      name: e.detail.value === undefined ? '' : e.detail.value,
+      page: 1
+    })
+
+    this.getLotteryLogList();
+  },
+  /**
+   * 触底加载
+   */
+  scrollToLower() {
+    const page = this.data.page
+    this.setData({
+      isLoading: true,
+      page:page + 1
+    })
+    this.getLotteryLogList()
+  },
+
   /**
    * 获取日志列表
    */
-  getLotteryLogList(page = 1) {
+  getLotteryLogList() {
     const url = api.mountAPI + "lottery-log-list"
+    const page = this.data.page;
     let data = {
       pageSize: pageSize,
       page: page,
-      name: this.data.name
+      name: this.data.name,
+      order: this.data.orderColumn,
+      sort: this.data.sort
     }
 
     if (this.data.isEnd && page !== 1) {
@@ -82,13 +145,6 @@ Page({
         userId: app.getUserDetailNew().id
       })
     }
-  },
-  /**
-   * 加载更多评论
-   */
-  getMoreComments() {
-    const page = this.data.page
-    this.getComments(page + 1)
   },
 
   /**

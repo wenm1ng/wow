@@ -20,6 +20,10 @@ const request = {
     return this.Request('GET', handler)
   },
 
+  getLoad(url, data = {}, header = {}) {
+    const handler = { url, data, header }
+    return this.Request('GET', handler, 1)
+  },
   post(url, data = {}, header = {}) {
     const handler = { url, data, header }
     return this.Request('POST', handler)

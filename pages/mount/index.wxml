@@ -1,0 +1,32 @@
+<!--pages/mount/index.wxml-->
+<l-search-bar l-class="wa-search" placeholder="搜索" show-cancel="{{false}}" bind:linblur="doSearch" bind:linclear="doSearch"></l-search-bar>
+<scroll-view scroll-x enable-flex class="tag-scroll" scroll-into-view="{{null}}">
+    <view>
+        <l-tag l-class="tag tag-scroll2" plain="{{false}}"
+               font-color="{{orderColumn === 'times' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="times" icon="{{sort === 'desc' ? 'down' : 'up'}}">
+            坐骑概率</l-tag>
+    </view>
+    <view class="tag tag-scroll2" style="left:70%">
+        <text>已选:{{mountId.length}}</text>
+    </view>
+</scroll-view>
+
+<scroll-view class="out-view" scroll-y="{{true}}" style="height:{{height}}rpx !important;margin-top:100rpx;" scroll-top="0">
+    <view wx:for="{{mountList}}" data-index="{{index}}" bindtap="onChecked" class="mount-view {{item.is_checked ? 'hover-background' : ''}}" style="margin-bottom: {{index === mountList.length - 1 ? '100' : '0'}}rpx">
+        <image class="mount-img" src="{{item.image_url}}"/>
+<!--        {{item.is_checked ? 'hover-img' : ''}}-->
+        <view class="mount-text">{{item.name}}</view>
+        <view>概率:{{item.rate}}%</view>
+    </view>
+</scroll-view>
+
+        <!--中间z-index按钮-->
+<view class="add-button-view" bindtap="gotoLottery">
+    <l-button size="medium" l-class="add-button" width="200">我选好了</l-button>
+</view>
+<view class="all-button-view" bindtap="selectAll" data-type="all">
+    <l-button size="medium" l-class="add-button" width="200">全选</l-button>
+</view>
+<view class="reset-button-view" bindtap="selectAll" data-type="reset">
+    <l-button size="medium" l-class="search-button" l-hover-class="search-hover-button" width="200">重选</l-button>
+</view>

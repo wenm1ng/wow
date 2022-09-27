@@ -1,37 +1,45 @@
 <!--pages/lottery-log/index.wxml-->
-<scroll-view class="{{tabsFixed ? 'tab-content-top' : ''}} tab-content profile-scroll" lower-threshold="30" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{height}}rpx !important;" scroll-top="{{scrollTop}}">
-    <view wx:if="{{info.id}}" class="comment-box" wx:if="{{comments.length > 0}}">
-        <view class="comment" wx:for="{{comments}}" wx:key="item">
-            <image class="avatar" src="{{item.avatar_url}}" data-user-id="{{item.user_id}}" />
-            <view class="comment-right {{index == comments.length - 1 && isEnd ? 'non-border' : ''}}">
+<l-search-bar l-class="wa-search" placeholder="搜索" show-cancel="{{false}}" bind:linblur="doSearch" bind:linclear="doSearch"></l-search-bar>
+<scroll-view scroll-x enable-flex class="tag-scroll" scroll-into-view="{{null}}">
+    <view>
+        <l-tag l-class="tag tag-scroll2" plain="{{false}}"
+               font-color="{{orderColumn === 'times' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="times" icon="{{orderObj.timesOrder === 'desc' ? 'down' : 'up'}}">
+            尝试次数</l-tag>
+    </view>
+    <view>
+        <l-tag l-class="tag tag-scroll2 tag1" plain="{{false}}"
+               font-color="{{orderColumn === 'suc_times' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="suc_times" icon="{{orderObj.sucTimesOrder === 'desc' ? 'down' : 'up'}}">
+            刷中次数</l-tag>
+    </view>
+    <view>
+        <l-tag l-class="tag tag-scroll2 tag2" plain="{{false}}"
+               font-color="{{orderColumn === 'rate' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="rate" icon="{{orderObj.rateOrder === 'desc' ? 'down' : 'up'}}">
+            坐骑概率</l-tag>
+    </view>
+</scroll-view>
+<scroll-view class="tab-content profile-scroll" lower-threshold="30" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{height}}rpx !important;margin-top:100rpx;" scroll-top="{{scrollTop}}" 	refresher-background="#fff">
+    <view class="comment-box" wx:if="{{list.length > 0}}">
+        <view class="comment" wx:for="{{list}}" wx:key="item">
+            <image class="avatar" src="{{item.image_url}}" />
+            <view class="comment-right {{index === list.length - 1 && isEnd ? 'non-border' : ''}}">
                 <view class="comment-top">
-                    <view class="nick-name" data-user-id="{{item.user_id}}">{{item.user_name}}
+                    <view class="nick-name">{{item.name}}
                     </view>
-                    <view class="time">{{item.create_at}}</view>
                 </view>
                 <view class="comment-bottom">
                     <view class="content">
-                        <text wx:if="{{item.reply_user_id}}">回复</text>
-                        <text class="nick-name">{{item.reply_user_name}}: </text>{{item.content}}
-                    </view>
-                    <view class="delete-box" wx:if="{{userId == item.user_id}}">
-                        <view class="delete-text" data-id="{{item.id}}" catchtap="deleteComment">删除</view>
-                    </view>
-                    <view class="delete-box" wx:if="{{userId != item.user_id}}">
-                        <view class="delete-text" data-id="{{item.id}}" data-index="{{index}}" bindtap="onCommentItemTap">回复</view>
+                        <view>
+                            <text>尝试<text style="color:#337559;font-size: 40rpx;">{{item.times}}</text>次</text>
+                            <text style="float:right;margin-right:10%">刷出<text style="color:#d81e05;font-size: 40rpx;">{{item.suc_times}}</text>次</text>
+                        </view>
                     </view>
                 </view>
             </view>
         </view>
         <!--    <view style=""></view>-->
-        <l-loadmore show="{{comments.length !== 0 && isEnd}}" line l-class="loading" type="end" />
+        <l-loadmore show="{{list.length !== 0 && isEnd}}" line l-class="loading" type="end" />
+        <l-loadmore wx:if="{{!isEnd}}" show="{{isLoading}}" line l-class="loading" />
 
-        <view class="more" wx:if="{{!isEnd}}" bindtap="getMoreComments">
-            <text>展开更多评论</text>
-            <view class="more-icon">
-                <l-icon name="down" color="#337559" size="22" />
-            </view>
-        </view>
     </view>
-    <l-loadmore show="{{comments.length === 0}}" line l-class="loading" type="end" end-text="暂时还没有人评论哦"/>
+    <nothing wx:if="{{list.length === 0}}" pic="../../images/icon_nothing/pic_hole.png" tip="暂时还没有刷坐骑记录" />
 </scroll-view>

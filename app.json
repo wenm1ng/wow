@@ -31,7 +31,8 @@
     "pages/leader-board/index",
     "pages/board-caption/index",
     "pages/lottery/index",
-    "pages/lottery-log/index"
+    "pages/lottery-log/index",
+    "pages/mount/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -59,7 +60,7 @@
         "selectedIconPath": "images/icon_tab/help_hl.png"
       },
       {
-        "pagePath": "pages/lottery/index",
+        "pagePath": "pages/mount/index",
         "text": "抽奖",
         "iconPath": "images/icon_tab/help.png",
         "selectedIconPath": "images/icon_tab/help_hl.png"

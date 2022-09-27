@@ -4,7 +4,22 @@
 <!--<view class="button-one" bindtap="doLottery" data-type="2" data-one="0">十连刷</view>-->
 <view class="button-one" bindtap="doLottery" data-type="2" data-one="1">一键十连刷</view>
 <view class="button-one" bindtap="gotoLotteryLog">手气日志</view>
-<view class="button" bindtap="again">重新翻牌</view>
+
+<view class="btn-popup" bindtap="togglePopup">
+    <l-icon l-class="{{showPopup? 'btn-active' : 'btn'}}" name="close" size="15" color="#777" />
+</view>
+<!-- 下拉层 -->
+<l-popup show="{{showPopup}}" animation content-align="top" bind:lintap="togglePopup" z-index="99">
+    <view class="popup">
+        <l-tag l-class="tag" plain="{{labelIndex !== '-1'}}" shape="circle"
+               bg-color="#337559" font-color="{{labelIndex === '-1' ? '#fff' : '#337559'}}" bind:lintap="onTagTap"
+               data-index="-1">#当前全部</l-tag>
+        <l-tag wx:for="{{name}}" wx:key="item" l-class="tag" plain="{{labelIndex !== index}}" shape="circle"
+               bg-color="#337559" font-color="{{labelIndex === index ? '#fff' : '#337559'}}" bind:lintap="onTagTap"
+               data-index="{{index}}">#{{item}}</l-tag>
+    </view>
+</l-popup>
+<!--<view class="button" bindtap="again">重新翻牌</view>-->
 <!--<l-button plain="{{true}}" l-class="button" bg-color="fadbd9">重新翻牌</l-button>-->
 <view class="curin-index">
     <view bindtap="{{whether?'':'tamin'}}" wx:for="{{lotteryList}}" wx:key="index" data-index="{{index}}" class="currin {{item.is_open === 1?'animt':''}} {{item.is_open === 1 ?'cinton'+(index+1):''}}" style="{{item.is_open === 1 && item.is_show_image === 1 && item.image_url !== ''?'background-image: url('+item.image_url+');':(item.is_show_image === 1 ? 'background-image: linear-gradient(45deg, #fff, #fff);color:black':'')}}">
@@ -13,8 +28,8 @@
 </view>
 <!--        background-image: linear-gradient(45deg, #f43f3b, #ec008c)-->
 <!--        {{really != index+1 && surplus && implement > 2?'background-image: linear-gradient(45deg, #39b54a, #8dc63f);':''}}-->
-<l-popup show="{{modalShow}}"  locked="{{false}}" bind:lintap="nextMount">
-    <view style="width:600rpx;height:650rpx;background-color: #fff">
+<l-popup show="{{modalShow}}"  locked="{{false}}" >
+    <view style="width:600rpx;height:650rpx;background-color: #fff" bindtap="closeModal">
         <view style="width: 600rpx;height:150rpx;text-align: center">
             <text style="font-size:80rpx;">坐骑出炉!</text>
         </view>

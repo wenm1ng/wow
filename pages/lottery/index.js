@@ -12,6 +12,8 @@ Page({
     surplus:false,
     biutin:'点击开刷',
     id: [],
+    name:[],
+    labelIndex: '-1',
     is_all: 0,
     type: 0,
     lotteryList: [],
@@ -25,11 +27,33 @@ Page({
     mountWidth: 150,
     mountHeight: 150,
     isLotterying: false, //正在抽奖
+    showPopup: false, //标签筛选
   },
   onLoad(options) {
     this.setData({
-      id:options.id ? options.id : [],
+      id:options.id ? JSON.parse(options.id) : [],
+      name:options.name ? JSON.parse(options.name) : [],
       is_all: options.is_all ? options.is_all : 1
+    })
+    // console.log(this.data.id, this.data.name);
+  },
+  /**
+   * 展开或收起弹出层
+   */
+  togglePopup() {
+    this.setData({
+      showPopup: !this.data.showPopup
+    })
+  },
+  onTagTap(event) {
+    this.setData({
+      labelIndex: event.currentTarget.dataset.index
+    })
+  },
+  //关闭弹窗
+  closeModal(){
+    this.setData({
+      modalShow: false
     })
   },
   gotoLotteryLog(){
@@ -57,8 +81,10 @@ Page({
     const type = event.currentTarget.dataset.type
     const one = event.currentTarget.dataset.one
     const url = api.mountAPI + 'lottery';
+    const index = parseInt(this.data.index);
+
     const data = {
-      id: this.data.id,
+      id: index === -1 ? this.data.id : [this.data.id[index]],
       is_all: this.data.is_all,
       type:type
     }
@@ -85,8 +111,8 @@ Page({
           let bingoLength = bingoList.length
           if(bingoLength === 1){
             mountView = 600
-            mountWidth = 500
-            mountHeight = 500
+            mountWidth = 400
+            mountHeight = 400
           } else if(bingoLength === 2 ){
             mountView = 300
             mountWidth = 300
