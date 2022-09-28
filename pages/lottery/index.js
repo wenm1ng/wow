@@ -33,7 +33,7 @@ Page({
     showConfirm: false, //confirm框
     height: 600,
     scrollTop: 0,
-    luckyCoin: 0, //幸运币
+    luckyCoin: '', //幸运币
   },
   onLoad(options) {
     this.setData({
@@ -109,6 +109,9 @@ Page({
     if(!app.checkUserDetailGoAuth()){
       return;
     }
+    if(this.data.isLotterying){
+      return;
+    }
     wx.navigateTo({
       url: "/pages/lottery-log/index"
     })
@@ -139,9 +142,9 @@ Page({
     }
     wxutil.request.post(url, data).then((res) => {
       if (res.data.code === 200) {
-        const length = res.data.data.length
+        const length = res.data.data['list'].length
         that.setData({
-          lotteryList: res.data.data,
+          lotteryList: res.data.data['list'],
           type: type,
           one: one,
           lengths: length
@@ -149,8 +152,8 @@ Page({
         if(one === '1'){
           let bingoList = [];
           for (let i = 0;i < length; i++){
-            if(res.data.data[i].is_bingo === 1){
-              bingoList.push(res.data.data[i])
+            if(res.data.data['list'][i].is_bingo === 1){
+              bingoList.push(res.data.data['list'][i])
             }
           }
           let mountView
@@ -174,14 +177,15 @@ Page({
             bingoList: bingoList,
             mountView: mountView,
             mountWidth: mountWidth,
-            mountHeight: mountHeight
+            mountHeight: mountHeight,
+            luckyCoin: this.data.luckyCoin - res.data.data['lucky_coin']
           })
 
           //一键十连刷
           for (let i = 0;i < length; i++){
             that.turnOver(i)
-            if(res.data.data[i].is_bingo === 1){
-              bingoList.push(res.data.data[i])
+            if(res.data.data['list'][i].is_bingo === 1){
+              bingoList.push(res.data.data['list'][i])
             }
           }
         }

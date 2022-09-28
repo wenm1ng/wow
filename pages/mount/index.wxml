@@ -6,7 +6,7 @@
                font-color="{{orderColumn === 'times' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="times" icon="{{sort === 'desc' ? 'down' : 'up'}}">
             坐骑概率</l-tag>
     </view>
-    <view class="tag tag-scroll2" style="left:70%">
+    <view class="tag tag-scroll2" style="left:70%;height: 0">
         <text>已选:{{mountId.length}}</text>
     </view>
 </scroll-view>

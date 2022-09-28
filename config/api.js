@@ -1,6 +1,6 @@
 // const baseAPI2 = "https://www.mingtongct.com/api/v1/"
-// const baseAPI2 = "http://192.168.39.101:9909/api/v1/"
-const baseAPI2 = "http://127.0.0.1:9909/api/v1/"
+const baseAPI2 = "http://192.168.39.101:9909/api/v1/"
+// const baseAPI2 = "http://127.0.0.1:9909/api/v1/"
 const socketAPI = "wss://www.mingtongct.com/ws/"
 // const socketAPI = "ws://192.168.39.101:9909"
 // const socketAPI = "ws://127.0.0.1:9908"

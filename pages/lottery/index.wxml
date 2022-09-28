@@ -7,8 +7,10 @@
 <view style="margin-top:30rpx;margin-left:5%">
     <text>当前可刷出的坐骑：{{labelIndex == -1 ? '当前全部' : name[labelIndex]}}</text>
 </view>
-<view style="margin-top:10rpx;margin-left:5%">
-    <text>我的幸运币：{{luckyCoin}}</text>
+<view style="margin-top:10rpx;margin-left:5%;height:50rpx">
+    <text style="float:left">我的幸运币：{{luckyCoin}}</text>
+    <view style="float:left;color:#1f7dd0;font-size: 25rpx;height:45rpx;margin-left:5%" hover-class="hover-color">帮币换<l-icon name="backward" size="30" color="#1f7dd0" l-class="inline"/>幸运币</view>
+    <view style="float:left;color:#1f7dd0;font-size: 25rpx;height:45rpx;margin-left:5%;display: inline" hover-class="hover-color">看广告奖励<l-icon name="add" size="30" color="#1f7dd0" l-class="inline"/>幸运币</view>
 </view>
 <view style="text-align: center">
     <l-button size="medium" l-class="button-one left" width="200"  bindtap="doLottery" bg-color="#337559" data-type="1" data-one="1">一键单刷</l-button>
