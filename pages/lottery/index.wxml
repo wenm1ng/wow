@@ -1,29 +1,43 @@
 <!--pages/lottery/index.wxml-->
 
-<view class="button-one" bindtap="doLottery" data-type="1" data-one="1">一键刷坐骑</view>
-<!--<view class="button-one" bindtap="doLottery" data-type="2" data-one="0">十连刷</view>-->
-<view class="button-one" bindtap="doLottery" data-type="2" data-one="1">一键十连刷</view>
-<view class="button-one" bindtap="gotoLotteryLog">手气日志</view>
+<!--<view class="button-one" bindtap="doLottery" data-type="1" data-one="1">一键单刷</view>-->
+<!--&lt;!&ndash;<view class="button-one" bindtap="doLottery" data-type="2" data-one="0">十连刷</view>&ndash;&gt;-->
+<!--<view class="button-one" bindtap="doLottery" data-type="2" data-one="1">一键九连</view>-->
+<!--<view class="button-one" bindtap="gotoLotteryLog">坐骑记录</view>-->
+<view style="margin-top:30rpx;margin-left:5%">
+    <text>当前可刷出的坐骑：{{labelIndex == -1 ? '当前全部' : name[labelIndex]}}</text>
+</view>
+<view style="margin-top:10rpx;margin-left:5%">
+    <text>我的幸运币：{{luckyCoin}}</text>
+</view>
+<view style="text-align: center">
+    <l-button size="medium" l-class="button-one left" width="200"  bindtap="doLottery" bg-color="#337559" data-type="1" data-one="1">一键单刷</l-button>
+    <l-button size="medium" l-class="button-one mid" width="200" bg-color="#A81818" bindtap="doLottery" data-type="2" data-one="1">一键九连</l-button>
+    <l-button size="medium" l-class="button-one right" width="200" bindtap="gotoLotteryLog">坐骑记录</l-button>
+</view>
 
 <view class="btn-popup" bindtap="togglePopup">
     <l-icon l-class="{{showPopup? 'btn-active' : 'btn'}}" name="close" size="15" color="#777" />
 </view>
 <!-- 下拉层 -->
 <l-popup show="{{showPopup}}" animation content-align="top" bind:lintap="togglePopup" z-index="99">
-    <view class="popup">
+    <scroll-view class="popup" scroll-y="{{true}}" style="height:{{height}}rpx !important;" scroll-top="{{scrollTop}}" enhanced binddragend="onRecordTop">
         <l-tag l-class="tag" plain="{{labelIndex !== '-1'}}" shape="circle"
                bg-color="#337559" font-color="{{labelIndex === '-1' ? '#fff' : '#337559'}}" bind:lintap="onTagTap"
                data-index="-1">#当前全部</l-tag>
         <l-tag wx:for="{{name}}" wx:key="item" l-class="tag" plain="{{labelIndex !== index}}" shape="circle"
                bg-color="#337559" font-color="{{labelIndex === index ? '#fff' : '#337559'}}" bind:lintap="onTagTap"
                data-index="{{index}}">#{{item}}</l-tag>
-    </view>
+    </scroll-view>
 </l-popup>
 <!--<view class="button" bindtap="again">重新翻牌</view>-->
 <!--<l-button plain="{{true}}" l-class="button" bg-color="fadbd9">重新翻牌</l-button>-->
 <view class="curin-index">
     <view bindtap="{{whether?'':'tamin'}}" wx:for="{{lotteryList}}" wx:key="index" data-index="{{index}}" class="currin {{item.is_open === 1?'animt':''}} {{item.is_open === 1 ?'cinton'+(index+1):''}}" style="{{item.is_open === 1 && item.is_show_image === 1 && item.image_url !== ''?'background-image: url('+item.image_url+');':(item.is_show_image === 1 ? 'background-image: linear-gradient(45deg, #fff, #fff);color:black':'')}}">
         {{really == index+1?flop:''}}{{really != index+1 && really != ''?biutin:''}}{{item.title}}
+    </view>
+    <view wx:if="{{lotteryList.length === 0}}">
+
     </view>
 </view>
 <!--        background-image: linear-gradient(45deg, #f43f3b, #ec008c)-->
@@ -59,15 +73,8 @@
 <!--        </view>-->
     </view>
 
-<!--    <l-card type="primary"-->
-<!--            image="{{nowImageUrl}}"-->
-<!--            describe="{{nowName}}" title="{{nowName}}" l-class="mount-modal" l-title-class="mount-name" l-img-class="mount-img">-->
-<!--        &lt;!&ndash; 此处为content &ndash;&gt;-->
-<!--&lt;!&ndash;        <view class="content">&ndash;&gt;-->
-<!--&lt;!&ndash;            新疆苹果,又名塞威氏苹果,蔷微科,落叶乔木。原产新疆西部天山北山麓,&ndash;&gt;-->
-<!--&lt;!&ndash;            主要集中分布于伊犁河谷果子沟,新源县境内的那拉提野果林,巩留的莫合&ndash;&gt;-->
-<!--&lt;!&ndash;            林场,垂直分布区域海拔在1000～1300m的山顶、山坡、河谷区域。&ndash;&gt;-->
-<!--&lt;!&ndash;        </view>&ndash;&gt;-->
-<!--    </l-card>-->
 </l-popup>
-<!--<l-popup show="{{true}}"> </l-popup>-->
+<l-dialog
+    show="{{showConfirm}}"
+    type="confirm"
+    content="幸运币不足" />

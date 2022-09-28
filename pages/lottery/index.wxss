@@ -2,6 +2,8 @@
 view{
     box-sizing: border-box;
 }
+
+
 .button{
     width: 40%;
     height: 80rpx;
@@ -15,17 +17,26 @@ view{
     position: relative;
 }
 .button-one{
-    width: 30%;
+    width: 10%;
     height: 80rpx;
     line-height: 80rpx;
-    background-color: #fadbd9;
-    color: #e54d42;
     text-align: center;
     border-radius: 10rpx;
-    margin: 30rpx 10%;
+    margin-top:30rpx;
     float: left;
     position: relative;
 }
+.left{
+    margin-left:5%
+}
+.mid{
+    margin-left:5%;
+}
+.right{
+    float:right;
+    margin-right:5%
+}
+
 .curin-index{
     width: 100%;
     float: left;
@@ -180,7 +191,7 @@ view{
 }
 
 page{
-    background-color: #dbdbdb
+    background-color: #f7f7f7
 }
 
 /*************************************************自定义css**********************************************/
@@ -233,4 +244,9 @@ page{
 
 .tag {
     margin: 0 10rpx;
+}
+
+.mount-tag {
+    margin: 0 10rpx;
+    float:left;
 }

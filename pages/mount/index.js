@@ -47,6 +47,7 @@ Page({
         content: '您还未选坐骑,将默认全选',
         success: (res) => {
           if (res.confirm) {
+            this.selectAll('', 'all')
             this.nowGoLottery();
           }
         },
@@ -62,8 +63,10 @@ Page({
       url: "/pages/lottery/index?id="+ JSON.stringify(this.data.mountId) + '&name=' + JSON.stringify(this.data.mountName) + '&is_all' + this.data.isAll
     })
   },
-  selectAll(event){
-    const type = event.currentTarget.dataset.type
+  selectAll(event, type = 'reset'){
+    if(type === 'reset'){
+      type = event.currentTarget.dataset.type
+    }
     const mountList = this.data.mountList
     const length = mountList.length
     var mountId = [];

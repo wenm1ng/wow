@@ -22,6 +22,7 @@ module.exports = {
   chatAPI: baseAPI2 + 'chat-room/', // 聊天接口
   orderAPI: baseAPI2 + 'order/', //订单接口
   mountAPI: baseAPI2 + 'mount/', //订单接口
+  walletAPI: baseAPI2 + 'wallet/', //钱包接口
   signs: signs,
   imageBgUrl,
   imageIconUrl,

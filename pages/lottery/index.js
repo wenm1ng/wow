@@ -12,9 +12,11 @@ Page({
     surplus:false,
     biutin:'点击开刷',
     id: [],
+    mountId: [],
     name:[],
     labelIndex: '-1',
     is_all: 0,
+    origin_is_all: 0,
     type: 0,
     lotteryList: [],
     modalShow: false,
@@ -28,14 +30,55 @@ Page({
     mountHeight: 150,
     isLotterying: false, //正在抽奖
     showPopup: false, //标签筛选
+    showConfirm: false, //confirm框
+    height: 600,
+    scrollTop: 0,
+    luckyCoin: 0, //幸运币
   },
   onLoad(options) {
     this.setData({
       id:options.id ? JSON.parse(options.id) : [],
       name:options.name ? JSON.parse(options.name) : [],
-      is_all: options.is_all ? options.is_all : 1
+      is_all: options.is_all ? options.is_all : 1,
+      origin_is_all: options.is_all? options.is_all: 1
     })
-    // console.log(this.data.id, this.data.name);
+    this.getScrollHeight()
+    this.getLuckyCoin()
+  },
+  //记录标签modal滚动位置
+  onRecordTop(e){
+    this.setData({
+      scrollTop: e.detail.scrollTop
+    })
+  },
+
+  getLuckyCoin(){
+    const url = api.walletAPI + 'get-lucky-coin'
+    const that = this
+    wxutil.request.post(url).then((res) => {
+      if(res.data.code === 200){
+        that.setData({
+          luckyCoin : res.data.data['lucky_coin']
+        })
+      }
+    })
+  },
+  /**
+   * 获取窗口高度
+   */
+  getScrollHeight() {
+    const that = this;
+    wx.getSystemInfo({
+      success: function (res) {
+        const windowHeight = res.windowHeight;
+        const windowWidth = res.windowWidth;
+        const ratio = 750 / windowWidth;
+        const height = windowHeight * ratio;
+        that.setData({
+          height: height - 100,
+        })
+      }
+    })
   },
   /**
    * 展开或收起弹出层
@@ -46,8 +89,14 @@ Page({
     })
   },
   onTagTap(event) {
+    const index = event.currentTarget.dataset.index;
+    let isAll = 0;
+    if(index === '-1' && this.data.origin_is_all == 1){
+      isAll = 1;
+    }
     this.setData({
-      labelIndex: event.currentTarget.dataset.index
+      labelIndex: index,
+      is_all: isAll,
     })
   },
   //关闭弹窗
@@ -68,12 +117,12 @@ Page({
     if(!app.checkUserDetailGoAuth()){
       return;
     }
-    if(this.data.isLotterying){
+    let that = this
+    if(that.data.isLotterying){
       return;
     }
-    this.setData({
+    that.setData({
       isLotterying: true,
-
     })
     wx.showLoading({
       title: '刷坐骑中...',
@@ -81,14 +130,13 @@ Page({
     const type = event.currentTarget.dataset.type
     const one = event.currentTarget.dataset.one
     const url = api.mountAPI + 'lottery';
-    const index = parseInt(this.data.index);
+    const index = parseInt(this.data.labelIndex);
 
     const data = {
       id: index === -1 ? this.data.id : [this.data.id[index]],
       is_all: this.data.is_all,
       type:type
     }
-    let that = this;
     wxutil.request.post(url, data).then((res) => {
       if (res.data.code === 200) {
         const length = res.data.data.length
@@ -128,7 +176,7 @@ Page({
             mountWidth: mountWidth,
             mountHeight: mountHeight
           })
-          console.log(that.data.mountView)
+
           //一键十连刷
           for (let i = 0;i < length; i++){
             that.turnOver(i)
@@ -143,11 +191,17 @@ Page({
           icon: 'error',
           duration: 2000//持续的时间
         })
+        that.setData({
+          isLotterying: false,
+        })
       }else{
         wx.showToast({
           title: '操作失败',
           icon: 'error',
           duration: 2000//持续的时间
+        })
+        that.setData({
+          isLotterying: false,
         })
       }
       wx.hideLoading()
