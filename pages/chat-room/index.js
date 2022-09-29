@@ -373,6 +373,15 @@ Page({
     }, 1000);
   },
 
+  getUserIdNew(){
+    if(!app.checkUserDetailGoAuth()){
+      return false;
+    }
+    this.setData({
+      userId: app.getUserDetailNew().id
+    })
+    return true;
+  },
   /**
    * 获取用户ID
    */
@@ -387,51 +396,39 @@ Page({
               url: "/pages/auth/index",
             })
           }else{
-            let pages = getCurrentPages();
-            console.log(pages)
-            console.log(111)
-            let prevPage = pages[pages.length - 2];
-            let lastPage;
-            console.log(prevPage);
-
-            if(prevPage === undefined){
-              lastPage = '/pages/wa/index'
-            }else{
-              lastPage = prevPage.route
-            }
-            console.log(lastPage)
-            if(lastPage === '/pages/wa/index' || lastPage === 'pages/profile/index'){
-              wx.switchTab({
-                url: lastPage,
-              })
-            }else{
-              wx.navigateTo({
-                url: lastPage,
-              })
-            }
+            wx.navigateBack({
+              //返回
+              delta: 1
+            })
+            // let pages = getCurrentPages();
+            // console.log(pages)
+            // console.log(111)
+            // let prevPage = pages[pages.length - 2];
+            // let lastPage;
+            // console.log(prevPage);
+            //
+            // if(prevPage === undefined){
+            //   lastPage = '/pages/wa/index'
+            // }else{
+            //   lastPage = prevPage.route
+            // }
+            // console.log(lastPage)
+            // if(lastPage === '/pages/wa/index' || lastPage === 'pages/profile/index'){
+            //   wx.switchTab({
+            //     url: lastPage,
+            //   })
+            // }else{
+            //   wx.navigateTo({
+            //     url: lastPage,
+            //   })
+            // }
           }
         },
         fail: (res) => {
-          let pages = getCurrentPages();
-          console.log(pages)
-          console.log(111)
-          let prevPage = pages[pages.length - 2];
-          let lastPage;
-          console.log(prevPage);
-          if(prevPage === undefined){
-            lastPage = '/pages/wa/index'
-          }else{
-            lastPage = prevPage.route
-          }
-          if(lastPage === '/pages/wa/index' || lastPage === 'pages/profile/index'){
-            wx.switchTab({
-              url: lastPage,
-            })
-          }else{
-            wx.navigateTo({
-              url: lastPage,
-            })
-          }
+          wx.navigateBack({
+            //返回
+            delta: 1
+          })
         },
       })
       return false;

@@ -51,7 +51,17 @@ Page({
       scrollTop: e.detail.scrollTop
     })
   },
-
+  gotoTransformCoin(){
+    if(!app.checkUserDetailGoAuth()){
+      return;
+    }
+    if(this.data.isLotterying){
+      return;
+    }
+    wx.navigateTo({
+      url: "/pages/wallet-detail/index"
+    })
+  },
   getLuckyCoin(){
     const url = api.walletAPI + 'get-lucky-coin'
     const that = this

@@ -15,6 +15,9 @@
 <button hover-class="btn-list">
 	<l-list image="../../images/icon/log.png" title="账单" icon-color="#337559" icon-size="38" gap="30" bindtap="gotoLog"/>
 </button>
+<button wx:if="{{false}}" hover-class="btn-list">
+	<l-list image="../../images/icon/transform.png" title="帮币换幸运币" icon-color="#337559" icon-size="38" gap="30" bindtap="gotoTransformCoin"/>
+</button>
 <!--<button hover-class="btn-list">-->
 <!--	<l-list image="../../images/icon/withdrawal.png" title="提现" icon="help" icon-color="#337559" icon-size="38" gap="30" bindtap="tapWithdrawal"/>-->
 <!--</button>-->

@@ -52,6 +52,18 @@ Page({
     })
   },
 
+  gotoMount(){
+    wx.switchTab({
+      url: "/pages/tool-box/index"
+    })
+  },
+
+  gotoHelp(){
+    wx.switchTab({
+      url: "/pages/help/index"
+    })
+  },
+
   //获取watab列表
   bindVersion(e) {
     let version = e.currentTarget.dataset.version

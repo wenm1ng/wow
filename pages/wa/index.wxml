@@ -2,7 +2,24 @@
     <l-search-bar l-class="wa-search" placeholder="搜索" show-cancel="{{false}}" bind:linconfirm="doSearch"></l-search-bar>
     <view class="wa-big-image">
         <image class='btnImg' src='https://mingtongct.com/images/bg/bg.jpg'></image>
+        <view class="quick-entry">
+            <view class="quick-left" bindtap="gotoMount">
+                <view style="width:200rpx;float:left;text-align: center">
+                    <text style="display: block;height:80rpx;line-height: 80rpx;font-weight:bold;">模拟刷坐骑</text>
+                    <text style="display: block;font-size:20rpx;height:30rpx;line-height: 30rpx;color:rgb(58, 123, 221);">没有难刷的坐骑</text>
+                </view>
+                <image class="entryImg" src="https://mingtongct.com/images/bg/mount.jpg"></image>
+            </view>
+            <view class="quick-right" bindtap="gotoHelp">
+                <view style="width:175rpx;float:left;text-align: right">
+                    <text style="display: block;height:80rpx;line-height: 80rpx;font-weight:bold;">找不到WA?</text>
+                    <text style="display: block;font-size:20rpx;height:30rpx;line-height: 30rpx;color:rgb(58, 123, 221);text-align: center">找人帮帮忙</text>
+                </view>
+                <image class="entryImg" src="https://mingtongct.com/images/bg/yilidan.webp" style="width:165rpx;height:100rpx;margin-top:20rpx;"></image>
+            </view>
+        </view>
     </view>
+
     <view class="text-title">
         <text wx:for="{{version_list}}" wx:key="item" style="color:{{index == checkVersion ? 'black' : '#A0A0A0'}}" data-version="{{item.version}}" data-index="{{index}}" bindtap="bindVersion">{{item.name}}</text>
     </view>

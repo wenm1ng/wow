@@ -1,0 +1,34 @@
+<!-- pages/setting/index.wxml -->
+<!--账户金额-->
+<view class="header">
+	<text class="text">帮币数量</text>
+	<text class="money-text">{{walletMoney}}</text>
+	<text class="lucky-coin">幸运币数量</text>
+	<text class="lucky-coin-text">{{luckyCoin}}</text>
+	<view class="user-box">
+		<image class="money" src="../../images/icon/money2.png" bindtap="gotoAuth" mode="aspectFill" />
+	</view>
+</view>
+<view>
+	<view style="height:100rpx;">
+		<label>
+			<view style="height:100rpx;width:20%;float: left;text-align: center;line-height: 100rpx">
+				<text>转换数量</text>
+			</view>
+			<view style="height:100rpx;width:55%;float: left;line-height: 100rpx">
+				<input placeholder="请输入转换数量"  value="{{money}}" style="height: 100rpx;margin-left:20rpx" bindinput="formatMoney" bindfocus="focusMoney" bindblur="checkMoney" type="number" maxlength="3"/>
+			</view>
+			<l-button size="mini" bg-color="#00ACFF" bindtap="getAllMoney" l-class="inline-button">全部</l-button>
+			<!--		<view style="color:red;float:right;height:100rpx;width:50%;line-height: 100rpx;font-size: 20rpx;text-align: right">-->
+			<!--			<text wx:show="{{errMessage !== ''}}" style="margin-right: 20rpx">{{errMessage}}</text>-->
+			<!--		</view>-->
+		</label>
+		<!--	<l-input label="自定义金额" placeholder="请输入自定义金额" rules="{{moneyRule}}" tipType="text"/>-->
+	</view>
+	<view style="margin-left:10%;margin-top: 10rpx">
+		<text style="margin-right:20rpx">可得</text><text style="color:#00ACFF;font-size: 60rpx">{{lastMoney}}</text><text style="margin-left:15rpx">个幸运币</text>
+	</view>
+	<view style="margin-top: 60rpx;margin-left:2.5%">
+		<l-button size="large" bg-color="#00ACFF" bindtap="toTransform">兑换</l-button>
+	</view>
+</view>

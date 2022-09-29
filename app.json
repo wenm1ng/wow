@@ -32,7 +32,9 @@
     "pages/board-caption/index",
     "pages/lottery/index",
     "pages/lottery-log/index",
-    "pages/mount/index"
+    "pages/mount/index",
+    "pages/transform-coin/index",
+    "pages/tool-box/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -60,16 +62,10 @@
         "selectedIconPath": "images/icon_tab/help_hl.png"
       },
       {
-        "pagePath": "pages/mount/index",
-        "text": "抽奖",
-        "iconPath": "images/icon_tab/help.png",
-        "selectedIconPath": "images/icon_tab/help_hl.png"
-      },
-      {
-        "pagePath": "pages/chat-room/index",
-        "text": "吹吹水",
-        "iconPath": "images/icon_tab/chat.png",
-        "selectedIconPath": "images/icon_tab/chat_hl.png"
+        "pagePath": "pages/tool-box/index",
+        "text": "休闲馆",
+        "iconPath": "images/icon_tab/beer.png",
+        "selectedIconPath": "images/icon_tab/beer_hl.png"
       },
       {
         "pagePath": "pages/profile/index",

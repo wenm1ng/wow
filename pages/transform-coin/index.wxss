@@ -1,0 +1,205 @@
+/* pages/setting/index.wxss */
+.inline-button{
+  float: left;
+  margin-top: 15rpx;
+}
+
+.header .text {
+  position: relative;
+  left:50rpx;
+  top:50rpx;
+  height:100rpx;
+}
+
+.header .money-text {
+  position: fixed;
+  left:50rpx;
+  top:120rpx;
+  font-size: 50rpx;
+  font-weight: bold;
+}
+
+.header .lucky-coin {
+  position: relative;
+  left:230rpx;
+  top:50rpx;
+  height:100rpx;
+}
+
+.header .lucky-coin-text {
+  position: relative;
+  left:80rpx;
+  top:120rpx;
+  font-size: 50rpx;
+  font-weight: bold;
+}
+
+.header{
+  background-color: #00ACFF;
+  height:250rpx;
+  color:white;
+}
+
+.money{
+  width:100rpx;
+  height:100rpx;
+  position: fixed;
+  right:50rpx;
+  top:70rpx;
+}
+
+
+.hover-button{
+  background-color:#00ACFF !important;
+  border:1rpx white solid;
+  color:white !important;
+}
+
+.topUp{position: relative;}
+.mode {padding: 20rpx;margin-top: 20rpx;border-bottom: 1px solid #eee;}
+.recharge {display: flex;min-height: 60rpx;align-items: center;background-color: #ffffff;margin-top: 33rpx;padding-left: 20rpx;}
+/* .line{height: 100rpx;line-height: 100rpx;} */
+.cn{text-align: center;border-radius:6rpx;padding: 5rpx 12rpx;margin-left: 20rpx;box-sizing: border-box; border: 1px solid #963efc;}
+.uncheck{color: #963efc;}
+.select{background: #963efc;color: #fff;}
+.the-input{margin-left: 10rpx;position: relative;}
+/* .top-inp{ height: 100rpx;width: 100%} */
+.top-right{margin-top: 42rpx;width: 40%;text-align: right;}
+.immediately{width: 100%;text-align: center; height: 90rpx;line-height: 70rpx;padding: 10rpx 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+}
+.offline{padding: 3%;margin-top: 20rpx;box-sizing: border-box;}
+.offline-line{height: 80rpx;line-height: 80rpx;}
+.offline image{margin-top: 25rpx;}
+.pay-img{width: 44rpx;height: 44rpx;z-index: 9999;}
+.wechatPay{margin-top: 20rpx;}
+.pay-cont{margin-left: 75rpx;}
+.pay-select{margin-top:10rpx;width: 100%;padding: 0 3% 3% 3%;
+  box-sizing: border-box;}
+/* .inpTo{padding: 12rpx 10rpx;height: 80rpx;line-height: 80rpx} */
+.input_control { position: absolute; top: -5px;left: 20rpx; height: 75rpx;width: 600rpx;font-size: 25rpx;border-radius: 50rpx;background-color: rgb(0,0,0,0.1);
+  padding-left: 20rpx;}
+.weui-check__label {
+  margin-top: 40rpx;
+}
+.weui-cell__hd {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10rpx;
+  padding-left: 10rpx;
+}
+.goorder {
+  text-align: center;
+  padding-bottom: 12rpx;
+  font-size: 25rpx;
+  color: #0eb20c;
+  text-overflow: ellipsis;
+  height: 30rpx;
+  line-height: 30rpx;
+  position: absolute;
+  bottom: 40rpx;
+  width: 100%;
+}
+.top-bg {
+  min-height: 250rpx;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  margin: 20rpx;
+}
+.massing {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding: 20rpx;
+}
+.userinfo-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+}
+.balance {
+  align-items: center;
+  color: #ffffff;
+  padding-left: 20rpx;
+}
+.Records {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 44rpx;
+}
+.Records > image {
+  width: 25rpx;
+  height: 30rpx;
+}
+/* 充值选择 */
+.rechargelist {
+  background-color: #ffffff;
+  padding: 20rpx;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+.item{
+  width: 25%;
+  height: 80rpx;
+  border: 1px solid rgb(150,62,252,0.3);
+  line-height: 80rpx;
+  text-align: center;
+  margin: 20rpx;
+}
+.leftBtn {
+  color: #ffffff;
+}
+.withdrawal {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: rgb(250,250,250,0.4);
+  width: 93rpx;
+  height: 46rpx;
+  padding-right: 12rpx;
+  border-radius: 40rpx 0 0 40rpx;
+  position: absolute;
+  top: 20rpx;
+  right: 0rpx;
+}
+.withdrawal image{
+  width: 40rpx;
+  height: 40rpx;
+}
+.keep {
+  height: 600rpx;
+  background-color: #ffffff;
+}
+.paypal {
+  width: 100%;
+  font-size: 20rpx;
+  padding: 20rpx;
+  border:1rpx solid #eee;
+  background-color: #ffffff;
+}
+.paylist {
+  display: flex;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.formual {
+  color: #bfbcbc;
+}
+.request {
+  width: 45rpx;
+  height: 45rpx;
+  position: relative;
+  left: 23rpx;
+}
+.payName{display: flex;align-items: center;}
+
+

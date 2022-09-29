@@ -1,0 +1,13 @@
+<!--pages/tool-box/index.wxml-->
+<l-grid l-class="grid" show-border="{{true}}">
+    <l-grid-item
+            wx:for="{{toolList}}" key="{{index}}" slot="{{index}}" bind:linitemtap="gotoPage">
+        <l-icon name="{{item.icon_name}}" />
+        <view class="text">{{item.name}}</view>
+    </l-grid-item>
+</l-grid>
+
+<!--<view class="footer">-->
+<!--    <image class="github-logo" src="/images/logo/logo.png"/>-->
+<!--    <text class="github-uri">WOW WA仓库</text>-->
+<!--</view>-->

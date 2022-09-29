@@ -82,7 +82,15 @@ Page({
       url: "/pages/recharge-log/index"
     })
   },
-
+  //帮币换幸运币
+  gotoTransformCoin(){
+    if(!app.checkUserDetailGoAuth()){
+      return;
+    }
+    wx.navigateTo({
+      url: "/pages/transform-coin/index"
+    })
+  },
   /**
    * 清除缓存
    */
