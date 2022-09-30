@@ -13,7 +13,7 @@ Page({
     version_list:[],
     checkVersion:0, //选中的版本
     checkTab:0, //选中的tab标题
-    version:1
+    version:4
   },
   //选好wa信息后下一个页面
   nextPage(e){
@@ -108,8 +108,10 @@ Page({
     const url = api.versionAPI+'get-version-list'
     const data = {}
     if(wxutil.getStorage('version_list')){
+      const versionList = wxutil.getStorage('version_list');
       this.setData({
-        version_list: wxutil.getStorage('version_list')
+        version_list: versionList,
+        version: versionList[0].version
       })
       return;
     }
@@ -117,7 +119,8 @@ Page({
       if (res.data.code === 200) {
         wxutil.setStorage('version_list', res.data.data, 3600 * 24);
         this.setData({
-          version_list: res.data.data
+          version_list: res.data.data,
+          version: res.data.data[0].version
         })
       }
     })
