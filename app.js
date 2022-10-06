@@ -62,6 +62,31 @@ App({
     }
     return true;
   },
+  //保存到我的宏
+  saveMacro(id){
+    if(!this.checkUserDetailGoAuth()){
+      return;
+    }
+    const url = api.macroAPI + 'save';
+    const data = {
+      id: id
+    }
+    wxutil.request.post(url, data).then((rs) => {
+      if (rs.data.code === 200) {
+        wx.showToast({
+          title: '保存成功',
+          icon: 'success',
+          duration: 2000//持续的时间
+        })
+      }else{
+        wx.showToast({
+          title: '保存失败',
+          icon: 'error',
+          duration: 2000//持续的时间
+        })
+      }
+    })
+  },
   /**
    * 获取回答modelId
    * @returns {string}

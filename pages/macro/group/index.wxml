@@ -1,4 +1,4 @@
-<view>
+<view style="color:#337559">
     组合多个技能到一个键位，节省键位，条件需要的，则输入技能，不需要的保留空。
 </view>
 <view style="color:red">
@@ -37,25 +37,28 @@
     </l-form-item>
 
     <view slot="submit">
-        <l-button>提交组合</l-button>
+        <l-button bg-color="#337559">提交组合</l-button>
     </view>
     <view slot="reset">
-        <l-button type="default" plain>重置技能</l-button>
+        <l-button type="default" l-class="reset" plain>重置技能</l-button>
     </view>
 </l-form>
 
 <!--modal层-->
 <l-popup show="{{modalShow}}"  locked="{{false}}" >
-    <view style="width:600rpx;height:650rpx;background-color: #fff" bindtap="closeModal">
-        <view style="width: 600rpx;height:150rpx;text-align: center">
-            <text style="font-size:80rpx;">坐骑出炉!</text>
+    <view style="width:600rpx;height:{{modalHeight}}rpx;background-color: #fff;">
+        <view bindtap="closeModal" class="close-icon">
+            <l-icon name="close"/>
         </view>
-        <view wx:for="{{bingoList}}" class="mount-view" style="width:{{mountView}}rpx;">
-            <image src="{{item.image_url}}" style="width:{{mountWidth}}rpx;height:{{mountHeight}}rpx;margin:0 auto;"/>
-            <view style="text-align: center;">
-                <text>{{item.name}}</text>
+        <scroll-view class="tab-content profile-scroll" scroll-y="{{true}}" style="height:{{scrollHeight}}rpx !important;padding-top:30rpx;" scroll-top="0">
+            <view style="width:500rpx;margin-left:50rpx;">
+                <text style="font-size:30rpx;">{{macroStr}}
+                </text>
             </view>
+        </scroll-view>
+        <view style="height:{{contentHeight}}rpx;">
+            <l-button size="medium" l-class="share" width="200" bg-color="#337559" bindtap="copyStr">复制宏</l-button>
+            <l-button size="medium"  bg-color="white" width="200" l-class="btn-back" lang="zh_CN" bindtap="saveMacro">保存到我的宏</l-button>
         </view>
     </view>
-
 </l-popup>

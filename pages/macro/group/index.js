@@ -9,9 +9,12 @@ Page({
    * 页面的初始数据
    */
   data: {
-    modalShow: true,
-    height: 500,
-    macroStr: ''
+    modalShow: false,
+    modalHeight: 600,
+    contentHeight: 150,
+    scrollHeight:450,
+    macroStr: '',
+    logId: 0
   },
 
   /**
@@ -32,7 +35,33 @@ Page({
     wxutil.request.post(url, data).then((res) => {
       if(res.data.code === 200){
         that.setData({
-          macroStr: res.data.data
+          macroStr: res.data.data.content,
+          modalShow: true,
+          logId: res.data.data.id
+        })
+      }
+    })
+  },
+  saveMacro(){
+    app.saveMacro(this.data.logId)
+  },
+  //关闭弹窗
+  closeModal(){
+    this.setData({
+      modalShow: false,
+      macroStr: '',
+      logId: 0
+    })
+  },
+  //复制宏
+  copyStr(){
+    wx.setClipboardData({
+      data:this.data.macroStr,//要复制的数据
+      success (res) {
+        wx.showToast({
+          title: '复制成功',
+          icon: 'success',
+          duration: 2000//持续的时间
         })
       }
     })
