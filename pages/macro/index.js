@@ -16,13 +16,17 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    this.getToolList();
+    const id = options.id ? options.id : 0
+    this.getToolChildList(id);
   },
 
-  getToolList(){
-    const url = api.commonAPI + 'tool/list'
+  getToolChildList(id){
+    const url = api.commonAPI + 'tool/child-list'
+    const data = {
+      id: id
+    }
     const that = this
-    wxutil.request.get(url).then((res) => {
+    wxutil.request.get(url, data).then((res) => {
       if(res.data.code === 200){
         that.setData({
           toolList: res.data.data
@@ -32,7 +36,7 @@ Page({
   },
   gotoPage(e){
     wx.navigateTo({
-      url: this.data.toolList[e.detail.index].page_path + '?id=' + this.data.toolList[e.detail.index].id
+      url: this.data.toolList[e.detail.index].page_path
     })
   },
   /**

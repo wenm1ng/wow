@@ -34,7 +34,9 @@
     "pages/lottery-log/index",
     "pages/mount/index",
     "pages/transform-coin/index",
-    "pages/tool-box/index"
+    "pages/tool-box/index",
+    "pages/macro/index",
+    "pages/macro/group/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

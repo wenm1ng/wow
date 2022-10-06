@@ -1,0 +1,10 @@
+/* pages/macro/group/index.wxss */
+.l-form-btn-class{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10rpx;
+}
+
+.form-item{
+    width:480rpx !important;
+}

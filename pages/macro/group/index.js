@@ -1,4 +1,4 @@
-// pages/tool-box/index.js
+// pages/macro/group/index.js
 const app = getApp()
 const api = app.api
 const wxutil = app.wxutil
@@ -9,30 +9,32 @@ Page({
    * 页面的初始数据
    */
   data: {
-    toolList:[]
+    modalShow: true,
+    height: 500,
+    macroStr: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    this.getToolList();
+    wx.lin.initValidateForm(this)
   },
 
-  getToolList(){
-    const url = api.commonAPI + 'tool/list'
+  //重置表单
+  onReset(){
+    wx.lin.resetForm('macro');
+  },
+  submit(e){
+    const url = api.macroAPI + 'group'
+    const data = e.detail.values
     const that = this
-    wxutil.request.get(url).then((res) => {
+    wxutil.request.post(url, data).then((res) => {
       if(res.data.code === 200){
         that.setData({
-          toolList: res.data.data
+          macroStr: res.data.data
         })
       }
-    })
-  },
-  gotoPage(e){
-    wx.navigateTo({
-      url: this.data.toolList[e.detail.index].page_path + '?id=' + this.data.toolList[e.detail.index].id
     })
   },
   /**
