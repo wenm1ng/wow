@@ -50,17 +50,20 @@
 <!--        background-image: linear-gradient(45deg, #f43f3b, #ec008c)-->
 <!--        {{really != index+1 && surplus && implement > 2?'background-image: linear-gradient(45deg, #39b54a, #8dc63f);':''}}-->
 <l-popup show="{{modalShow}}"  locked="{{false}}" >
-    <view style="width:600rpx;height:650rpx;background-color: #fff" bindtap="closeModal">
+    <view style="width:600rpx;height:{{modalHeight}}rpx;background-color: #fff;" bindtap="closeModal">
         <view style="width: 600rpx;height:150rpx;text-align: center">
             <text style="font-size:80rpx;">坐骑出炉!</text>
         </view>
         <view wx:for="{{bingoList}}" class="mount-view" style="width:{{mountView}}rpx;">
             <image src="{{item.image_url}}" style="width:{{mountWidth}}rpx;height:{{mountHeight}}rpx;margin:0 auto;"/>
-            <view style="text-align: center;">
-                <text>{{item.name}}</text>
+            <view style="text-align: center;width:{{mountView}}rpx;" class="mount-text">
+                {{item.name}}
             </view>
         </view>
-<!--        <view class="mount-view" style="width:200rpx;">-->
+        <l-button size="medium" l-class="share" width="200" special="{{true}}" open-type="share" bg-color="#337559">分享一下<l-icon name="share" size="30" color="#fff" l-class="inline"/></l-button>
+        <l-button size="medium"  bg-color="white" width="200" l-class="btn-back" lang="zh_CN" bindtap="closeModal">关闭</l-button>
+
+        <!--        <view class="mount-view" style="width:200rpx;">-->
 <!--            <image src="{{nowImageUrl}}" style="width:150rpx;height:150rpx;margin:0 auto;"/>-->
 <!--            <view style="text-align: center;">-->
 <!--                <text>{{nowName}}</text>-->

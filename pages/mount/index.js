@@ -60,7 +60,7 @@ Page({
   },
   nowGoLottery(){
     wx.navigateTo({
-      url: "/pages/lottery/index?id="+ JSON.stringify(this.data.mountId) + '&name=' + JSON.stringify(this.data.mountName) + '&is_all' + this.data.isAll
+      url: "/pages/lottery/index?id="+ JSON.stringify(this.data.mountId) + '&name=' + JSON.stringify(this.data.mountName) + '&is_all=' + this.data.isAll
     })
   },
   selectAll(event, type = 'reset'){
