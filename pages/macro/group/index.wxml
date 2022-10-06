@@ -2,7 +2,7 @@
     组合多个技能到一个键位，节省键位，条件需要的，则输入技能，不需要的保留空。
 </view>
 <view style="color:red">
-    注意：技能名称一定不要填错！!!可以在游戏中按P键查看具体的技能名称!
+    注意：技能名称一定不要填错!!!可以在游戏中按P键查看具体的技能名称!
 </view>
 <l-form name="macro" bind:linsubmit="submit" bind:linreset="onReset" l-form-btn-class="l-form-btn-class">
     <l-form-item label="鼠标指向是敌方，则施放技能：" l-form-item-class="form-item" name="mouse_enemy" label-width="450rpx">
@@ -44,6 +44,7 @@
     </view>
 </l-form>
 
+<!--modal层-->
 <l-popup show="{{modalShow}}"  locked="{{false}}" >
     <view style="width:600rpx;height:650rpx;background-color: #fff" bindtap="closeModal">
         <view style="width: 600rpx;height:150rpx;text-align: center">

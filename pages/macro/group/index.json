@@ -2,7 +2,8 @@
   "usingComponents": {
     "l-form":"/miniprogram_npm/lin-ui/form/index",
     "l-form-item":"/miniprogram_npm/lin-ui/form-item/index",
-    "l-input":"/miniprogram_npm/lin-ui/input/index"
+    "l-input":"/miniprogram_npm/lin-ui/input/index",
+    "l-popup":"/miniprogram_npm/lin-ui/popup/index"
   },
   "navigationBarTitleText": "组合技能"
 }
