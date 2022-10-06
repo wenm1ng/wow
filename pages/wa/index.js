@@ -53,8 +53,8 @@ Page({
   },
 
   gotoMount(){
-    wx.switchTab({
-      url: "/pages/tool-box/index"
+    wx.navigateTo({
+      url: "/pages/mount/index"
     })
   },
 
