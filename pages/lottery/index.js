@@ -23,8 +23,9 @@ Page({
     nowImageUrl: 'https://mingtongct.com/images/mount/argusfelstalkermountred.jpg',
     nowName: '奥利瑟拉佐尔的烈焰之爪',
     one: 0,
-    bingoList: [], //中奖坐骑
+    bingoList: [],
     lengths: 0,
+    modalHeight: 650,
     mountView: 200,
     mountWidth: 150,
     mountHeight: 150,
@@ -36,6 +37,7 @@ Page({
     luckyCoin: '', //幸运币
   },
   onLoad(options) {
+    console.log(options);
     this.setData({
       id:options.id ? JSON.parse(options.id) : [],
       name:options.name ? JSON.parse(options.name) : [],
@@ -43,7 +45,7 @@ Page({
       origin_is_all: options.is_all? options.is_all: 1
     })
     this.getScrollHeight()
-    this.getLuckyCoin()
+    // this.getLuckyCoin()
   },
   //记录标签modal滚动位置
   onRecordTop(e){
@@ -170,25 +172,32 @@ Page({
           let mountWidth
           let mountHeight
           let bingoLength = bingoList.length
+          let modalHeight = 650
           if(bingoLength === 1){
             mountView = 600
-            mountWidth = 400
-            mountHeight = 400
+            mountWidth = 300
+            mountHeight = 300
           } else if(bingoLength === 2 ){
             mountView = 300
             mountWidth = 300
             mountHeight = 300
+          }else if(bingoLength <= 6){
+            mountView = 200
+            mountWidth = 150
+            mountHeight = 150
           }else{
             mountView = 200
             mountWidth = 150
             mountHeight = 150
+            modalHeight = 900
           }
           that.setData({
             bingoList: bingoList,
             mountView: mountView,
             mountWidth: mountWidth,
             mountHeight: mountHeight,
-            luckyCoin: this.data.luckyCoin - res.data.data['lucky_coin']
+            modalHeight: modalHeight,
+            // luckyCoin: this.data.luckyCoin - res.data.data['lucky_coin']
           })
 
           //一键十连刷
@@ -291,7 +300,7 @@ Page({
     that.setData({
       lotteryList: lotteryList,
     })
-    let time = 500 * (index + 1);
+    let time = 1000 * (index + 1);
     setTimeout(function () {
       lotteryList[index].is_open = 1;
       // lotteryList[index].title = '';
@@ -319,5 +328,10 @@ Page({
     }, time + 700)
   },
   onShareAppMessage(options) {
+    return {
+      title: this.data.bingoList.length > 0 ? "我刷到了“"+ this.data.bingoList[0].name +"”,你也来试试吧" : '模拟刷坐骑',
+      imageUrl: this.data.bingoList[0].image_url ? this.data.bingoList[0].image_url : '',
+      path: "/pages/mount/index"
+    }
   }
 })
