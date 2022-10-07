@@ -36,7 +36,8 @@
     "pages/transform-coin/index",
     "pages/tool-box/index",
     "pages/macro/index",
-    "pages/macro/group/index"
+    "pages/macro/group/index",
+    "pages/macro/hand/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

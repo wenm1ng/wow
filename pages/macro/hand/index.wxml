@@ -1,0 +1,48 @@
+<!--pages/macro/hand/index.wxml-->
+<view class="section">
+    <view class="section__title">多列选择器</view>
+    <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
+        <view class="picker">
+            当前选择：{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
+        </view>
+    </picker>
+</view>
+<l-form name="macro" bind:linsubmit="submit" bind:linreset="onReset" l-form-btn-class="l-form-btn-class">
+    <l-form-item label="物品名称：" l-form-item-class="form-item" name="item_name" label-width="450rpx">
+        <l-input  id="item_name" width="300" hide-label/>
+    </l-form-item>
+    <l-form-item label="技能名称：" l-form-item-class="form-item" name="skill_name" label-width="450rpx">
+        <l-input  id="skill_name" width="300" hide-label/>
+    </l-form-item>
+    <l-form-item label="宠物技能名称：" l-form-item-class="form-item" name="pet_skill_name" label-width="450rpx">
+        <l-input  id="pet_skill_name" width="300" hide-label/>
+    </l-form-item>
+    <l-form-item label="喊话内容：" l-form-item-class="form-item" name="talk_content" label-width="450rpx">
+        <l-input  id="talk_content" width="300" hide-label/>
+    </l-form-item>
+    <view slot="submit">
+        <l-button bg-color="#337559">提交组合</l-button>
+    </view>
+    <view slot="reset">
+        <l-button type="default" l-class="reset" plain>重置</l-button>
+    </view>
+</l-form>
+
+        <!--modal层-->
+<l-popup show="{{modalShow}}"  locked="{{false}}" >
+    <view style="width:600rpx;height:{{modalHeight}}rpx;background-color: #fff;">
+        <view bindtap="closeModal" class="close-icon">
+            <l-icon name="close"/>
+        </view>
+        <scroll-view class="tab-content profile-scroll" scroll-y="{{true}}" style="height:{{scrollHeight}}rpx !important;padding-top:30rpx;" scroll-top="0">
+            <view style="width:500rpx;margin-left:50rpx;">
+                <text style="font-size:30rpx;">{{macroStr}}
+                </text>
+            </view>
+        </scroll-view>
+        <view style="height:{{contentHeight}}rpx;">
+            <l-button size="medium" l-class="share" width="200" bg-color="#337559" bindtap="copyStr">复制宏</l-button>
+            <l-button size="medium"  bg-color="white" width="200" l-class="btn-back" lang="zh_CN" bindtap="saveMacro">保存到我的宏</l-button>
+        </view>
+    </view>
+</l-popup>
