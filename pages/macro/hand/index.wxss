@@ -7,6 +7,11 @@
 
 .form-item{
     width:480rpx !important;
+    background-color: white;
+}
+
+.bg-white{
+    background-color: white;
 }
 
 .popup {
@@ -79,4 +84,32 @@
 .reset{
     color:#337559 !important;
     border-color: #337559 !important;
+}
+
+.btn-list {
+    background: #f1f1f1;
+}
+
+button {
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    font-size: 18px;
+    text-align: center;
+    text-decoration: none;
+    line-height: 2.55555556;
+    -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
+    border: none;
+    border-radius: 0;
+    background-color: #fff;
+    padding: 0 !important;
+    width: 100% !important;
+    font-weight: 500 !important;
+}
+
+button::after {
+    border: none;
 }

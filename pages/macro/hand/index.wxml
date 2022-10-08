@@ -1,25 +1,59 @@
 <!--pages/macro/hand/index.wxml-->
-<view class="section">
-    <view class="section__title">多列选择器</view>
-    <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
-        <view class="picker">
-            当前选择：{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
+
+<button hover-class="btn-list" style="margin-top: 1rpx">
+    <l-list title="选择动作和条件:">
+        <view slot="left-section">
+            <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}" style="width:500rpx">
+                <view style="text-align: left;padding-left:40rpx;" wx:if="{{isSelect}}">
+                    <view>
+                        {{multiArray[0][multiIndex[0]]}},
+                    </view>
+                    <view>{{multiArray[1][multiIndex[1]]}} {{multiArray[2][multiIndex[2]].length > 0 ? ',' : ''}}</view>
+                    <view>{{multiArray[2][multiIndex[2]].length > 0 ? multiArray[2][multiIndex[2]] : ''}}</view>
+                </view>
+                <view style="text-align: left;padding-left:40rpx;" wx:else>点击进行选择</view>
+            </picker>
         </view>
-    </picker>
-</view>
+    </l-list>
+</button>
+<button wx:if="{{inputType !== 0 && inputType !== 3}}" hover-class="btn-list" style="margin-top: 1rpx">
+    <l-list title="选择阵营:">
+        <view slot="left-section">
+            <picker bindchange="bindCampChange" value="{{campIndex}}" range="{{checkboxCampList}}" style="width:500rpx">
+                <view class="picker" style="text-align:left;padding-left:40rpx;">
+                    {{checkboxCampList[campIndex]}}
+                </view>
+            </picker>
+        </view>
+    </l-list>
+</button>
+<button wx:if="{{inputType !== 0 && inputType !== 3}}" hover-class="btn-list" style="margin-top: 1rpx">
+    <l-list title="选择状态:">
+        <view slot="left-section">
+            <picker bindchange="bindStatusChange" value="{{statusIndex}}" range="{{checkboxStatusList}}" style="width:500rpx">
+                <view class="picker" style="text-align:left;padding-left:40rpx;">
+                    {{checkboxStatusList[statusIndex]}}
+                </view>
+            </picker>
+        </view>
+    </l-list>
+</button>
+<button wx:if="{{inputType !== 0 && inputType !== 3}}" hover-class="btn-list" style="margin-top: 1rpx">
+    <l-list title="选择按键:">
+        <view slot="left-section">
+            <picker bindchange="bindButtonChange" value="{{buttonIndex}}" range="{{checkboxButtonList}}" style="width:500rpx">
+                <view class="picker" style="text-align:left;padding-left:40rpx;">
+                    {{checkboxButtonList[buttonIndex]}}
+                </view>
+            </picker>
+        </view>
+    </l-list>
+</button>
 <l-form name="macro" bind:linsubmit="submit" bind:linreset="onReset" l-form-btn-class="l-form-btn-class">
-    <l-form-item label="物品名称：" l-form-item-class="form-item" name="item_name" label-width="450rpx">
-        <l-input  id="item_name" width="300" hide-label/>
+    <l-form-item wx:if="{{inputType !== 0}}" label="{{enums[inputType - 1]}}" l-form-item-class="form-item" name="content" label-width="150rpx">
+        <l-input  id="content" width="600" hide-label l-class="bg-white"/>
     </l-form-item>
-    <l-form-item label="技能名称：" l-form-item-class="form-item" name="skill_name" label-width="450rpx">
-        <l-input  id="skill_name" width="300" hide-label/>
-    </l-form-item>
-    <l-form-item label="宠物技能名称：" l-form-item-class="form-item" name="pet_skill_name" label-width="450rpx">
-        <l-input  id="pet_skill_name" width="300" hide-label/>
-    </l-form-item>
-    <l-form-item label="喊话内容：" l-form-item-class="form-item" name="talk_content" label-width="450rpx">
-        <l-input  id="talk_content" width="300" hide-label/>
-    </l-form-item>
+
     <view slot="submit">
         <l-button bg-color="#337559">提交组合</l-button>
     </view>
@@ -46,3 +80,10 @@
         </view>
     </view>
 </l-popup>
+
+<!--<l-toast-->
+<!--    show="{{true}}"-->
+<!--    icon="success"-->
+<!--    title="成功提示框"-->
+<!--    mask="true"-->
+<!--/>-->
