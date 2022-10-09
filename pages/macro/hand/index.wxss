@@ -14,6 +14,28 @@
     background-color: white;
 }
 
+.red{
+    color:red;
+}
+
+.left{
+    position: absolute;
+    left:100rpx;
+    bottom:50rpx;
+}
+
+.mid{
+    position: absolute;
+    left:300rpx;
+    bottom:50rpx;
+}
+
+.right{
+    position: absolute;
+    left:500rpx;
+    bottom:50rpx;
+}
+
 .popup {
     padding: 10rpx 0 20rpx 0;
     display: flex;
@@ -65,6 +87,11 @@
     display: inline-flex !important;
     padding:0 25rpx;
 }
+.my-button{
+    margin-left:130rpx;
+    margin-top:30rpx;
+}
+
 .btn-back{
     margin-top: 10rpx;
     background-color:white !important;
@@ -79,6 +106,12 @@
     position: absolute;
     left:630rpx;
     z-index: 110;
+}
+
+.close-my-icon{
+    position: absolute;
+    left:610rpx;
+    z-index: 112;
 }
 
 .reset{
@@ -112,4 +145,13 @@ button {
 
 button::after {
     border: none;
+}
+
+.textarea{
+    width:500rpx !important;
+    /*margin-left:0 !important;*/
+    font-size:30rpx;
+    height:450rpx !important;
+    /*margin-left:100rpx;*/
+    margin-right:150rpx;
 }

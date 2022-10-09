@@ -63,13 +63,15 @@ App({
     return true;
   },
   //保存到我的宏
-  saveMacro(id){
+  saveMacro(id, name, macroContent, func){
     if(!this.checkUserDetailGoAuth()){
       return;
     }
     const url = api.macroAPI + 'save';
     const data = {
-      id: id
+      id: id,
+      name: name,
+      macro_content: macroContent
     }
     wxutil.request.post(url, data).then((rs) => {
       if (rs.data.code === 200) {
@@ -78,9 +80,14 @@ App({
           icon: 'success',
           duration: 2000//持续的时间
         })
+        func()
       }else{
+        let msg = '保存失败';
+        if(rs.data.code !== 400){
+          msg = rs.data.msg
+        }
         wx.showToast({
-          title: '保存失败',
+          title: msg,
           icon: 'error',
           duration: 2000//持续的时间
         })

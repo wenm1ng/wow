@@ -14,6 +14,7 @@ Page({
     contentHeight: 150,
     scrollHeight:450,
     macroStr: '',
+    name: '',
     logId: 0
   },
 
@@ -27,6 +28,10 @@ Page({
   //重置表单
   onReset(){
     wx.lin.resetForm('macro');
+    wx.lin.resetForm('macroName');
+    this.setData({
+      logId: 0
+    })
   },
   submit(e){
     const url = api.macroAPI + 'group'
@@ -42,8 +47,22 @@ Page({
       }
     })
   },
-  saveMacro(){
-    app.saveMacro(this.data.logId)
+  //保存到我的宏
+  saveMacro(e){
+    console.log(e.detail.values);
+
+    if(e.detail.values.name === ''){
+      wx.showToast({
+        title: '宏名称不能为空',
+        icon: 'error',
+        duration: 2000//持续的时间
+      })
+      return;
+    }
+    const that = this
+    app.saveMacro(this.data.logId, e.detail.values.name, that.data.macroStr, function(){
+      that.closeMyModal()
+    })
   },
   //关闭弹窗
   closeModal(){
@@ -51,6 +70,22 @@ Page({
       modalShow: false,
       macroStr: '',
       logId: 0
+    })
+  },
+  updateMacro(e){
+    this.setData({
+      macroStr: e.detail.value
+    })
+  },
+  closeMyModal(){
+    wx.lin.resetForm('macroName');
+    this.setData({
+      modalMyShow: false,
+    })
+  },
+  showMyModal(){
+    this.setData({
+      modalMyShow: true,
     })
   },
   //复制宏

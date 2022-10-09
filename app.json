@@ -37,7 +37,8 @@
     "pages/tool-box/index",
     "pages/macro/index",
     "pages/macro/group/index",
-    "pages/macro/hand/index"
+    "pages/macro/hand/index",
+    "pages/macro/my/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

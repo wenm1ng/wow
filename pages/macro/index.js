@@ -35,6 +35,9 @@ Page({
     })
   },
   gotoPage(e){
+    if(this.data.toolList[e.detail.index].is_login === 1 && !app.checkUserDetailGoAuth()){
+      return
+    }
     wx.navigateTo({
       url: this.data.toolList[e.detail.index].page_path
     })

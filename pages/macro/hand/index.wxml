@@ -1,5 +1,13 @@
 <!--pages/macro/hand/index.wxml-->
-
+<view style="color:#337559;padding:10rpx;">
+    1. 每次重新选择完宏命令之后，点击”提交组合“按钮把所选选项放入宏模板中，可以多次选择，多次放入。
+</view>
+<view style="color:#337559;padding:10rpx;">
+    2. 页面的“重置当前”意味着重置当前选项，“重置所有”意味着添加新宏，如未操作重置所有则一直做修改宏操作。
+</view>
+<view style="color:red;padding:10rpx;">
+    注意：涉及到技能名称的宏一定不要填错!可以在游戏中按P键查看具体的技能名称!
+</view>
 <button hover-class="btn-list" style="margin-top: 1rpx">
     <l-list title="选择动作和条件:">
         <view slot="left-section">
@@ -49,38 +57,61 @@
         </view>
     </l-list>
 </button>
-<l-form name="macro" bind:linsubmit="submit" bind:linreset="onReset" l-form-btn-class="l-form-btn-class">
-    <l-form-item wx:if="{{inputType !== 0}}" label="{{enums[inputType - 1]}}" l-form-item-class="form-item" name="content" label-width="150rpx">
-        <l-input  id="content" width="600" hide-label l-class="bg-white"/>
+<l-form name="macro" bind:linsubmit="submit" l-form-btn-class="l-form-btn-class">
+    <l-form-item wx:if="{{inputType !== 0}}" label="*{{enums[inputType - 1]}}" l-form-label-class="red" l-form-item-class="form-item" name="content" label-width="180rpx">
+        <l-input  id="content" width="600" hide-label l-class="bg-white" value="{{content}}"/>
     </l-form-item>
 
-    <view slot="submit">
+    <view slot="submit" class="left">
         <l-button bg-color="#337559">提交组合</l-button>
     </view>
-    <view slot="reset">
-        <l-button type="default" l-class="reset" plain>重置</l-button>
+    <view class="mid">
+        <l-button l-class="reset" plain bindtap="onReset">重置当前</l-button>
+    </view>
+    <view class="right">
+        <l-button l-class="reset" plain bindtap="onResetAll">重置所有</l-button>
     </view>
 </l-form>
 
-        <!--modal层-->
-<l-popup show="{{modalShow}}"  locked="{{false}}" >
+<!--modal层-->
+<l-popup show="{{modalMyShow}}"  locked="{{false}}" >
+    <view style="width:550rpx;height:300rpx;background-color: #fff;">
+        <view bindtap="closeMyModal" class="close-my-icon">
+            <l-icon name="close"/>
+        </view>
+        <view style="height:80rpx"></view>
+        <view style="height:130rpx;">
+            <l-form name="macroName" bind:linsubmit="saveMacro" l-form-btn-class="l-form-btn-class">
+                <l-form-item label="宏名称："  l-form-item-class="form-item" name="name" label-width="130rpx">
+                    <l-input  id="name" width="400" hide-label l-class="bg-white" value="{{name}}"/>
+                </l-form-item>
+                <view slot="submit">
+                    <l-button size="medium" l-class="my-button" width="200" bg-color="#337559">保存</l-button>
+                </view>
+            </l-form>
+        </view>
+    </view>
+</l-popup>
+
+<l-popup show="{{modalShow}}"  locked="{{false}}" z-index="111">
     <view style="width:600rpx;height:{{modalHeight}}rpx;background-color: #fff;">
         <view bindtap="closeModal" class="close-icon">
             <l-icon name="close"/>
         </view>
         <scroll-view class="tab-content profile-scroll" scroll-y="{{true}}" style="height:{{scrollHeight}}rpx !important;padding-top:30rpx;" scroll-top="0">
-            <view style="width:500rpx;margin-left:50rpx;">
-                <text style="font-size:30rpx;">{{macroStr}}
-                </text>
-            </view>
+<!--            <view style="width:500rpx;margin-left:50rpx;">-->
+<!--                <text style="font-size:30rpx;">{{macroStr}}-->
+<!--                </text>-->
+<!--            </view>-->
+            <l-textarea indicator="{{false}}" maxlength="-1" l-class="textarea" value="{{macroStr}}" bind:lininput="updateMacro" name="name"/>
+
         </scroll-view>
         <view style="height:{{contentHeight}}rpx;">
             <l-button size="medium" l-class="share" width="200" bg-color="#337559" bindtap="copyStr">复制宏</l-button>
-            <l-button size="medium"  bg-color="white" width="200" l-class="btn-back" lang="zh_CN" bindtap="saveMacro">保存到我的宏</l-button>
+            <l-button size="medium"  bg-color="white" width="200" l-class="btn-back" lang="zh_CN" bindtap="showMyModal">保存到我的宏</l-button>
         </view>
     </view>
 </l-popup>
-
 <!--<l-toast-->
 <!--    show="{{true}}"-->
 <!--    icon="success"-->

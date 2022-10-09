@@ -1,0 +1,31 @@
+<!--pages/lottery-log/index.wxml-->
+<l-search-bar l-class="wa-search" placeholder="搜索" show-cancel="{{false}}" bind:linblur="doSearch" bind:linclear="doSearch"></l-search-bar>
+<scroll-view scroll-x enable-flex class="tag-scroll" scroll-into-view="{{null}}">
+    <view>
+        <l-tag l-class="tag tag-scroll2" plain="{{false}}"
+               font-color="{{orderColumn === 'update_at' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="update_at" icon="{{orderObj.timesOrder === 'desc' ? 'down' : 'up'}}">
+            更新时间</l-tag>
+    </view>
+</scroll-view>
+<scroll-view class="tab-content profile-scroll" lower-threshold="30" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{height}}rpx !important;margin-top:100rpx;" scroll-top="{{scrollTop}}" 	refresher-background="#fff">
+    <view class="comment-box" wx:if="{{list.length > 0}}">
+        <view class="comment" wx:for="{{list}}" wx:key="item">
+            <view class="comment-right {{index === list.length - 1 && isEnd ? 'non-border' : ''}}">
+                <view class="comment-top">
+                    <view class="nick-name" style="width:30%">{{item.macro_name}}
+                    </view>
+                    <view class="content">
+                        <view>
+                            <text style="float:right;">{{item.update_at}}</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <!--    <view style=""></view>-->
+        <l-loadmore show="{{list.length !== 0 && isEnd}}" line l-class="loading" type="end" />
+        <l-loadmore wx:if="{{!isEnd}}" show="{{isLoading}}" line l-class="loading" />
+
+    </view>
+    <nothing wx:if="{{list.length === 0}}" pic="../../images/icon_nothing/pic_hole.png" tip="您暂时还没有宏" />
+</scroll-view>

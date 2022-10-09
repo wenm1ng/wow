@@ -1,8 +1,12 @@
-<view style="color:#337559">
+<view style="color:#337559;padding:10rpx">
     组合多个技能到一个键位，节省键位，条件需要的，则输入技能，不需要的保留空。
 </view>
-<view style="color:red">
-    注意：技能名称一定不要填错!!!可以在游戏中按P键查看具体的技能名称!
+<view style="color:#337559;padding:10rpx">
+    “重置技能”意味着添加新宏，如未操作重置则一直做修改宏操作
+</view>
+
+<view style="color:red;padding:10rpx">
+    注意：涉及到技能名称的宏一定不要填错!可以在游戏中按P键查看具体的技能名称!
 </view>
 <l-form name="macro" bind:linsubmit="submit" bind:linreset="onReset" l-form-btn-class="l-form-btn-class">
     <l-form-item label="鼠标指向是敌方，则施放技能：" l-form-item-class="form-item" name="mouse_enemy" label-width="450rpx">
@@ -35,11 +39,11 @@
     <l-form-item label="以上条件都不满足，则默认施放技能（二选一）：" l-form-item-class="form-item" name="def" label-width="450rpx">
         <l-input  id="def" width="300" hide-label/>
     </l-form-item>
-
-    <view slot="submit">
+    <view style="height:200rpx"></view>
+    <view slot="submit" class="left">
         <l-button bg-color="#337559">提交组合</l-button>
     </view>
-    <view slot="reset">
+    <view slot="reset" class="right">
         <l-button type="default" l-class="reset" plain>重置技能</l-button>
     </view>
 </l-form>
@@ -51,14 +55,34 @@
             <l-icon name="close"/>
         </view>
         <scroll-view class="tab-content profile-scroll" scroll-y="{{true}}" style="height:{{scrollHeight}}rpx !important;padding-top:30rpx;" scroll-top="0">
-            <view style="width:500rpx;margin-left:50rpx;">
-                <text style="font-size:30rpx;">{{macroStr}}
-                </text>
-            </view>
+<!--            <view style="width:500rpx;margin-left:50rpx;">-->
+<!--                <text style="font-size:30rpx;">{{macroStr}}-->
+<!--                </text>-->
+<!--            </view>-->
+            <l-textarea indicator="{{false}}" maxlength="-1" l-class="textarea" value="{{macroStr}}" bind:lininput="updateMacro" name="name"/>
+
         </scroll-view>
         <view style="height:{{contentHeight}}rpx;">
             <l-button size="medium" l-class="share" width="200" bg-color="#337559" bindtap="copyStr">复制宏</l-button>
-            <l-button size="medium"  bg-color="white" width="200" l-class="btn-back" lang="zh_CN" bindtap="saveMacro">保存到我的宏</l-button>
+            <l-button size="medium"  bg-color="white" width="200" l-class="btn-back" lang="zh_CN" bindtap="showMyModal">保存到我的宏</l-button>
+        </view>
+    </view>
+</l-popup>
+<l-popup show="{{modalMyShow}}"  locked="{{false}}" >
+    <view style="width:550rpx;height:300rpx;background-color: #fff;">
+        <view bindtap="closeMyModal" class="close-my-icon">
+            <l-icon name="close"/>
+        </view>
+        <view style="height:80rpx"></view>
+        <view style="height:130rpx;">
+            <l-form name="macroName" bind:linsubmit="saveMacro" l-form-btn-class="l-form-btn-class">
+                <l-form-item label="宏名称："  l-form-item-class="form-item" name="name" label-width="130rpx">
+                    <l-input  id="name" width="400" hide-label l-class="bg-white" value="{{name}}"/>
+                </l-form-item>
+                <view slot="submit">
+                    <l-button size="medium" l-class="my-button" width="200" bg-color="#337559">保存</l-button>
+                </view>
+            </l-form>
         </view>
     </view>
 </l-popup>

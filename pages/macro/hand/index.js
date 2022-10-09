@@ -9,6 +9,7 @@ Page({
     handList: [],
     selectList: [],
     modalShow: false,
+    modalMyShow: false,
     modalHeight: 600,
     contentHeight: 150,
     scrollHeight:450,
@@ -21,6 +22,8 @@ Page({
     campIndex:0,
     statusIndex:0,
     buttonIndex:0,
+    content: '',
+    name: '',
     enums:[
         '技能名称：',
         '物品名称：',
@@ -34,6 +37,11 @@ Page({
   onLoad(options) {
     wx.lin.initValidateForm(this)
     this.getHandList()
+  },
+  updateMacro(e){
+    this.setData({
+      macroStr: e.detail.value
+    })
   },
   getHandList(){
     const url = api.macroAPI + 'tab-list'
@@ -65,20 +73,108 @@ Page({
       }
     })
   },
-  //重置表单
+  //重置当前数据
   onReset(){
-    wx.lin.resetForm('macro');
+    this.setData({
+      isSelect: false,
+      multiIndex: [0, 0],
+      inputType: 0,
+      campIndex:0,
+      statusIndex:0,
+      buttonIndex:0,
+      content: '',
+    })
+  },
+  //重置所有数据
+  onResetAll(){
+    this.setData({
+      isSelect: false,
+      multiIndex: [0, 0],
+      macroStr: '',
+      logId: 0,
+      inputType: 0,
+      campIndex:0,
+      statusIndex:0,
+      buttonIndex:0,
+      content: '',
+      name: '',
+    })
+  },
+  //关闭弹窗
+  closeModal(){
+    this.setData({
+      modalShow: false,
+    })
+  },
+  closeMyModal(){
+    wx.lin.resetForm('macroName');
+    this.setData({
+      modalMyShow: false,
+    })
+  },
+  //保存到我的宏
+  saveMacro(e){
+    console.log(e.detail.values);
+
+    if(e.detail.values.name === ''){
+      wx.showToast({
+        title: '宏名称不能为空',
+        icon: 'error',
+        duration: 2000//持续的时间
+      })
+      return;
+    }
+    const that = this
+    app.saveMacro(this.data.logId, e.detail.values.name, that.data.macroStr, function(){
+      that.closeMyModal()
+    })
+  },
+  showMyModal(){
+    this.setData({
+      modalMyShow: true,
+    })
+  },
+  //复制宏
+  copyStr(){
+    wx.setClipboardData({
+      data:this.data.macroStr,//要复制的数据
+      success (res) {
+        wx.showToast({
+          title: '复制成功',
+          icon: 'success',
+          duration: 2000//持续的时间
+        })
+      }
+    })
   },
   submit(e){
+    if(!this.data.isSelect){
+      wx.showToast({
+        title: '请选择动作',
+        icon: 'error',
+        duration: 2000//持续的时间
+      })
+      return;
+    }
     const url = api.macroAPI + 'hand-combine'
 
     let data = {
       camp_index: this.data.campIndex,
       status_index: this.data.statusIndex,
       button_index: this.data.buttonIndex,
-      action: this.data.multiIndex
+      action: this.data.multiIndex,
+      id: this.data.logId,
+      macro_str: this.data.macroStr
     }
-    if(e.detail.values.content){
+    if(e.detail.values){
+      if(e.detail.values.content === ''){
+        wx.showToast({
+          title: '请输入必填信息',
+          icon: 'error',
+          duration: 2000//持续的时间
+        })
+        return;
+      }
       data.content = e.detail.values.content
     }
     const that = this
