@@ -2,7 +2,7 @@
 const app = getApp()
 const api = app.api
 const wxutil = app.wxutil
-const pageSize = 10 // 每页显示条数
+const pageSize = 15 // 每页显示条数
 
 Page({
   data: {
@@ -220,6 +220,7 @@ Page({
           list: page === 1 ? list : this.data.list.concat(list),
           isLoading: false
         })
+        console.log(this.data.isEnd)
       }
     })
   },

@@ -358,7 +358,7 @@ page{
     margin-right:300rpx;
 }
 .right{
-    position: fixed;
+    position: absolute;
     right:110rpx;
-    top:680rpx;
+    bottom:480rpx;
 }

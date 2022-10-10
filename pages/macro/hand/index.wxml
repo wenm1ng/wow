@@ -59,7 +59,7 @@
 </button>
 <l-form name="macro" bind:linsubmit="submit" l-form-btn-class="l-form-btn-class">
     <l-form-item wx:if="{{inputType !== 0}}" label="*{{enums[inputType - 1]}}" l-form-label-class="red" l-form-item-class="form-item" name="content" label-width="180rpx">
-        <l-input  id="content" width="600" hide-label l-class="bg-white" value="{{content}}"/>
+        <l-input  id="content" width="540" hide-label l-class="bg-white" value="{{content}}"/>
     </l-form-item>
 
     <view slot="submit" class="left">

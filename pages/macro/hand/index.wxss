@@ -6,8 +6,8 @@
 }
 
 .form-item{
-    width:480rpx !important;
-    background-color: white;
+    width:600rpx !important;
+    background-color: white !important;
 }
 
 .bg-white{

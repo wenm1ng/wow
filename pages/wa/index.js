@@ -34,7 +34,11 @@ Page({
     this.getVersionList();
     this.getTabList();
   },
-
+  gotoMacro(){
+    wx.navigateTo({
+      url: "/pages/macro/index?id=3"
+    })
+  },
   /**
    * 搜索
    */

@@ -14,7 +14,7 @@
 </view>
 
 <!--<view style="height: 100rpx;"></view>-->
-<scroll-view class="tab-content profile-scroll" lower-threshold="30" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{height}}rpx !important;" scroll-top="{{scrollTop}}" 	refresher-background="#fff">
+<scroll-view class="tab-content profile-scroll" lower-threshold="40" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{height}}rpx !important;" scroll-top="{{scrollTop}}" 	refresher-background="#fff">
     <view class="comment-box" wx:if="{{list.length > 0}}">
         <view class="comment" wx:for="{{list}}" wx:key="item" hover-class="background-grey" data-id="{{item.id}}" data-index="{{index}}" data-name="{{item.macro_name}}" data-content="{{item.macro_content}}" bindtap="onShowDetail">
             <view class="comment-right {{index === list.length - 1 && isEnd ? 'non-border' : ''}}">
@@ -55,7 +55,7 @@
                 <l-button size="medium"  width="150" l-class="btn-back" lang="zh_CN">修改</l-button>
             </view>
 <!--        </scroll-view>-->
-            <view style="height:{{contentHeight}}rpx;position: absolute;top: 680rpx;">
+            <view style="height:{{contentHeight}}rpx;position: absolute;bottom: 500rpx;">
                 <l-button size="medium" l-class="share float" width="150" bg-color="#337559" bindtap="copyStr">复制宏</l-button>
 
                 <l-button size="medium" bg-color="#C22020" width="150" l-class="float" lang="zh_CN" bindtap="delMacro">删除</l-button>

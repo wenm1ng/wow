@@ -1,7 +1,7 @@
 <view class="page">
     <l-search-bar l-class="wa-search" placeholder="搜索" show-cancel="{{false}}" bind:linconfirm="doSearch"></l-search-bar>
     <view class="wa-big-image">
-        <image class='btnImg' src='https://mingtongct.com/images/bg/bg.jpg'></image>
+        <image class='btnImg' bindtap="gotoMacro" src='https://mingtongct.com/images/bg/bg_macro.jpg'></image>
         <view class="quick-entry">
             <view class="quick-left" bindtap="gotoMount">
                 <view style="width:200rpx;float:left;text-align: center">
