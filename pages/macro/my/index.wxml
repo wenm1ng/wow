@@ -1,15 +1,22 @@
 <!--pages/lottery-log/index.wxml-->
 <l-search-bar l-class="wa-search" placeholder="搜索" show-cancel="{{false}}" bind:linblur="doSearch" bind:linclear="doSearch"></l-search-bar>
-<scroll-view scroll-x enable-flex class="tag-scroll" scroll-into-view="{{null}}">
-    <view>
-        <l-tag l-class="tag tag-scroll2" plain="{{false}}"
-               font-color="{{orderColumn === 'update_at' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="update_at" icon="{{orderObj.timesOrder === 'desc' ? 'down' : 'up'}}">
-            更新时间</l-tag>
-    </view>
-</scroll-view>
-<scroll-view class="tab-content profile-scroll" lower-threshold="30" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{height}}rpx !important;margin-top:100rpx;" scroll-top="{{scrollTop}}" 	refresher-background="#fff">
+<!--<scroll-view scroll-x enable-flex class="tag-scroll" scroll-into-view="{{null}}">-->
+<!--    <view style="display: flex">-->
+<!--        <l-tag l-class="tag tag-scroll2" plain="{{false}}"-->
+<!--               font-color="{{orderColumn === 'update_at' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="update_at" icon="{{orderObj.timesOrder === 'desc' ? 'down' : 'up'}}">-->
+<!--            更新时间</l-tag>-->
+<!--    </view>-->
+<!--</scroll-view>-->
+<view class="tag-scroll" style="display: block">
+    <l-tag l-class="tag tag-scroll2" plain="{{false}}"
+           font-color="{{orderColumn === 'update_at' ? '#337559' : '#A0A0A0'}}" bind:lintap="onOrder" data-order="update_at" icon="{{orderObj.timesOrder === 'desc' ? 'down' : 'up'}}">
+        更新时间</l-tag>
+</view>
+
+<!--<view style="height: 100rpx;"></view>-->
+<scroll-view class="tab-content profile-scroll" lower-threshold="30" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{height}}rpx !important;" scroll-top="{{scrollTop}}" 	refresher-background="#fff">
     <view class="comment-box" wx:if="{{list.length > 0}}">
-        <view class="comment" wx:for="{{list}}" wx:key="item">
+        <view class="comment" wx:for="{{list}}" wx:key="item" hover-class="background-grey" data-id="{{item.id}}" data-index="{{index}}" data-name="{{item.macro_name}}" data-content="{{item.macro_content}}" bindtap="onShowDetail">
             <view class="comment-right {{index === list.length - 1 && isEnd ? 'non-border' : ''}}">
                 <view class="comment-top">
                     <view class="nick-name" style="width:30%">{{item.macro_name}}
@@ -22,10 +29,42 @@
                 </view>
             </view>
         </view>
-        <!--    <view style=""></view>-->
         <l-loadmore show="{{list.length !== 0 && isEnd}}" line l-class="loading" type="end" />
         <l-loadmore wx:if="{{!isEnd}}" show="{{isLoading}}" line l-class="loading" />
-
     </view>
     <nothing wx:if="{{list.length === 0}}" pic="../../images/icon_nothing/pic_hole.png" tip="您暂时还没有宏" />
 </scroll-view>
+
+<l-popup show="{{modalShow}}"  locked="{{false}}" z-index="111">
+    <view style="width:600rpx;height:{{modalHeight}}rpx;background-color: #fff;">
+        <view bindtap="closeModal" class="close-icon">
+            <l-icon name="close"/>
+        </view>
+        <l-form name="macro" bind:linsubmit="saveMacro" l-form-btn-class="l-form-btn-class">
+<!--        <scroll-view class="tab-content profile-scroll" scroll-y="{{true}}" style="height:{{scrollHeight}}rpx !important;padding-top:30rpx;" scroll-top="0">-->
+            <view style="height:130rpx;">
+                <l-form-item label="宏名称："  l-form-item-class="form-item" name="name" label-width="130rpx">
+                    <l-input  id="name" width="400" hide-label l-class="bg-white" value="{{macroName}}"/>
+                </l-form-item>
+                <l-form-item label="宏内容："  l-form-item-class="form-item" name="content" label-width="130rpx">
+                    <l-textarea indicator="{{false}}" maxlength="-1" l-class="textarea" value="{{macroStr}}" id="content"/>
+                </l-form-item>
+            </view>
+            <view slot="submit" class="right">
+                <!--                        <l-button size="medium" l-class="my-button" width="200" bg-color="#337559">保存</l-button>-->
+                <l-button size="medium"  width="150" l-class="btn-back" lang="zh_CN">修改</l-button>
+            </view>
+<!--        </scroll-view>-->
+            <view style="height:{{contentHeight}}rpx;position: absolute;top: 680rpx;">
+                <l-button size="medium" l-class="share float" width="150" bg-color="#337559" bindtap="copyStr">复制宏</l-button>
+
+                <l-button size="medium" bg-color="#C22020" width="150" l-class="float" lang="zh_CN" bindtap="delMacro">删除</l-button>
+            </view>
+        </l-form>
+        <!--        <view style="height:{{contentHeight}}rpx;">-->
+<!--            <l-button size="medium" l-class="share" width="200" bg-color="#337559" bindtap="copyStr">复制宏</l-button>-->
+<!--            <l-button size="medium"  width="200" l-class="btn-back" lang="zh_CN" bindtap="showMyModal">修改</l-button>-->
+<!--            <l-button size="medium" bg-color="#C22020" width="200" l-class="btn-back" lang="zh_CN" bindtap="delMacro">删除</l-button>-->
+<!--        </view>-->
+    </view>
+</l-popup>

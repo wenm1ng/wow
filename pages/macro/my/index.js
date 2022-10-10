@@ -21,15 +21,111 @@ Page({
     index: -1,
     isRequest:false, //是否正在处理请求
     isLoading:false,
-    name: '' //坐骑名称
+    name: '', //搜索名称
+    modalShow: false,
+    modalHeight: 600,
+    scrollHeight:450,
+    id: '',
+    macroName: '',
+    macroStr: '',
+    contentHeight: 50,
   },
 
   onLoad(options) {
+    wx.lin.initValidateForm(this)
     this.getScrollHeight();
     this.getList()
     this.getUserId()
   },
-
+  onShowDetail(event){
+    this.setData({
+      id: event.currentTarget.dataset.id,
+      macroName: event.currentTarget.dataset.name,
+      macroStr: event.currentTarget.dataset.content,
+      modalShow: true,
+      index: event.currentTarget.dataset.index
+    })
+  },
+  //复制宏
+  copyStr(){
+    wx.setClipboardData({
+      data:this.data.macroStr,//要复制的数据
+      success (res) {
+        wx.showToast({
+          title: '复制成功',
+          icon: 'success',
+          duration: 2000//持续的时间
+        })
+      }
+    })
+  },
+  //关闭弹窗
+  closeModal(){
+    this.setData({
+      modalShow: false,
+    })
+  },
+  //保存到我的宏
+  saveMacro(e){
+    if(e.detail.values.name === ''){
+      wx.showToast({
+        title: '宏名称不能为空',
+        icon: 'error',
+        duration: 2000//持续的时间
+      })
+      return;
+    }
+    if(e.detail.values.content === ''){
+      wx.showToast({
+        title: '宏内容不能为空',
+        icon: 'error',
+        duration: 2000//持续的时间
+      })
+      return;
+    }
+    const that = this
+    app.saveMacro(this.data.id, e.detail.values.name, e.detail.values.content, function(){
+      that.getList()
+    })
+  },
+  //删除宏
+  delMacro(){
+    const that = this
+    wx.showModal({
+      title: "提示",
+      content: '确定要删除吗?',
+      success: (res) => {
+        if (res.confirm) {
+          const url = api.macroAPI + 'del'
+          wxutil.request.post(url, {id: this.data.id}).then((rs) => {
+            if (rs.data.code === 200) {
+              wx.showToast({
+                title: '删除成功',
+                icon: 'success',
+                duration: 2000//持续的时间
+              })
+              that.setData({
+                modalShow: false
+              })
+              that.getList()
+            }else{
+              let msg = '删除失败';
+              if(rs.data.code !== 400){
+                msg = rs.data.msg
+              }
+              wx.showToast({
+                title: msg,
+                icon: 'error',
+                duration: 2000//持续的时间
+              })
+            }
+          })
+        }
+      },
+      fail: (res) => {
+      },
+    })
+  },
   onOrder(event){
     const orderColumn = event.currentTarget.dataset.order
 

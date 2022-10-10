@@ -19,7 +19,7 @@
 
 <view style="text-align: center">
     <l-button size="medium" l-class="button-one left" width="200"  bindtap="doLottery" bg-color="#337559" data-type="1" data-one="1">一键单刷</l-button>
-    <l-button size="medium" l-class="button-one mid" width="200" bg-color="#A81818" bindtap="doLottery" data-type="2" data-one="1">一键九连</l-button>
+    <l-button size="medium" l-class="button-one mid" width="200" bg-color="#A81818" bindtap="doLottery" data-type="2" data-one="1">一键九连刷</l-button>
     <l-button size="medium" l-class="button-one right" width="200" bindtap="gotoLotteryLog">坐骑记录</l-button>
 </view>
 

@@ -180,7 +180,7 @@
     display: flex;
     flex-direction: column;
     margin-left: 30rpx;
-    padding: 10rpx 0;
+    padding: 20rpx 0;
     width: 600rpx;
     border-bottom: 1px #f1f1f1 solid;
 }
@@ -293,7 +293,7 @@ page{
     left: 0;
     z-index: 99;
     white-space: nowrap;
-    height: 50rpx;
+    height: 58rpx;
     width: 750rpx;
     padding: 20rpx 0;
     background: #f7f7f7;
@@ -303,11 +303,11 @@ page{
     display: flex;
     flex-direction: row;
     position: fixed;
-    top: 80rpx;
+    top: 88rpx;
     left: 0;
     z-index: 99;
     white-space: nowrap;
-    height: 50rpx;
+    height: 60rpx;
     /*width: 100rpx;*/
     padding: 20rpx 0;
     background-color: #f7f7f7 !important;
@@ -333,4 +333,32 @@ page{
 
 .tag {
     margin: 0 10rpx;
+}
+
+.background-grey{
+    background-color: #cdcbcb;
+}
+.close-icon{
+    position: absolute;
+    left:630rpx;
+    z-index: 110;
+}
+
+.float{
+    float:left;
+    margin-left:40rpx
+}
+.textarea{
+    width:400rpx !important;
+    /*margin-left:0 !important;*/
+    font-size:30rpx;
+    height:300rpx !important;
+    /*margin-left:100rpx;*/
+    margin-top:20rpx;
+    margin-right:300rpx;
+}
+.right{
+    position: fixed;
+    right:110rpx;
+    top:680rpx;
 }

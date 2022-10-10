@@ -96,18 +96,24 @@ page{
 .add-button-view{
     position: absolute;
     top:92%;
-    left:10%;
+    left:30rpx;
     z-index: 999;
-    width:30%;
     height:100rpx;
 }
 
 .all-button-view{
     position: absolute;
     top:92%;
-    left:40%;
+    left:280rpx;
     z-index: 999;
-    width:30%;
+    height:100rpx;
+}
+
+.reset-button-view{
+    position: absolute;
+    top:90%;
+    left:70%;
+    z-index: 999;
     height:100rpx;
 }
 
@@ -125,20 +131,7 @@ page{
     filter: #0f6945;
 }
 
-.add-button{
-    background-color:#0f6945 !important;
-    color:white !important;
-    width:40% !important;
-}
 
-.reset-button-view{
-    position: absolute;
-    top:90%;
-    left:70%;
-    z-index: 999;
-    width:30%;
-    height:100rpx;
-}
 
 .bg-font{
     background-color:#f7f7f7;
@@ -168,4 +161,8 @@ page{
     margin:2% 4% 2% 2% !important;
     margin-top:20rpx !important;
     margin-bottom:20rpx !important;
+}
+
+.blue{
+    background-color: #638BD0 !important;
 }

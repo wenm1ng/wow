@@ -22,10 +22,10 @@
 
         <!--中间z-index按钮-->
 <view class="add-button-view" bindtap="gotoLottery">
-    <l-button size="medium" l-class="add-button" width="200">我选好了</l-button>
+    <l-button size="medium" bg-color="#0f6945" width="200">我选好了</l-button>
 </view>
 <view class="all-button-view" bindtap="selectAll" data-type="all">
-    <l-button size="medium" l-class="add-button" width="200">全选</l-button>
+    <l-button size="medium" width="200">全选</l-button>
 </view>
 <view class="reset-button-view" bindtap="selectAll" data-type="reset">
     <l-button size="medium" l-class="search-button" l-hover-class="search-hover-button" width="200">重选</l-button>
