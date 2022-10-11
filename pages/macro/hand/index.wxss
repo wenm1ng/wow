@@ -6,7 +6,7 @@
 }
 
 .form-item{
-    width:600rpx !important;
+    width:480rpx !important;
     background-color: white !important;
 }
 

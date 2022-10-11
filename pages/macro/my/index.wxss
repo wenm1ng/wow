@@ -360,5 +360,5 @@ page{
 .right{
     position: absolute;
     right:110rpx;
-    bottom:480rpx;
+    bottom:450rpx;
 }

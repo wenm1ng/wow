@@ -39,7 +39,7 @@
     <l-form-item label="以上条件都不满足，则默认施放技能（二选一）：" l-form-item-class="form-item" name="def" label-width="450rpx">
         <l-input  id="def" width="300" hide-label/>
     </l-form-item>
-    <view style="height:200rpx"></view>
+    <view style="height:50rpx"></view>
     <view slot="submit" class="left">
         <l-button bg-color="#337559">提交组合</l-button>
     </view>

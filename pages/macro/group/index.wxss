@@ -79,6 +79,7 @@
 .reset{
     color:#337559 !important;
     border-color: #337559 !important;
+    z-index:99;
 }
 
 .close-my-icon{
@@ -100,12 +101,8 @@
 }
 
 .left{
-    position: fixed;
-    bottom: 50rpx;
-    left:100rpx;
+    margin-bottom: 30rpx;
 }
 .right{
-    position: fixed;
-    bottom: 50rpx;
-    right:100rpx;
+    margin-bottom: 30rpx;
 }

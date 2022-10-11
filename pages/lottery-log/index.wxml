@@ -17,7 +17,7 @@
             坐骑概率</l-tag>
     </view>
 </scroll-view>
-<scroll-view class="tab-content profile-scroll" lower-threshold="30" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{height}}rpx !important;margin-top:100rpx;" scroll-top="{{scrollTop}}" 	refresher-background="#fff">
+<scroll-view class="tab-content profile-scroll" lower-threshold="50" scroll-y="{{true}}" bindscrolltolower="scrollToLower" style="height:{{height}}rpx !important;margin-top:100rpx;" scroll-top="{{scrollTop}}" 	refresher-background="#fff">
     <view class="comment-box" wx:if="{{list.length > 0}}">
         <view class="comment" wx:for="{{list}}" wx:key="item">
             <image class="avatar" src="{{item.image_url}}" />

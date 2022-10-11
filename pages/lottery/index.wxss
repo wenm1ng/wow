@@ -270,9 +270,6 @@ page{
     display: inline;
 }
 .share{
-    margin:2% 4% 2% 2% !important;
-    margin-top:20rpx !important;
-    margin-bottom:20rpx !important;
     float:left;
     margin-left:60rpx !important;
     font-size: 28rpx !important;
@@ -283,15 +280,12 @@ page{
     line-height:72rpx !important;
     white-space:nowrap;
     width:200rpx;
-    display: inline-flex !important;
     padding:0 25rpx;
 }
 .btn-back{
-    margin-top: 20rpx;
     background-color:white !important;
     color:#0f6945 !important;
     border:1rpx #0f6945 solid;
-    display: inline;
-    float:right;
-    margin-right:50rpx;
+    float:left;
+    margin-left:100rpx;
 }

@@ -23,6 +23,7 @@ Page({
     nowImageUrl: 'https://mingtongct.com/images/mount/argusfelstalkermountred.jpg',
     nowName: '奥利瑟拉佐尔的烈焰之爪',
     one: 0,
+    // bingoList: [{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"},{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"},{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"},{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"},{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"},{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"},{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"},{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"},{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"}],
     bingoList: [],
     lengths: 0,
     modalHeight: 650,
@@ -181,10 +182,16 @@ Page({
             mountView = 300
             mountWidth = 300
             mountHeight = 300
+          } else if(bingoLength === 3 ){
+            mountView = 200
+            mountWidth = 150
+            mountHeight = 150
+            modalHeight = 500
           }else if(bingoLength <= 6){
             mountView = 200
             mountWidth = 150
             mountHeight = 150
+            modalHeight = 700
           }else{
             mountView = 200
             mountWidth = 150
@@ -201,12 +208,15 @@ Page({
           })
 
           //一键十连刷
-          for (let i = 0;i < length; i++){
-            that.turnOver(i)
-            if(res.data.data['list'][i].is_bingo === 1){
-              bingoList.push(res.data.data['list'][i])
+          setTimeout(function(){
+            for (let i = 0;i < length; i++){
+              that.turnOver(i)
+              if(res.data.data['list'][i].is_bingo === 1){
+                bingoList.push(res.data.data['list'][i])
+              }
             }
-          }
+          },200)
+
         }
       }else if(res.data.code === 40001){
         wx.showToast({
@@ -300,7 +310,7 @@ Page({
     that.setData({
       lotteryList: lotteryList,
     })
-    let time = 1000 * (index + 1);
+    let time = 600 * (index + 1);
     setTimeout(function () {
       lotteryList[index].is_open = 1;
       // lotteryList[index].title = '';
@@ -310,11 +320,18 @@ Page({
     }, time)
     setTimeout(function () {
       lotteryList[index].is_show_image = 1;
-      lotteryList[index].title = lotteryList[index].name;
-
+      lotteryList[index].title = '';
       that.setData({
         lotteryList: lotteryList,
       })
+      setTimeout(function () {
+        lotteryList[index].title = lotteryList[index].name;
+
+        that.setData({
+          lotteryList: lotteryList,
+        })
+      },600)
+
       if(index === that.data.lengths - 1 && that.data.bingoList.length !== 0){
         that.setData({
           modalShow: true

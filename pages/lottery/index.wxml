@@ -60,9 +60,10 @@
                 {{item.name}}
             </view>
         </view>
-        <l-button size="medium" l-class="share" width="200" special="{{true}}" open-type="share" bg-color="#337559">分享一下<l-icon name="share" size="30" color="#fff" l-class="inline"/></l-button>
-        <l-button size="medium"  bg-color="white" width="200" l-class="btn-back" lang="zh_CN" bindtap="closeModal">关闭</l-button>
-
+        <view style="margin-top: 30rpx;float:left">
+            <l-button size="medium" l-class="share" width="200" special="{{true}}" open-type="share" bg-color="#337559">分享一下<l-icon name="share" size="30" color="#fff" l-class="inline"/></l-button>
+            <l-button size="medium"  bg-color="white" width="200" l-class="btn-back" lang="zh_CN" bindtap="closeModal">关闭</l-button>
+        </view>
         <!--        <view class="mount-view" style="width:200rpx;">-->
 <!--            <image src="{{nowImageUrl}}" style="width:150rpx;height:150rpx;margin:0 auto;"/>-->
 <!--            <view style="text-align: center;">-->

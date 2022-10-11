@@ -55,7 +55,7 @@
                 <l-button size="medium"  width="150" l-class="btn-back" lang="zh_CN">修改</l-button>
             </view>
 <!--        </scroll-view>-->
-            <view style="height:{{contentHeight}}rpx;position: absolute;bottom: 500rpx;">
+            <view style="height:{{contentHeight}}rpx;position: absolute;bottom: 470rpx;">
                 <l-button size="medium" l-class="share float" width="150" bg-color="#337559" bindtap="copyStr">复制宏</l-button>
 
                 <l-button size="medium" bg-color="#C22020" width="150" l-class="float" lang="zh_CN" bindtap="delMacro">删除</l-button>
