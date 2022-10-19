@@ -36,11 +36,22 @@
     </l-list>
 </button>
 <button wx:if="{{inputType !== 0 && inputType !== 3}}" hover-class="btn-list" style="margin-top: 1rpx">
-    <l-list title="选择状态:">
+    <l-list title="目标状态:">
         <view slot="left-section">
             <picker bindchange="bindStatusChange" value="{{statusIndex}}" range="{{checkboxStatusList}}" style="width:500rpx">
                 <view class="picker" style="text-align:left;padding-left:40rpx;">
                     {{checkboxStatusList[statusIndex]}}
+                </view>
+            </picker>
+        </view>
+    </l-list>
+</button>
+<button wx:if="{{inputType !== 0 && inputType !== 3}}" hover-class="btn-list" style="margin-top: 1rpx">
+    <l-list title="玩家状态:">
+        <view slot="left-section">
+            <picker bindchange="bindPlayerChange" value="{{playerIndex}}" range="{{checkboxPlayerList}}" style="width:500rpx">
+                <view class="picker" style="text-align:left;padding-left:40rpx;">
+                    {{checkboxPlayerList[playerIndex]}}
                 </view>
             </picker>
         </view>
@@ -57,8 +68,19 @@
         </view>
     </l-list>
 </button>
+<button wx:if="{{inputType !== 0 && inputType !== 3}}" hover-class="btn-list" style="margin-top: 1rpx">
+    <l-list title="是否紧急:">
+        <view slot="left-section">
+            <picker bindchange="bindCommonChange" value="{{commonIndex}}" range="{{checkboxCommonList}}" style="width:500rpx">
+                <view class="picker" style="text-align:left;padding-left:40rpx;">
+                    {{checkboxCommonList[commonIndex]}}
+                </view>
+            </picker>
+        </view>
+    </l-list>
+</button>
 <l-form name="macro" bind:linsubmit="submit" l-form-btn-class="l-form-btn-class">
-    <l-form-item wx:if="{{inputType !== 0}}" label="*{{enums[inputType - 1]}}" l-form-label-class="red" l-form-item-class="form-item" name="content" label-width="180rpx">
+    <l-form-item wx:if="{{inputType !== 0 && inputType !== 5}}" label="*{{enums[inputType - 1]}}" l-form-label-class="red" l-form-item-class="form-item" name="content" label-width="180rpx">
         <l-input  id="content" width="540" hide-label l-class="bg-white" value="{{content}}"/>
     </l-form-item>
 

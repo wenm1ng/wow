@@ -19,9 +19,13 @@ Page({
     checkboxStatusList: [],
     checkboxButtonList: [],
     checkboxCampList: [],
+    checkboxCommonList: [],
+    checkboxPlayerList: [],
     campIndex:0,
     statusIndex:0,
     buttonIndex:0,
+    commonIndex:0,
+    playerIndex:0,
     content: '',
     name: '',
     enums:[
@@ -68,6 +72,8 @@ Page({
           checkboxStatusList: res.data.data.checkbox_status_list,
           checkboxButtonList: res.data.data.checkbox_button_list,
           checkboxCampList: res.data.data.checkbox_camp_list,
+          checkboxCommonList: res.data.data.checkbox_common_list,
+          checkboxPlayerList: res.data.data.checkbox_player_list,
           multiArray:multiArray
         })
       }
@@ -82,6 +88,8 @@ Page({
       campIndex:0,
       statusIndex:0,
       buttonIndex:0,
+      commonIndex:0,
+      playerIndex:0,
       content: '',
     })
   },
@@ -96,6 +104,8 @@ Page({
       campIndex:0,
       statusIndex:0,
       buttonIndex:0,
+      commonIndex:0,
+      playerIndex:0,
       content: '',
       name: '',
     })
@@ -162,6 +172,8 @@ Page({
       camp_index: this.data.campIndex,
       status_index: this.data.statusIndex,
       button_index: this.data.buttonIndex,
+      common_index: this.data.commonIndex,
+      player_index: this.data.playerIndex,
       action: this.data.multiIndex,
       id: this.data.logId,
       macro_str: this.data.macroStr
@@ -206,6 +218,18 @@ Page({
       buttonIndex: e.detail.value
     })
   },
+  bindCommonChange: function(e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      commonIndex: e.detail.value
+    })
+  },
+  bindPlayerChange: function(e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      playerIndex: e.detail.value
+    })
+  },
 
   bindMultiPickerChange: function (e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
@@ -219,7 +243,9 @@ Page({
       this.setData({
         campIndex: 0,
         statusIndex: 0,
-        buttonIndex: 0
+        buttonIndex: 0,
+        commonIndex: 0,
+        playerIndex: 0
       })
     }
     this.setData({
