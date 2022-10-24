@@ -1,0 +1,16 @@
+<!--pages/stake/index.wxml-->
+<view class="shake" style="height:100rpx;">hahaha</view>
+        <!-- 添加按钮 -->
+        <!--可拖动按钮控件表-->
+        <!--buttonStart和buttonEnd一定不能用catch事件，否则按钮点击事件会失效-->
+<view class="btn_Suspension" bindtap="openAddPage" wx:for="{{list}}" catchtouchmove="buttonMove" bindtouchstart="buttonStart" bindtouchend="buttonEnd" data-key="item" style="top:{{buttonTop + item*10}}px;left:{{buttonLeft + item*10}}px;">
+    <image class="Suspension_logo" src="../../images/icon_font/foreach.png"></image><!--这里是按钮图标-->
+</view>
+
+<view class="inner" bindtap="useSkill"><!--底部-->
+<!--    <image src="https://mingtongct.com/images/skill/ability_ambush.jpg" class="image"></image>-->
+    <view class="cdTime" style="background-image:url('https://mingtongct.com/images/skill/ability_ambush.jpg')">{{time}}</view>
+    <view class="spiner {{isUse ? 'ani1' : ''}}"></view><!--旋转体-->
+    <view class="masker {{isUse ? 'ani3' : ''}}"></view><!--蒙版1-->
+    <view class="filler {{isUse ? 'ani2' : ''}}"></view><!--蒙版2-->
+</view>

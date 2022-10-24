@@ -1,0 +1,8 @@
+<!--pages/stake-1/index.wxml-->
+<view class="divBox" style="left:10px; top:10px;" wx:for="{{skillPositionArr}}">
+    <image class="divBGPic" src="https://mingtongct.com/images/skill/ability_ambush.jpg" bindtap="handleMouseDown" style="left: {{pixelLeft}}px; top: {{pixelTop}}}px; width: {{pixelWidth}}}px; height: {{pixelHeight}}px;" />
+    <view wx:for="{{item}}" wx:for-item="child" wx:for-index="childIndex" class="mask layer{{childIndex}}" style="display: {{child.display}}; width:{{child.width}}px; height:{{child.height}}; {{child.borderLeftWidth >= 0 ? 'border-left-width:'+child.borderLeftWidth+'px;' : ''}} {{child.borderTopWidth >= 0 ? 'border-top-width:'+child.borderTopWidth+'px;' : ''}} {{child.borderRightWidth >= 0 ? 'border-right-width:'+child.borderRightWidth+'px;' : ''}} {{child.borderBottomWidth >= 0 ? 'border-bottom-width:'+child.borderBottomWidth+'px;' : ''}}"></view>
+<!--    <view class="mask layer1"></view>-->
+<!--    <view class="mask layer2"></view>-->
+<!--    <view class="mask layer3"></view>-->
+</view>

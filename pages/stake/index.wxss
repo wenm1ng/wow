@@ -1,0 +1,65 @@
+/* pages/stake-1/index.wxss */
+.divBox
+{
+    position: absolute;
+    overflow: hidden;
+    width: 64px;
+    height: 64px;
+    background: #000;
+}
+
+.divBox view
+{
+    margin: 0;
+    position: absolute;
+}
+
+
+.divBox .mask
+{
+    display: none;
+    overflow: hidden;
+    border: 32px solid #000001;
+
+    filter: alpha(opacity=60);
+    _filter: Chroma(color='black') alpha(opacity=60);
+    opacity: 0.6;
+}
+
+.divBox .layer0
+{
+    height: 0px;
+    left: 32px;
+    top: -32px;
+
+    border-top: 32px solid transparent;
+    border-left: 0px solid transparent;
+}
+
+.divBox .layer1
+{
+    width: 0px;
+    left: 32px;
+    top: 32px;
+
+    border-top: 0px solid transparent;
+    border-right: 32px solid transparent;
+}
+
+.divBox .layer2
+{
+    left:-32px;
+    top: 32px;
+
+    border-bottom: 32px solid transparent;
+    border-right: 0px solid transparent;
+}
+
+.divBox .layer3
+{
+    left: -32px;
+    top: -32px;
+
+    border-bottom: 0px solid transparent;
+    border-left: 32px solid transparent;
+}

@@ -38,7 +38,9 @@
     "pages/macro/index",
     "pages/macro/group/index",
     "pages/macro/hand/index",
-    "pages/macro/my/index"
+    "pages/macro/my/index",
+    "pages/stake-2/index",
+    "pages/stake/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -58,6 +60,12 @@
         "text": "首页",
         "iconPath": "images/icon_tab/index.png",
         "selectedIconPath": "images/icon_tab/index_hl.png"
+      },
+      {
+        "pagePath": "pages/stake/index",
+        "text": "打木桩",
+        "iconPath": "images/icon_tab/help.png",
+        "selectedIconPath": "images/icon_tab/help_hl.png"
       },
       {
         "pagePath": "pages/help/index",

@@ -1,0 +1,152 @@
+/* pages/stake/index.wxss */
+.shake {
+    animation: doudong 1s 0s infinite}
+/*定义关键帧动画*/@keyframes doudong {
+   0%  {
+       transform: rotate(0deg)}
+   10% ,20%,30%{
+       transform: rotate( -3deg)}
+   15%,25%,35% {
+       transform: rotate( 3deg)
+   }
+   40% {
+       transform: rotate( -2deg)
+   }
+   45% {
+       transform: rotate( 2deg)
+   }
+   50%{
+       transform: rotate( 0deg)
+   }
+   100%{
+       transform: rotate( 0deg)
+   }
+}
+
+/**可拖动悬浮按钮样式表**/
+.btn_Suspension{
+    position: fixed;
+    height: 90rpx;
+    width: 90rpx;
+    background-color: rgba(255, 255, 255, 0.755);
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    box-shadow: 1px 0px 1px 1px #ede7e7;
+}
+.Suspension_logo{
+    position:absolute;
+    height:100%;
+    width:100%;
+}
+
+/****************************************************************技能CD动画***********************************************************************/
+/**旋转动画**/
+.inner {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 200px auto 0 auto;
+    background-color: rgb(201, 202, 202);
+    border: solid 1px;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.image{
+    width: 100px;
+    height: 100px;
+}
+
+
+
+.cdTime {
+    position: absolute;
+    width: 100%;
+    line-height: 100px;
+    z-index: 5;
+    text-align: center;
+    color: #ffffff;
+    font-size: 37px;
+}
+
+.spiner {
+    position: absolute;
+    z-index: 1;
+    top: -50px;
+    left: -50px;
+    width: 100px;
+    height: 200px;
+    transform-origin: right;
+    border-radius: 100px 0 0 100px;
+    background-color: rgb(201, 202, 202);
+}
+
+.filler {
+    position: absolute;
+    left: 50px;
+    top: -50px;
+    width: 100px;
+    height: 200px;
+    border-radius: 0px 100px 100px 0;
+    background-color: rgb(121, 121, 121);
+    opacity: 0;
+}
+
+.masker {
+    z-index: 0;
+    position: absolute;
+    left: -50px;
+    top: -50px;
+    width: 100px;
+    height: 200px;
+    border-radius: 100px 0px 0 100px;
+    background-color: rgb(121, 121, 121);
+}
+.ani1{
+    animation: spin  linear;
+    animation-duration:10s;
+    z-index: 6;
+}
+.ani2{
+    animation: second-half-hide  steps(1, end);
+    animation-duration:10s;
+    z-index: 6;
+}
+.ani3{
+    animation: second-half-show  steps(1, end);
+    animation-duration:10s;
+}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes second-half-hide {
+    0% {
+        opacity: 1;
+    }
+
+    50%,
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes second-half-show {
+    0% {
+        z-index: 3;
+    }
+
+    50%,
+    100% {
+        z-index: 0;
+    }
+}
