@@ -1,5 +1,9 @@
 // pages/stake-1/index.js
+const app = getApp()
+const api = app.api
+const wxutil = app.wxutil
 var that;
+var repeatData = {}
 Page({
 
   /**
@@ -8,13 +12,18 @@ Page({
   data: {
     pixelLeft:0,
     pixelTop:0,
-    pixelWidth: 64,
-    pixelHeight: 64,
+    pixelWidth: 128,
+    pixelHeight: 128,
     arrMask: [],
     tickID: 0,
     stage: 0,
     inCD: false,
-    skillPositionArr: []
+    skillPositionArr: [],
+    nowIndexArr: [], //当前使用的技能下标
+    skillLink: [], //每个技能inCD等数据
+    skillInfo: [], //技能详细数据
+    repeatData: [], //技能定时器去重数据
+    isShake: false
   },
 
   /**
@@ -22,141 +31,209 @@ Page({
    */
   onLoad(options) {
     that = this
+
     let temp
+    let tempLink
     let skillPositionArr = []
-    for (var i = 0; i < 1; i++){
+    let skillLink = []
+    for (var i = 0; i < 10; i++){
       temp = [
-        {display:"none",width:0,height:32,borderLeftWidth:32,borderBottomWidth:0},
-        {display:"none",width:32,height:0,borderTopWidth:32,borderLeftWidth:0},
-        {display:"none",width:0,height:32,borderRightWidth:32,borderTopWidth:0},
-        {display:"none",width:32,height:0,borderBottomWidth:32,borderRightWidth:0},
+        // {display:"none",width:0,height:64,borderLeftWidth:64,borderBottomWidth:0},
+        // {display:"none",width:64,height:0,borderTopWidth:64,borderLeftWidth:0},
+        // {display:"none",width:0,height:64,borderRightWidth:64,borderTopWidth:0},
+        // {display:"none",width:64,height:0,borderBottomWidth:64,borderRightWidth:0},
+        {display:"none"},
+        {display:"none"},
+        {display:"none"},
+        {display:"none"},
       ]
+      tempLink = {inCD:false,tickID:0,stage:0}
+      skillLink.push(tempLink)
       skillPositionArr.push(temp);
     }
     this.setData({
-      skillPositionArr: skillPositionArr
+      skillPositionArr: skillPositionArr,
+      skillLink: skillLink,
+
     })
-    setInterval(this.onDraw, 16)
+
+    let promiseArr = [];
+//将图片地址的上传的promise对象加入到promiseArr
+    let promise = new Promise((resolve, reject) => {
+      //这里可以写要发的请求，这里以上传为例
+      setInterval(function(){
+        that.onDraw(0)
+      }, 16)
+      setInterval(function(){
+        that.onDraw(1)
+      }, 16)
+      setInterval(function(){
+        that.onDraw(2)
+      }, 16)
+      setInterval(function(){
+        that.onDraw(3)
+      }, 16)
+      setInterval(function(){
+        that.onDraw(4)
+      }, 16)
+      setInterval(function(){
+        that.onDraw(5)
+      }, 16)
+      setInterval(function(){
+        that.onDraw(6)
+      }, 16)
+      setInterval(function(){
+        that.onDraw(7)
+      }, 16)
+      setInterval(function(){
+        that.onDraw(8)
+      }, 16)
+      setInterval(function(){
+        that.onDraw(9)
+      }, 16)
+    });
+    promiseArr.push(promise)
+    // let promiseAnswer = new Promise((resolve, reject) => {
+    //   //这里可以写要发的请求，这里以上传为例
+    //   this.getAnswerList();
+    // });
+    // promiseArr.push(promiseAnswer)
+//Promise.all处理promiseArr数组中的每一个promise对象
+    Promise.all(promiseArr).then((result) => {
+      //在存储对象的数组里的所有请求都完成时，会执行这里
+      console.log(111)
+    })
   },
-  onDraw() {
-    if (!that.data.inCD){
+  onDraw(index) {
+    if (index === undefined || !that.data.skillLink[index].inCD){
       return;
     }
+    var i = ++that.data.skillLink[index].tickID;
 
-    var i = ++that.data.tickID;
-    that.setData({
-      tickID: i
-    })
     let arrMask = that.data.skillPositionArr;
+    let skillLink = that.data.skillLink;
+    skillLink[index].tickID = i;
 
-    switch(that.data.stage) {
+    // console.log(that.data.skillLink[index].stage)
+    // var repeat = index.toString() + that.data.skillLink[index].stage.toString()
+    // repeat = parseInt(repeat)
+
+    // var repeatName = 'repeatData['+repeat+']'
+    // that.setData({
+    //   [repeatName]: 1
+    // })
+    switch(that.data.skillLink[index].stage) {
       case 0:
-        arrMask[0][0].borderLeftWidth = i;
+        arrMask[index][0].borderLeftWidth = i;
         break;
       case 1:
-        arrMask[0][0].height = i;
-        arrMask[0][0].borderBottomWidth = 32 - i;
-        // arrMask[0][0].borderLeftWidth = i + 50;
+        arrMask[index][0].height = i + 2;
+        arrMask[index][0].borderBottomWidth = 64 - i;
         break;
       case 2:
-        arrMask[0][1].borderTopWidth = i;
+        arrMask[index][1].borderTopWidth = i;
         break;
       case 3:
-        arrMask[0][1].width = i;
-        arrMask[0][1].borderLeftWidth = (32-i);
+        arrMask[index][1].width = i;
+        arrMask[index][1].borderLeftWidth = (64-i);
         break;
       case 4:
-        arrMask[0][2].width = 32 - i;
-        arrMask[0][2].borderRightWidth = i;
+        arrMask[index][2].width = 64 - i;
+        arrMask[index][2].borderRightWidth = i;
         break;
       case 5:
-        arrMask[0][2].height = i;
-        arrMask[0][2].borderTopWidth = (32-i);
+        arrMask[index][2].height = i;
+        arrMask[index][2].borderTopWidth = (64-i);
         break;
       case 6:
-        arrMask[0][3].height = 32 - i;
-        arrMask[0][3].borderBottomWidth = i;
+        arrMask[index][3].height = 64 - i;
+        arrMask[index][3].borderBottomWidth = i;
         break;
       case 7:
-        arrMask[0][3].width = i;
-        arrMask[0][3].borderRightWidth = (32-i);
+        arrMask[index][3].width = i;
+        arrMask[index][3].borderRightWidth = (64-i);
         break;
       case 8:
-        that.setData({
-          inCD: false
-        })
+        skillLink[index].inCD = false;
         for(i=0; i<4; i++)
-          arrMask[0][i].display = "none";
+          arrMask[index][i].display = "none";
         break;
     }
-    that.setData({
-      skillPositionArr: arrMask
-    })
-    if (that.data.tickID === 32) {
-      that.setData({
-        tickID: 0,
-        stage: that.data.stage + 1
-      })
-    }
-  },
-  handleMouseDown(){
 
-    // this.setData({
-    //   pixelLeft: 2,
-    //   pixelTop: 2,
-    //   pixelWidth: 60,
-    //   pixelHeight: 60
-    // })
-    if(that.data.inCD){
+    if (skillLink[index].tickID === 64) {
+      skillLink[index].tickID = 0;
+      skillLink[index].stage = skillLink[index].stage + 1;
+    }
+    var positionName = 'skillPositionArr['+index+']'
+    var linkName = 'skillLink['+index+']'
+    that.setData({
+      [positionName]: arrMask[index],
+      [linkName]: skillLink[index]
+    })
+
+  },
+  handleMouseDown(event){
+    var index = event.currentTarget.dataset.index
+
+    if(that.data.skillLink[index].inCD){
       return;
     }
+    let skillLink = that.data.skillLink
+    skillLink[index].tickID = 0;
+    skillLink[index].stage = 0;
+    var indexArr = that.data.nowIndexArr
+    indexArr.push(index)
     this.setData({
       pixelLeft: 0,
       pixelTop: 0,
-      pixelWidth: 64,
-      pixelHeight: 64,
-      tickID: 0,
-      stage: 0,
+      pixelWidth: 128,
+      pixelHeight: 128,
+      skillLink: skillLink,
+      nowIndexArr: indexArr
     })
-    this.onReset()
+    this.onReset(index)
   },
-  onReset(){
-    var arr = this.data.skillPositionArr
-    var newArr = arr;
-    arr.forEach(function(val, key){
-      val.forEach(function(v, k){
-        newArr[key][k].display = 'block'
+  onReset(index){
+    var newArr = this.data.skillPositionArr
+    newArr[index].forEach(function(v, k){
+      newArr[index][k].display = 'block'
+    })
+    newArr[index][0].width = 0;
+    newArr[index][0].height = 0;
+    newArr[index][0].borderLeftWidth = 0;
+    newArr[index][0].borderBottomWidth = 64;
+
+    newArr[index][1].width = 0;
+    newArr[index][1].height = 0;
+    newArr[index][1].borderTopWidth = 0;
+    newArr[index][1].borderLeftWidth = 64;
+
+
+    newArr[index][2].width = 64;
+    newArr[index][2].height = 0;
+    newArr[index][2].borderRightWidth = 0;
+    newArr[index][2].borderTopWidth = 64;
+
+    newArr[index][3].width = 0;
+    newArr[index][3].height = 64;
+    newArr[index][3].borderBottomWidth = 0;
+    newArr[index][3].borderRightWidth = 64;
+
+    let skillLink = that.data.skillLink
+    skillLink[index].inCD = true;
+
+    var positionName = 'skillPositionArr['+index+']'
+    var linkName = 'skillLink['+index+']'
+    that.setData({
+      [positionName]: newArr[index],
+      [linkName]: skillLink[index],
+      isShake: true
+    })
+    setTimeout(function(){
+      that.setData({
+        isShake: false
       })
-      newArr[key][0].width = 0;
-      newArr[key][0].height = 0;
-      newArr[key][0].borderLeftWidth = 0;
-      newArr[key][0].borderBottomWidth = 32;
-
-      newArr[key][1].width = 0;
-      newArr[key][1].height = 0;
-      newArr[key][1].borderTopWidth = 0;
-      newArr[key][1].borderLeftWidth = 32;
-
-
-      newArr[key][2].width = 32;
-      newArr[key][2].height = 0;
-      newArr[key][2].borderRightWidth = 0;
-      newArr[key][2].borderTopWidth = 32;
-
-      newArr[key][3].width = 0;
-      newArr[key][3].height = 32;
-      newArr[key][3].borderBottomWidth = 0;
-      newArr[key][3].borderRightWidth = 32;
-    })
-    this.setData({
-      inCD:true,
-      skillPositionArr: newArr
-    })
-    // setTimeout(function(){
-    //   that.setData({
-    //     inCD: true
-    //   })
-    // },1000)
+    },1000)
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

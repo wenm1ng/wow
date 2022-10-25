@@ -1,11 +1,11 @@
 /* pages/stake-1/index.wxss */
 .divBox
 {
-    position: absolute;
+    position: relative;
     overflow: hidden;
-    width: 64px;
-    height: 64px;
-    background: #000;
+    width: 128rpx;
+    height: 128rpx;
+    background: #fff;
 }
 
 .divBox view
@@ -19,47 +19,109 @@
 {
     display: none;
     overflow: hidden;
-    border: 32px solid #000001;
+    border: 64rpx solid #000001;
 
     filter: alpha(opacity=60);
     _filter: Chroma(color='black') alpha(opacity=60);
     opacity: 0.6;
 }
 
-.divBox .layer0
+.divBox .layer0-0
 {
-    height: 0px;
-    left: 32px;
-    top: -32px;
+    height: 0rpx;
+    left: 54rpx;
+    top: -64rpx;
 
-    border-top: 32px solid transparent;
-    border-left: 0px solid transparent;
+    border-top: 64rpx solid transparent;
+    border-left: 0rpx solid transparent;
 }
 
-.divBox .layer1
+.divBox .layer0-1
 {
-    width: 0px;
-    left: 32px;
-    top: 32px;
+    width: 0rpx;
+    left: 54rpx;
+    top: 64rpx;
 
-    border-top: 0px solid transparent;
-    border-right: 32px solid transparent;
+    border-top: 0rpx solid transparent;
+    border-right: 64rpx solid transparent;
 }
 
-.divBox .layer2
+.divBox .layer0-2
 {
-    left:-32px;
-    top: 32px;
+    left:-74rpx;
+    top: 64rpx;
 
-    border-bottom: 32px solid transparent;
-    border-right: 0px solid transparent;
+    border-bottom: 64rpx solid transparent;
+    border-right: 0rpx solid transparent;
 }
 
-.divBox .layer3
+.divBox .layer0-3
 {
-    left: -32px;
-    top: -32px;
+    left: -74rpx;
+    top: -64rpx;
 
-    border-bottom: 0px solid transparent;
-    border-left: 32px solid transparent;
+    border-bottom: 0rpx solid transparent;
+    border-left: 64rpx solid transparent;
+}
+
+/*.layer1-0*/
+/*{*/
+/*    height: 0rpx;*/
+/*    left: 128rpx;*/
+/*    top: -64rpx;*/
+
+/*    border-top: 64rpx solid transparent;*/
+/*    border-left: 0rpx solid transparent;*/
+/*}*/
+
+/*.layer1-1*/
+/*{*/
+/*    width: 0rpx;*/
+/*    left: 128rpx;*/
+/*    top: 128rpx;*/
+
+/*    border-top: 0rpx solid transparent;*/
+/*    border-right: 64rpx solid transparent;*/
+/*}*/
+
+/*.layer1-2*/
+/*{*/
+/*    left:0rpx;*/
+/*    top: 64rpx;*/
+
+/*    border-bottom: 64rpx solid transparent;*/
+/*    border-right: 0rpx solid transparent;*/
+/*}*/
+
+/*.layer1-3*/
+/*{*/
+/*    left: 0rpx;*/
+/*    top: -64rpx;*/
+
+/*    border-bottom: 0rpx solid transparent;*/
+/*    border-left: 64rpx solid transparent;*/
+/*}*/
+.shake {
+    animation: doudong 1s 0s infinite}
+    /*定义关键帧动画*/
+    @keyframes doudong {
+   0%  {
+       transform: rotate(0deg)}
+   10% ,20%,30%{
+       transform: rotate( -3deg)}
+   15%,25%,35% {
+       transform: rotate( 3deg)
+   }
+   40% {
+       transform: rotate( -2deg)
+   }
+   45% {
+       transform: rotate( 2deg)
+   }
+   50%{
+       transform: rotate( 0deg)
+   }
+   100%{
+       transform: rotate( 0deg)
+   }
 }
