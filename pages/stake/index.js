@@ -23,7 +23,8 @@ Page({
     skillLink: [], //每个技能inCD等数据
     skillInfo: [], //技能详细数据
     repeatData: [], //技能定时器去重数据
-    isShake: false
+    isShake: false,
+    energy: 100, //能量条
   },
 
   /**
@@ -93,15 +94,30 @@ Page({
       }, 16)
     });
     promiseArr.push(promise)
-    // let promiseAnswer = new Promise((resolve, reject) => {
-    //   //这里可以写要发的请求，这里以上传为例
-    //   this.getAnswerList();
-    // });
-    // promiseArr.push(promiseAnswer)
+    let promiseOther = new Promise((resolve, reject) => {
+      //额外操作
+      setInterval(function(){
+        if(that.data.energy !== 100){
+          var energy = that.data.energy + 1
+          if(energy > 100){
+            energy = 100
+          }
+          that.setData({
+            energy: energy
+          })
+        }
+      }, 100)
+    });
+    promiseArr.push(promiseOther)
 //Promise.all处理promiseArr数组中的每一个promise对象
     Promise.all(promiseArr).then((result) => {
       //在存储对象的数组里的所有请求都完成时，会执行这里
       console.log(111)
+    })
+  },
+  test(){
+    this.setData({
+      energy: this.data.energy - 10
     })
   },
   onDraw(index) {
