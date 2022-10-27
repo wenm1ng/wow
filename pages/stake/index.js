@@ -21,10 +21,18 @@ Page({
     skillPositionArr: [],
     nowIndexArr: [], //当前使用的技能下标
     skillLink: [], //每个技能inCD等数据
-    skillInfo: [], //技能详细数据
+    skillList: [], //技能详细数据
+    finalSkillList: [], //技能筛选后的数据
     repeatData: [], //技能定时器去重数据
     isShake: false,
     energy: 100, //能量条
+    imgList: [],
+    finalImgList: [],
+    modalShow: false,
+    modalHeight: 400,
+    nowInfoIndex: 0,
+    stakeShow: false,
+    timer: []
   },
 
   /**
@@ -32,80 +40,56 @@ Page({
    */
   onLoad(options) {
     that = this
+    that.getSkill()
 
-    let temp
-    let tempLink
-    let skillPositionArr = []
-    let skillLink = []
-    for (var i = 0; i < 10; i++){
-      temp = [
-        // {display:"none",width:0,height:64,borderLeftWidth:64,borderBottomWidth:0},
-        // {display:"none",width:64,height:0,borderTopWidth:64,borderLeftWidth:0},
-        // {display:"none",width:0,height:64,borderRightWidth:64,borderTopWidth:0},
-        // {display:"none",width:64,height:0,borderBottomWidth:64,borderRightWidth:0},
-        {display:"none"},
-        {display:"none"},
-        {display:"none"},
-        {display:"none"},
-      ]
-      tempLink = {inCD:false,tickID:0,stage:0}
-      skillLink.push(tempLink)
-      skillPositionArr.push(temp);
-    }
+  },
+  getImageInfo(e){
     this.setData({
-      skillPositionArr: skillPositionArr,
-      skillLink: skillLink,
-
+      nowInfoIndex: e.detail.index,
+      modalShow: true
     })
-
+  },
+  //关闭弹窗
+  closeModal(){
+    this.setData({
+      modalShow: false
+    })
+  },
+  /**
+   * 设置定时器
+   */
+  setTimer(){
     let promiseArr = [];
-//将图片地址的上传的promise对象加入到promiseArr
     let promise = new Promise((resolve, reject) => {
       //这里可以写要发的请求，这里以上传为例
-      setInterval(function(){
-        that.onDraw(0)
-      }, 16)
-      setInterval(function(){
-        that.onDraw(1)
-      }, 16)
-      setInterval(function(){
-        that.onDraw(2)
-      }, 16)
-      setInterval(function(){
-        that.onDraw(3)
-      }, 16)
-      setInterval(function(){
-        that.onDraw(4)
-      }, 16)
-      setInterval(function(){
-        that.onDraw(5)
-      }, 16)
-      setInterval(function(){
-        that.onDraw(6)
-      }, 16)
-      setInterval(function(){
-        that.onDraw(7)
-      }, 16)
-      setInterval(function(){
-        that.onDraw(8)
-      }, 16)
-      setInterval(function(){
-        that.onDraw(9)
-      }, 16)
+      let timer = [];
+      let temp
+      that.data.finalSkillList.forEach(function(v,k){
+        temp = setInterval(function(){
+          setTimeout(function(){that.onDraw(k)}, 0)
+        }, v.cool_time <= 0 ? 2 : v.cool_time * 2)
+        //2对应1秒
+        timer.push(temp)
+      })
+      that.setData({
+        timer: timer
+      })
     });
     promiseArr.push(promise)
     let promiseOther = new Promise((resolve, reject) => {
       //额外操作
       setInterval(function(){
-        if(that.data.energy !== 100){
-          var energy = that.data.energy + 1
-          if(energy > 100){
-            energy = 100
+        setTimeout(function(){
+          if(that.data.energy !== 100){
+            var energy = that.data.energy + 1
+            if(energy > 100){
+              energy = 100
+            }
+            that.setData({
+              energy: energy
+            })
           }
-          that.setData({
-            energy: energy
-          })
-        }
+        }, 0)
       }, 100)
     });
     promiseArr.push(promiseOther)
@@ -113,6 +97,97 @@ Page({
     Promise.all(promiseArr).then((result) => {
       //在存储对象的数组里的所有请求都完成时，会执行这里
       console.log(111)
+    })
+  },
+  /**
+   * 拖动、删除图片后的操作
+   * @param e
+   */
+  updateImageList(e){
+    // let temp = [];
+    // e.detail.list.forEach(function(val,key){
+    //   temp[val] = key
+    // })
+    this.setData({
+      finalImgList: e.detail.list
+    })
+  },
+  /**
+   * 重置技能
+   */
+  resetSkill(){
+    this.getSkill()
+  },
+  /**
+   * 确认技能,准备伤害测试
+   */
+  confirmSkill(){
+    let finalSkillList = [];
+    let imgLink = []
+    let nowImgLink = [];
+    that.data.skillList.forEach(function(v,k){
+      nowImgLink['https://mingtongct.com/images/skill/'+v.icon] = k
+    })
+    that.data.finalImgList.forEach(function(v,k){
+      var imageUrl = 'https://mingtongct.com/images/skill/' + that.data.skillList[k].icon
+      if(imageUrl !== v){
+        imgLink[k] = v
+      }else{
+        finalSkillList[k] = that.data.skillList[k]
+      }
+    })
+    imgLink.forEach(function(v,k){
+      //替换顺序
+      var nowIndex = nowImgLink[v]
+      finalSkillList[k] = that.data.skillList[nowIndex]
+    })
+    let skillPositionArr = [];
+    var length = finalSkillList.length
+    for (var i=0;i<length;i++){
+      skillPositionArr[i] = that.data.skillPositionArr[i]
+    }
+    this.setData({
+      finalSkillList: finalSkillList,
+      skillPositionArr: skillPositionArr,
+      stakeShow: true
+    })
+    this.setTimer()
+  },
+  /**
+   * 获取技能列表
+   */
+  getSkill(){
+    let temp
+    let tempLink
+    let skillPositionArr = []
+    let skillLink = []
+    let imgList = [];
+
+    const url = api.damageAPI + 'skill-list'
+    const data = {version:2, oc:'zs'}
+    wxutil.request.get(url, data).then((res) => {
+      if(res.data.code === 200){
+        res.data.data.forEach(function(v){
+          temp = [
+            {display:"none"},
+            {display:"none"},
+            {display:"none"},
+            {display:"none"},
+          ]
+          tempLink = {inCD:false,tickID:0,stage:0}
+          skillLink.push(tempLink)
+          skillPositionArr.push(temp);
+          imgList.push('https://mingtongct.com/images/skill/'+v.icon);
+        })
+        that.setData({
+          skillList: res.data.data,
+          finalSkillList: res.data.data,
+          skillPositionArr: skillPositionArr,
+          skillLink: skillLink,
+          imgList:imgList,
+          finalImgList:imgList
+        })
+      }
     })
   },
   test(){
@@ -269,14 +344,18 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide() {
-
+    this.data.timer.forEach(function(v){
+      clearInterval(v);
+    })
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload() {
-
+    this.data.timer.forEach(function(v){
+      clearInterval(v);
+    })
   },
 
   /**

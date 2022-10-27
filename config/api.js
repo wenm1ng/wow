@@ -24,6 +24,7 @@ module.exports = {
   mountAPI: baseAPI2 + 'mount/', //订单接口
   walletAPI: baseAPI2 + 'wallet/', //钱包接口
   macroAPI: baseAPI2 + 'macro/', //宏相关接口
+  damageAPI: baseAPI2 + 'damage/', //伤害测试相关接口
   commonAPI: baseAPI2,
   signs: signs,
   imageBgUrl,

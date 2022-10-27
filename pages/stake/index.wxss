@@ -129,3 +129,16 @@
 .center{
     text-align: center;
 }
+
+.modal{
+    width:600rpx;
+    background-color: #0A0D20;
+    border: 4rpx solid #AAAAAA;
+    border-bottom-left-radius: 30rpx;
+    border-bottom-right-radius: 30rpx;
+    border-top-left-radius: 30rpx;
+    border-top-right-radius:30rpx;
+    color:#fff;
+    padding: 30rpx;
+    font-size: 40rpx
+}

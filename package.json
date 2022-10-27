@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/wenm1ng/wow#readme",
   "dependencies": {
-    "lin-ui": "^0.7.6"
+    "lin-ui": "^0.7.6",
+    "wx-drag-img": "^0.1.2"
   }
 }
