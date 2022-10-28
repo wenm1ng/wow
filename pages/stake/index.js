@@ -2,7 +2,10 @@
 const app = getApp()
 const api = app.api
 const wxutil = app.wxutil
-var that;
+var that; //wx data对象
+var count = 0;
+var isGCD = false;
+var timer = undefined; //定时器对象
 var repeatData = {}
 Page({
 
@@ -26,6 +29,7 @@ Page({
     repeatData: [], //技能定时器去重数据
     isShake: false,
     energy: 100, //能量条
+    isEnergy: true,
     imgList: [],
     finalImgList: [],
     modalShow: false,
@@ -61,38 +65,61 @@ Page({
   setTimer(){
     let promiseArr = [];
     let promise = new Promise((resolve, reject) => {
-      //这里可以写要发的请求，这里以上传为例
-      let timer = [];
-      let temp
-      that.data.finalSkillList.forEach(function(v,k){
-        temp = setInterval(function(){
-          setTimeout(function(){that.onDraw(k)}, 0)
-        }, v.cool_time <= 0 ? 2 : v.cool_time * 2)
-        //2对应1秒
-        timer.push(temp)
-      })
-      that.setData({
-        timer: timer
-      })
+      // //这里可以写要发的请求，这里以上传为例
+      // let timer = [];
+      // let temp
+      // that.data.finalSkillList.forEach(function(v,k){
+      //   temp = setInterval(function(){
+      //     setTimeout(function(){that.onDraw(k)}, 0)
+      //   }, v.cool_time <= 0 ? 2 : v.cool_time * 2)
+      //   //2对应1秒
+      //   timer.push(temp)
+      // })
+      // that.setData({
+      //   timer: timer
+      // })
+      timer = setInterval(function(){
+        setTimeout(function(){
+          that.data.finalSkillList.forEach(function(v,k){
+            if(v.cool_time === 0){
+              //没有CD，则使用公共GCD
+              if(that.data.skillLink[k].inCD){
+                that.onDraw(k)
+              }
+            }else{
+              that.onDraw(k)
+            }
+            // if (((count * 4) % v.cool_time) === 0) {
+            //   that.onDraw(k)
+            // }
+            // that.onDraw(k)
+          })
+          count++
+        }, 0)
+      }, 125)
     });
     promiseArr.push(promise)
-    let promiseOther = new Promise((resolve, reject) => {
-      //额外操作
-      setInterval(function(){
-        setTimeout(function(){
-          if(that.data.energy !== 100){
-            var energy = that.data.energy + 1
-            if(energy > 100){
-              energy = 100
+    if(this.data.isEnergy){
+      //如果是有能量条（集中值、怒气）的职业，才进行能量条自动回复
+      let promiseOther = new Promise((resolve, reject) => {
+        //额外操作
+        setInterval(function(){
+          setTimeout(function(){
+            if(that.data.energy !== 100){
+              var energy = that.data.energy + 1
+              if(energy > 100){
+                energy = 100
+              }
+              that.setData({
+                energy: energy
+              })
             }
-            that.setData({
-              energy: energy
-            })
-          }
-        }, 0)
-      }, 100)
-    });
-    promiseArr.push(promiseOther)
+          }, 0)
+        }, 300)
+      });
+      promiseArr.push(promiseOther)
+    }
+
 //Promise.all处理promiseArr数组中的每一个promise对象
     Promise.all(promiseArr).then((result) => {
       //在存储对象的数组里的所有请求都完成时，会执行这里
@@ -169,12 +196,13 @@ Page({
       if(res.data.code === 200){
         res.data.data.forEach(function(v){
           temp = [
-            {display:"none"},
-            {display:"none"},
-            {display:"none"},
-            {display:"none"},
+            {display:"none",width:0, height:0, borderLeftWidth:0, borderBottomWidth:64},
+            {display:"none",width:0, height:0, borderTopWidth:0, borderLeftWidth:64},
+            {display:"none",width:64, height:0, borderRightWidth:0, borderTopWidth:64},
+            {display:"none",width:0, height:64, borderBottomWidth:0, borderRightWidth:64},
           ]
-          tempLink = {inCD:false,tickID:0,stage:0}
+
+          tempLink = {inCD:false,tickID:0,stage:0,isEnergy: true}
           skillLink.push(tempLink)
           skillPositionArr.push(temp);
           imgList.push('https://mingtongct.com/images/skill/'+v.icon);
@@ -196,10 +224,17 @@ Page({
     })
   },
   onDraw(index) {
-    if (index === undefined || !that.data.skillLink[index].inCD){
+    if (index === undefined || !that.data.skillLink[index].inCD || that.data.finalSkillList[index].consume + that.data.energy < 0){
       return;
     }
-    var i = ++that.data.skillLink[index].tickID;
+
+    var x = 0;
+    if(that.data.finalSkillList[index].cool_time === 0){
+      x = 64
+    }else{
+      x = 64 / that.data.finalSkillList[index].cool_time
+    }
+    var i = (parseFloat(that.data.skillLink[index].tickID) + parseFloat(x)).toFixed(2);
 
     let arrMask = that.data.skillPositionArr;
     let skillLink = that.data.skillLink;
@@ -213,6 +248,14 @@ Page({
     // that.setData({
     //   [repeatName]: 1
     // })
+    if(skillLink[index].stage >= 9){
+      skillLink[index].stage = 0
+    }
+    if(that.data.finalSkillList[index].cool_time === 0){
+      //设置公共GCD
+      isGCD = true
+    }
+
     switch(that.data.skillLink[index].stage) {
       case 0:
         arrMask[index][0].borderLeftWidth = i;
@@ -246,32 +289,45 @@ Page({
         break;
       case 8:
         skillLink[index].inCD = false;
+        // console.log(index,'wenming')
+        // console.log(Date.now());
         for(i=0; i<4; i++)
           arrMask[index][i].display = "none";
+        if(that.data.finalSkillList[index].cool_time === 0){
+          //设置公共GCD
+          isGCD = false
+        }
         break;
     }
 
-    if (skillLink[index].tickID === 64) {
+    if (skillLink[index].tickID >= 64) {
       skillLink[index].tickID = 0;
       skillLink[index].stage = skillLink[index].stage + 1;
     }
+    skillLink[index].isEnergy = that.data.finalSkillList[index].consume + that.data.energy >= 0
     var positionName = 'skillPositionArr['+index+']'
     var linkName = 'skillLink['+index+']'
     that.setData({
       [positionName]: arrMask[index],
-      [linkName]: skillLink[index]
+      [linkName]: skillLink[index],
+
     })
 
   },
   handleMouseDown(event){
     var index = event.currentTarget.dataset.index
 
-    if(that.data.skillLink[index].inCD){
+    if(that.data.skillLink[index].inCD || !that.data.skillLink[index].isEnergy){
       return;
     }
+    var energy = that.data.energy + that.data.finalSkillList[index].consume;
+    energy = energy > 100 ? 100 : energy;
+
     let skillLink = that.data.skillLink
     skillLink[index].tickID = 0;
     skillLink[index].stage = 0;
+    skillLink[index].isEnergy = energy >= 0;
+
     var indexArr = that.data.nowIndexArr
     indexArr.push(index)
     this.setData({
@@ -280,51 +336,108 @@ Page({
       pixelWidth: 128,
       pixelHeight: 128,
       skillLink: skillLink,
+      energy: energy,
       nowIndexArr: indexArr
     })
+    if(this.data.finalSkillList[index].cool_time === 0){
+      isGCD = true
+    }
     this.onReset(index)
-  },
-  onReset(index){
-    var newArr = this.data.skillPositionArr
-    newArr[index].forEach(function(v, k){
-      newArr[index][k].display = 'block'
-    })
-    newArr[index][0].width = 0;
-    newArr[index][0].height = 0;
-    newArr[index][0].borderLeftWidth = 0;
-    newArr[index][0].borderBottomWidth = 64;
-
-    newArr[index][1].width = 0;
-    newArr[index][1].height = 0;
-    newArr[index][1].borderTopWidth = 0;
-    newArr[index][1].borderLeftWidth = 64;
-
-
-    newArr[index][2].width = 64;
-    newArr[index][2].height = 0;
-    newArr[index][2].borderRightWidth = 0;
-    newArr[index][2].borderTopWidth = 64;
-
-    newArr[index][3].width = 0;
-    newArr[index][3].height = 64;
-    newArr[index][3].borderBottomWidth = 0;
-    newArr[index][3].borderRightWidth = 64;
-
-    let skillLink = that.data.skillLink
-    skillLink[index].inCD = true;
-
-    var positionName = 'skillPositionArr['+index+']'
-    var linkName = 'skillLink['+index+']'
-    that.setData({
-      [positionName]: newArr[index],
-      [linkName]: skillLink[index],
-      isShake: true
-    })
     setTimeout(function(){
       that.setData({
         isShake: false
       })
     },1000)
+  },
+  onReset(index){
+    var newArr = this.data.skillPositionArr
+    let skillLink = that.data.skillLink
+    if(this.data.finalSkillList[index].cool_time === 0){
+      this.data.finalSkillList.forEach(function(v, k){
+        if(v.cool_time === 0){
+          if(that.data.energy + v.consume < 0){
+            //能量不够，跳出循环
+            skillLink[k].isEnergy = false
+            return
+          }
+          newArr[k][0].display = 'block'
+          newArr[k][1].display = 'block'
+          newArr[k][2].display = 'block'
+          newArr[k][3].display = 'block'
+          newArr[k][0].width = 0;
+          newArr[k][0].height = 0;
+          newArr[k][0].borderLeftWidth = 0;
+          newArr[k][0].borderBottomWidth = 64;
+
+          newArr[k][1].width = 0;
+          newArr[k][1].height = 0;
+          newArr[k][1].borderTopWidth = 0;
+          newArr[k][1].borderLeftWidth = 64;
+
+
+          newArr[k][2].width = 64;
+          newArr[k][2].height = 0;
+          newArr[k][2].borderRightWidth = 0;
+          newArr[k][2].borderTopWidth = 64;
+
+          newArr[k][3].width = 0;
+          newArr[k][3].height = 64;
+          newArr[k][3].borderBottomWidth = 0;
+          newArr[k][3].borderRightWidth = 64;
+          skillLink[k].inCD = true;
+          skillLink[k].tickID = 0;
+          skillLink[k].stage = 0;
+          skillLink[k].isEnergy = true;
+        }
+      })
+    }else{
+      skillLink[index].isEnergy = this.data.finalSkillList[index].consume + that.data.energy >= 0;
+      if(skillLink[index].isEnergy){
+        newArr[index][0].display = 'block'
+        newArr[index][1].display = 'block'
+        newArr[index][2].display = 'block'
+        newArr[index][3].display = 'block'
+        newArr[index][0].width = 0;
+        newArr[index][0].height = 0;
+        newArr[index][0].borderLeftWidth = 0;
+        newArr[index][0].borderBottomWidth = 64;
+
+        newArr[index][1].width = 0;
+        newArr[index][1].height = 0;
+        newArr[index][1].borderTopWidth = 0;
+        newArr[index][1].borderLeftWidth = 64;
+
+
+        newArr[index][2].width = 64;
+        newArr[index][2].height = 0;
+        newArr[index][2].borderRightWidth = 0;
+        newArr[index][2].borderTopWidth = 64;
+
+        newArr[index][3].width = 0;
+        newArr[index][3].height = 64;
+        newArr[index][3].borderBottomWidth = 0;
+        newArr[index][3].borderRightWidth = 64;
+        skillLink[index].inCD = true;
+        skillLink[index].tickID = 0;
+        skillLink[index].stage = 0;
+      }
+    }
+    // newArr[index].forEach(function(v, k){
+    //   newArr[index][k].display = 'block'
+    // })
+
+
+    // var positionName = 'skillPositionArr['+index+']'
+    // var linkName = 'skillLink['+index+']'
+    that.setData({
+      // [positionName]: newArr[index],
+      skillPositionArr: newArr,
+      skillLink: skillLink,
+      // [linkName]: skillLink[index],
+      isShake: true
+    })
+    // console.log(Date.now());
+
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -344,18 +457,18 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide() {
-    this.data.timer.forEach(function(v){
-      clearInterval(v);
-    })
+    if(timer !== undefined){
+      clearInterval(timer)
+    }
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload() {
-    this.data.timer.forEach(function(v){
-      clearInterval(v);
-    })
+    if(timer !== undefined){
+      clearInterval(timer)
+    }
   },
 
   /**

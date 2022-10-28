@@ -142,3 +142,9 @@
     padding: 30rpx;
     font-size: 40rpx
 }
+
+.notEnergy{
+    -webkit-filter: grayscale(100%);
+    /* Chrome, Safari, Opera */
+    filter: grayscale(80%);
+}
