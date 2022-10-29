@@ -29,14 +29,30 @@ Page({
     repeatData: [], //技能定时器去重数据
     isShake: false,
     energy: 100, //能量条
-    isEnergy: true,
+    isEnergy: true, //当前职业是否有能量条
     imgList: [],
     finalImgList: [],
     modalShow: false,
     modalHeight: 400,
     nowInfoIndex: 0,
     stakeShow: false,
-    timer: []
+    timer: [],
+    showActionBar: false, //是否显示施法动作条
+    actionBar: 0, //动作条进度（根据施法时间来）
+    isAccess: true, //是否可以执行技能步骤
+    allHurt: 0, //总伤害
+    averageHurt: 0, //秒伤
+    autoHurt: 0, //自动攻击显伤
+    skillHurt: 0, //主动技能直接伤害显伤
+    userPower: 20, //玩家力量
+    autoPower: 50, //自动攻击伤害(攻击力)
+    stakeArmor: 4000, //木桩人护甲
+    stakeReduceInjury: 0, //木桩人减伤
+    stakeParry: 15, //木桩人招架概率
+    stakeDodge: 6.5, //木桩人躲闪几率
+    userCrit: 20, //用户暴击率
+    beginTime: 0, //伤害测试开始时间戳
+    userBoost: 100, //用户增伤强度
   },
 
   /**
@@ -45,7 +61,9 @@ Page({
   onLoad(options) {
     that = this
     that.getSkill()
-
+    this.setData({
+      stakeReduceInjury: (this.stakeArmor / (this.stakeArmor + 10555)).toFixed(4)
+    })
   },
   getImageInfo(e){
     this.setData({
@@ -120,11 +138,38 @@ Page({
       promiseArr.push(promiseOther)
     }
 
+    //自动攻击定时器
+    setInterval(function(){
+      //自动攻击显伤 = 自动攻击伤害 * 木桩人护甲
+      let autoHurt = that.getCritNum(that.data.autoPower * that.data.stakeArmor / 100)
+      let allHurt = that.data.allHurt + autoHurt
+      that.setData({
+        autoHurt: autoHurt,
+        allHurt: allHurt,
+        averageHurt: parseInt(allHurt / ((Date.now() - that.data.beginTime) / 1000))
+      })
+      setTimeout(function(){
+        that.setData({
+          autoHurt: 0
+        })
+      }, 1000)
+    }, 2000)
 //Promise.all处理promiseArr数组中的每一个promise对象
     Promise.all(promiseArr).then((result) => {
       //在存储对象的数组里的所有请求都完成时，会执行这里
       console.log(111)
     })
+  },
+  /**
+   * 数值暴击
+   * @param Num
+   * @returns {number|*}
+   */
+  getCritNum(Num){
+    if(Math.floor(Math.random()*100+1) <= this.data.userCrit){
+      return Num * 2
+    }
+    return Num
   },
   /**
    * 拖动、删除图片后的操作
@@ -176,7 +221,8 @@ Page({
     this.setData({
       finalSkillList: finalSkillList,
       skillPositionArr: skillPositionArr,
-      stakeShow: true
+      stakeShow: true,
+      beginTime: Date.now()
     })
     this.setTimer()
   },
@@ -202,7 +248,7 @@ Page({
             {display:"none",width:0, height:64, borderBottomWidth:0, borderRightWidth:64},
           ]
 
-          tempLink = {inCD:false,tickID:0,stage:0,isEnergy: true}
+          tempLink = {inCD:false,tickID:0,stage:0}
           skillLink.push(tempLink)
           skillPositionArr.push(temp);
           imgList.push('https://mingtongct.com/images/skill/'+v.icon);
@@ -224,6 +270,9 @@ Page({
     })
   },
   onDraw(index) {
+    // if(that.data.finalSkillList[index].consume + that.data.energy >= 0){
+    //   console.log(that.data.finalSkillList[index].consume, that.data.energy)
+    // }
     if (index === undefined || !that.data.skillLink[index].inCD || that.data.finalSkillList[index].consume + that.data.energy < 0){
       return;
     }
@@ -304,7 +353,9 @@ Page({
       skillLink[index].tickID = 0;
       skillLink[index].stage = skillLink[index].stage + 1;
     }
-    skillLink[index].isEnergy = that.data.finalSkillList[index].consume + that.data.energy >= 0
+    // skillLink[index].isEnergy = that.data.finalSkillList[index].consume + that.data.energy >= 0
+    // skillLink[index].isEnergy = true
+
     var positionName = 'skillPositionArr['+index+']'
     var linkName = 'skillLink['+index+']'
     that.setData({
@@ -316,38 +367,73 @@ Page({
   },
   handleMouseDown(event){
     var index = event.currentTarget.dataset.index
-
-    if(that.data.skillLink[index].inCD || !that.data.skillLink[index].isEnergy){
-      return;
-    }
     var energy = that.data.energy + that.data.finalSkillList[index].consume;
     energy = energy > 100 ? 100 : energy;
+
+    if(that.data.skillLink[index].inCD || energy < 0 || that.data.showActionBar){
+      return;
+    }
+
 
     let skillLink = that.data.skillLink
     skillLink[index].tickID = 0;
     skillLink[index].stage = 0;
-    skillLink[index].isEnergy = energy >= 0;
 
     var indexArr = that.data.nowIndexArr
     indexArr.push(index)
-    this.setData({
-      pixelLeft: 0,
-      pixelTop: 0,
-      pixelWidth: 128,
-      pixelHeight: 128,
-      skillLink: skillLink,
-      energy: energy,
-      nowIndexArr: indexArr
-    })
+
     if(this.data.finalSkillList[index].cool_time === 0){
       isGCD = true
     }
-    this.onReset(index)
-    setTimeout(function(){
-      that.setData({
-        isShake: false
+    //如果技能有施法时间，加载施法动作条
+    if(that.data.finalSkillList[index].read_time > 0){
+      let temp;
+      let showActionBar;
+      let bar = setInterval(function(){
+        temp = (10 / that.data.finalSkillList[index].read_time) + that.data.actionBar;
+        showActionBar = temp < 100
+
+        that.setData({
+          actionBar: temp,
+          showActionBar: showActionBar,
+        })
+        if(!showActionBar){
+          clearInterval(bar)
+          that.setData({
+            pixelLeft: 0,
+            pixelTop: 0,
+            pixelWidth: 128,
+            pixelHeight: 128,
+            skillLink: skillLink,
+            energy: energy,
+            nowIndexArr: indexArr,
+            actionBar: 0
+          })
+          that.onReset(index)
+          setTimeout(function(){
+            that.setData({
+              isShake: false
+            })
+          },1000)
+        }
+      },100)
+    }else{
+      this.setData({
+        pixelLeft: 0,
+        pixelTop: 0,
+        pixelWidth: 128,
+        pixelHeight: 128,
+        skillLink: skillLink,
+        energy: energy,
+        nowIndexArr: indexArr
       })
-    },1000)
+      this.onReset(index)
+      setTimeout(function(){
+        that.setData({
+          isShake: false
+        })
+      },1000)
+    }
   },
   onReset(index){
     var newArr = this.data.skillPositionArr
@@ -357,7 +443,7 @@ Page({
         if(v.cool_time === 0){
           if(that.data.energy + v.consume < 0){
             //能量不够，跳出循环
-            skillLink[k].isEnergy = false
+            // skillLink[k].isEnergy = false
             return
           }
           newArr[k][0].display = 'block'
@@ -387,12 +473,12 @@ Page({
           skillLink[k].inCD = true;
           skillLink[k].tickID = 0;
           skillLink[k].stage = 0;
-          skillLink[k].isEnergy = true;
+          // skillLink[k].isEnergy = true;
         }
       })
     }else{
-      skillLink[index].isEnergy = this.data.finalSkillList[index].consume + that.data.energy >= 0;
-      if(skillLink[index].isEnergy){
+      // skillLink[index].isEnergy = this.data.finalSkillList[index].consume + that.data.energy >= 0;
+      if(this.data.finalSkillList[index].consume + that.data.energy >= 0){
         newArr[index][0].display = 'block'
         newArr[index][1].display = 'block'
         newArr[index][2].display = 'block'
@@ -434,7 +520,8 @@ Page({
       skillPositionArr: newArr,
       skillLink: skillLink,
       // [linkName]: skillLink[index],
-      isShake: true
+      isShake: true,
+      skillHurt: this.data.finalSkillList[index].hurt
     })
     // console.log(Date.now());
 

@@ -102,11 +102,14 @@
 /*    border-left: 64rpx solid transparent;*/
 /*}*/
 .shake {
-    animation: doudong 1s 0s infinite}
+    animation: doudong 1s 0s ;
+}
     /*定义关键帧动画*/
-    @keyframes doudong {
+@keyframes doudong {
    0%  {
-       transform: rotate(0deg)}
+       transform: rotate(0deg);
+       opacity: 1;
+   }
    10% ,20%,30%{
        transform: rotate( -3deg)}
    15%,25%,35% {
@@ -122,9 +125,19 @@
        transform: rotate( 0deg)
    }
    100%{
-       transform: rotate( 0deg)
+       transform: rotate( 0deg);
+       opacity: 0;
    }
 }
+
+.slowly-hide{
+    animation:fadenum 5s 1;
+}
+@keyframes fadenum{
+    0%{opacity: 1;}
+    100%{opacity: 0;}
+}
+
 /*自定义样式*/
 .center{
     text-align: center;
@@ -147,4 +160,10 @@
     -webkit-filter: grayscale(100%);
     /* Chrome, Safari, Opera */
     filter: grayscale(80%);
+}
+
+.action-bar{
+    position: relative;
+    top:350rpx;
+    z-index:99
 }
