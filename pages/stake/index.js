@@ -6,7 +6,8 @@ var that; //wx data对象
 var count = 0;
 var isGCD = false;
 var timer = undefined; //定时器对象
-var repeatData = {}
+var skillTimer = {} //技能dot每秒伤害定时器
+var foreverSkillEffect = {} //永久技能效果
 Page({
 
   /**
@@ -44,8 +45,10 @@ Page({
     averageHurt: 0, //秒伤
     autoHurt: 0, //自动攻击显伤
     skillHurt: 0, //主动技能直接伤害显伤
-    userPower: 20, //玩家力量
-    autoPower: 50, //自动攻击伤害(攻击力)
+    userPower: 100, //玩家攻击强度
+    userRapid: 100, //用户急速等级 攻击速度 = 武器攻速系数 / (急速等级 / 100 + 1)
+    userAttackSpeed: 0, //用户攻击速度
+    autoPower: 0, //自动攻击单次伤害
     stakeArmor: 4000, //木桩人护甲
     stakeReduceInjury: 0, //木桩人减伤
     stakeParry: 15, //木桩人招架概率
@@ -53,16 +56,66 @@ Page({
     userCrit: 20, //用户暴击率
     beginTime: 0, //伤害测试开始时间戳
     userBoost: 100, //用户增伤强度
+    oc: '', //当前职业
+
+    //各职业武器参数
+    weaponParams: {
+      fs: {
+        attackPower : 243,
+        attackSpeed: 2.99
+      },
+      ss: {
+        attackPower : 243,
+        attackSpeed: 2.99
+      },
+      xd: {
+        attackPower : 243,
+        attackSpeed: 2.99
+      },
+      zs: {
+        attackPower : 435,
+        attackSpeed: 3.8
+      },
+      qs: {
+        attackPower : 389,
+        attackSpeed: 3.6
+      },
+      lr: {
+        attackPower : 378,
+        attackSpeed: 3.7
+      },
+      ms: {
+        attackPower : 265,
+        attackSpeed: 3.2
+      },
+      dz: {
+        attackPower : 257,
+        attackSpeed: 2.7
+      },
+      sm: {
+        attackPower : 435,
+        attackSpeed: 2.8
+      },
+    },
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    let oc = options.oc ? options.oc : 'zs'
     that = this
     that.getSkill()
+    //攻击速度 攻击速度 = 武器攻速系数 / (急速等级 / 100 + 1)
+    let userAttackSpeed = this.data.weaponParams[oc].attackSpeed / (this.data.userRapid / 100 + 1)
+    // console.log(this.data.weaponParams[oc].attackPower, userAttackSpeed)
     this.setData({
-      stakeReduceInjury: (this.stakeArmor / (this.stakeArmor + 10555)).toFixed(4)
+      //攻击速度
+      userAttackSpeed: userAttackSpeed,
+      //自动攻击单次伤害 = (攻击强度 + 武器基础伤害 ) / 14 * 攻击速度
+      autoPower: (this.data.userPower + this.data.weaponParams[oc].attackPower) / 14 * userAttackSpeed,
+      //木桩人减伤百分比
+      stakeReduceInjury: (this.data.stakeArmor / (this.data.stakeArmor + 10555)).toFixed(4)
     })
   },
   getImageInfo(e){
@@ -141,11 +194,11 @@ Page({
     //自动攻击定时器
     setInterval(function(){
       //自动攻击显伤 = 自动攻击伤害 * 木桩人护甲
-      let autoHurt = that.getCritNum(that.data.autoPower * that.data.stakeArmor / 100)
+      let autoHurt = that.getCritNum(that.data.autoPower * (1 - that.data.stakeReduceInjury))
       let allHurt = that.data.allHurt + autoHurt
       that.setData({
-        autoHurt: autoHurt,
-        allHurt: allHurt,
+        autoHurt: parseInt(autoHurt),
+        allHurt: parseInt(allHurt),
         averageHurt: parseInt(allHurt / ((Date.now() - that.data.beginTime) / 1000))
       })
       setTimeout(function(){
@@ -374,7 +427,6 @@ Page({
       return;
     }
 
-
     let skillLink = that.data.skillLink
     skillLink[index].tickID = 0;
     skillLink[index].stage = 0;
@@ -521,10 +573,109 @@ Page({
       skillLink: skillLink,
       // [linkName]: skillLink[index],
       isShake: true,
+      //技能类型 1直伤 2增伤 3增加暴击率 4降低护甲 5降低敌人攻击 6提升对伤害没用的属性 7普攻附带伤害 没想起来的暂时无备注',
+
       skillHurt: this.data.finalSkillList[index].hurt
     })
     // console.log(Date.now());
 
+  },
+  //伤害判断逻辑
+  onHurtCharge(data){
+    //如果定时执行期间又有同类型的buff，直接停止该定时器
+    if(skillTimer.hasOwnProperty('i'+data.ws_id)){
+      clearInterval(skillTimer['i'+data.ws_id])
+    }
+    //如果已经有永久技能效果，跳过
+    if(foreverSkillEffect.hasOwnProperty('i'+data.ws_id)){
+      return;
+    }
+    switch(data.hurt_type){
+      case 1:
+          //直接造成伤害
+          if(data.keep_time > 0){
+            //dot伤害
+            let hurt
+            if(data.every_second_hurt > 0){
+              //直接伤害
+              hurt = data.hurt + (data.is_weapon_hurt ? this.data.weaponParams[oc].attackPower : 0)
+            }else{
+              //keep_time 下 产生 hurt 伤害
+              hurt = parseInt(data.hurt / data.keep_time)
+            }
+            that.onSetHurt(data.hurt)
+            //造成伤害，后面每秒造成多少伤害
+
+            skillTimer['i'+data.ws_id] = setInterval(function(){
+              that.onSetHurt(hurt)
+            }, 1000)
+            setTimeout(function(){
+              clearInterval(skillTimer['i'+data.ws_id])
+            }, data.keep_time)
+          }else{
+            //直接伤害
+            let hurt = data.hurt + (data.is_weapon_hurt ? this.data.weaponParams[oc].attackPower : 0)
+            that.onSetHurt(hurt)
+          }
+        break;
+      case 2:
+          //增加攻击强度（属性）
+          if(data.hurt_unit === 1){
+            //固定增加
+            that.setData({
+              autoPower: (this.data.userPower + data.hurt + this.data.weaponParams[oc].attackPower) / 14 * userAttackSpeed,
+            })
+          }else{
+            //百分比增加
+            that.setData({
+              autoPower:  parseInt(that.data.autoPower + that.data.autoPower * (data.hurt / 100)),
+            })
+          }
+          if(data.second_hurt > 0){
+            //如果有增属性，并且造成伤害的技能，直接造成伤害
+            that.onSetHurt(data.second_hurt)
+          }
+          if(data.keep_time > 0){
+            //重置属性
+            setTimeout(function(){
+              that.onResetPower()
+            }, data.keep_time)
+          }else{
+            //记录技能Id，永久效果只能触发一次
+            foreverSkillEffect['i'+data.ws_id] = 1
+          }
+
+        break;
+      case 3:
+          //增加暴击率
+
+          if(data.keep_time > 0){
+            //有持续时间
+
+          }else{
+            that.setData({
+              userCrit: userCrit + data.hurt
+            })
+            //记录技能Id，永久效果只能触发一次
+            foreverSkillEffect['i'+data.ws_id] = 1
+          }
+        break;
+    }
+  },
+  onResetPower(){
+    this.setData({
+      autoPower: (this.data.userPower + this.data.weaponParams[oc].attackPower) / 14 * userAttackSpeed,
+    })
+  },
+  //技能伤害计算
+  onSetHurt(hurt){
+    let skillHurt = that.getCritNum(hurt * (1 - that.data.stakeReduceInjury))
+    let allHurt = that.data.allHurt + skillHurt
+    that.setData({
+      autoHurt: parseInt(skillHurt),
+      allHurt: parseInt(allHurt),
+      averageHurt: parseInt(skillHurt / ((Date.now() - that.data.beginTime) / 1000))
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
