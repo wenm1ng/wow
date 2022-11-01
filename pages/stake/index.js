@@ -8,6 +8,10 @@ var isGCD = false;
 var timer = undefined; //定时器对象
 var skillTimer = {} //技能dot每秒伤害定时器
 var foreverSkillEffect = {} //永久技能效果
+var skillCritNum = {} //技能暴击次数
+var skillKeepTimer = {} //持续性效果技能对象
+var skillResetTimer = {} // 技能重置时间前释放对象
+var skillOverlayNums = {} //技能叠加次数
 Page({
 
   /**
@@ -220,9 +224,9 @@ Page({
    */
   getCritNum(Num){
     if(Math.floor(Math.random()*100+1) <= this.data.userCrit){
-      return Num * 2
+      return Num * 2 * (that.data.userBoost/100)
     }
-    return Num
+    return Num * (that.data.userBoost/100)
   },
   /**
    * 拖动、删除图片后的操作
@@ -582,6 +586,7 @@ Page({
   },
   //伤害判断逻辑
   onHurtCharge(data){
+    let hurt = data.hurt
     //如果定时执行期间又有同类型的buff，直接停止该定时器
     if(skillTimer.hasOwnProperty('i'+data.ws_id)){
       clearInterval(skillTimer['i'+data.ws_id])
@@ -598,7 +603,7 @@ Page({
             let hurt
             if(data.every_second_hurt > 0){
               //直接伤害
-              hurt = data.hurt + (data.is_weapon_hurt ? this.data.weaponParams[oc].attackPower : 0)
+              hurt = data.every_second_hurt + (data.is_weapon_hurt ? this.data.weaponParams[oc].attackPower : 0)
             }else{
               //keep_time 下 产生 hurt 伤害
               hurt = parseInt(data.hurt / data.keep_time)
@@ -620,15 +625,20 @@ Page({
         break;
       case 2:
           //增加攻击强度（属性）
+          if(skillKeepTimer.hasOwnProperty('i'+data.ws_id)){
+            //说明已有效果在生效，只重置时间
+            hurt = 0
+            clearTimeout(skillKeepTimer['i'+ws_id])
+          }
           if(data.hurt_unit === 1){
             //固定增加
             that.setData({
-              autoPower: (this.data.userPower + data.hurt + this.data.weaponParams[oc].attackPower) / 14 * userAttackSpeed,
+              autoPower: (this.data.userPower + hurt + this.data.weaponParams[oc].attackPower) / 14 * userAttackSpeed,
             })
           }else{
             //百分比增加
             that.setData({
-              autoPower:  parseInt(that.data.autoPower + that.data.autoPower * (data.hurt / 100)),
+              autoPower:  parseInt(that.data.autoPower + that.data.autoPower * (hurt / 100)),
             })
           }
           if(data.second_hurt > 0){
@@ -637,8 +647,9 @@ Page({
           }
           if(data.keep_time > 0){
             //重置属性
-            setTimeout(function(){
+            skillKeepTimer['i'+ws_id] = setTimeout(function(){
               that.onResetPower()
+              skillKeepTimer['i'+ws_id] = undefined
             }, data.keep_time)
           }else{
             //记录技能Id，永久效果只能触发一次
@@ -648,17 +659,135 @@ Page({
         break;
       case 3:
           //增加暴击率
-
+          if(skillKeepTimer.hasOwnProperty('i'+data.ws_id)){
+            //说明已有效果在生效，只重置时间
+            hurt = 0
+            clearTimeout(skillKeepTimer['i'+ws_id])
+          }
+          that.setData({
+            userCrit: that.data.userCrit + hurt
+          })
           if(data.keep_time > 0){
             //有持续时间
+            skillKeepTimer['i'+ws_id] = setTimeout(function(){
+              that.setData({
+                userCrit: that.data.userCrit - data.hurt
+              })
+              skillKeepTimer['i'+ws_id] = undefined
+            }, data.keep_time)
 
           }else{
-            that.setData({
-              userCrit: userCrit + data.hurt
-            })
             //记录技能Id，永久效果只能触发一次
             foreverSkillEffect['i'+data.ws_id] = 1
           }
+          if(data.hurt_take_times > 0){
+            //暴击只作用于前几次技能
+            skillCritNum['i'+data.ws_id] = data.hurt_take_times
+          }
+        break;
+      case 4:
+          //降低护甲
+          if(skillOverlayNums.hasOwnProperty('i'+data.ws_id) && skillResetTimer.hasOwnProperty('i'+data.ws_id)){
+            if(skillOverlayNums['i'+data.ws_id] >= data.hurt_times){
+              hurt = 0
+              clearTimeout(skillResetTimer['i'+data.ws_id])
+            }else{
+              that.setData({
+                stakeArmor: that.data.stakeArmor - skillOverlayNums['i'+data.ws_id] * hurt
+              })
+            }
+            //有持续时间
+            skillResetTimer['i'+data.ws_id] = setTimeout(function(){
+              that.setData({
+                stakeArmor: that.data.stakeArmor + skillOverlayNums['i'+data.ws_id] * hurt
+              })
+              skillResetTimer['i'+data.ws_id] = undefined
+            }, data.keep_time)
+          }else{
+
+            if(skillKeepTimer.hasOwnProperty('i'+data.ws_id)){
+              //说明已有效果在生效，只重置时间
+              hurt = 0
+              clearTimeout(skillKeepTimer['i'+ws_id])
+            }
+            that.setData({
+              stakeArmor: that.data.stakeArmor - hurt
+            })
+            if(data.keep_time > 0){
+              //有持续时间
+              skillResetTimer['i'+data.ws_id] = setTimeout(function(){
+                that.setData({
+                  stakeArmor: that.data.stakeArmor + data.hurt
+                })
+                skillKeepTimer['i'+ws_id] = undefined
+
+              }, data.keep_time)
+
+              if(data.hurt_times > 0){
+                skillOverlayNums['i'+data.ws_id] = 1;
+              }
+            }else{
+              //记录技能Id，永久效果只能触发一次
+              foreverSkillEffect['i'+data.ws_id] = 1
+            }
+          }
+        break;
+      case 7:
+        //增加普攻伤害
+          if(data.keep_time > 0 ){
+            //联合创新
+            // autoPower
+            if(skillKeepTimer.hasOwnProperty('i'+data.ws_id)){
+              //说明已有效果在生效，只重置时间
+              hurt = 0
+              clearTimeout(skillKeepTimer['i'+ws_id])
+            }
+            that.setData({
+              autoPower: that.data.autoPower + hurt
+            })
+            //有持续时间
+            skillResetTimer['i'+data.ws_id] = setTimeout(function(){
+              that.setData({
+                autoPower: that.data.autoPower - hurt
+              })
+              skillKeepTimer['i'+ws_id] = undefined
+
+            }, data.keep_time)
+
+          }
+          if(data.second_hurt > 0){
+            that.onSetHurt(data.second_hurt)
+          }
+        break;
+      case 8:
+        //增加所有伤害百分比
+          if(data.keep_time > 0){
+            if(skillKeepTimer.hasOwnProperty('i'+data.ws_id)){
+              //说明已有效果在生效，只重置时间
+              hurt = 0
+              clearTimeout(skillKeepTimer['i'+ws_id])
+            }
+            that.setData({
+              userBoost: that.data.userBoost + hurt
+            })
+            //有持续时间
+            skillResetTimer['i'+data.ws_id] = setTimeout(function(){
+              that.setData({
+                userBoost: that.data.userBoost - hurt
+              })
+              skillKeepTimer['i'+ws_id] = undefined
+
+            }, data.keep_time)
+          }else{
+            //记录技能Id，永久效果只能触发一次
+            foreverSkillEffect['i'+data.ws_id] = 1
+            that.setData({
+              userBoost: that.data.userBoost + hurt
+            })
+          }
+        break;
+      case 9:
+        //回能量
         break;
     }
   },
