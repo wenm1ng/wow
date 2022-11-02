@@ -32,7 +32,9 @@ Page({
     skillList: [], //技能详细数据
     finalSkillList: [], //技能筛选后的数据
     repeatData: [], //技能定时器去重数据
-    isShake: false,
+    isShake: false, //直接技能伤害文字是否显示
+    dotShake: false, //dot技能伤害文字是否显示
+    petShake: false, //宠物技能伤害文字是否显示
     energy: 100, //能量条
     isEnergy: true, //当前职业是否有能量条
     imgList: [],
@@ -49,7 +51,9 @@ Page({
     averageHurt: 0, //秒伤
     autoHurt: 0, //自动攻击显伤
     skillHurt: 0, //主动技能直接伤害显伤
-    userPower: 100, //玩家攻击强度
+    dotHurt: 0, //dot技能显伤
+    petHurt: 0, //宠物伤害显伤
+    userPower: 1000, //玩家攻击强度
     userRapid: 100, //用户急速等级 攻击速度 = 武器攻速系数 / (急速等级 / 100 + 1)
     userAttackSpeed: 0, //用户攻击速度
     autoPower: 0, //自动攻击单次伤害
@@ -119,7 +123,8 @@ Page({
       //自动攻击单次伤害 = (攻击强度 + 武器基础伤害 ) / 14 * 攻击速度
       autoPower: (this.data.userPower + this.data.weaponParams[oc].attackPower) / 14 * userAttackSpeed,
       //木桩人减伤百分比
-      stakeReduceInjury: (this.data.stakeArmor / (this.data.stakeArmor + 10555)).toFixed(4)
+      stakeReduceInjury: (this.data.stakeArmor / (this.data.stakeArmor + 10555)).toFixed(4),
+      oc: oc
     })
   },
   getImageInfo(e){
@@ -571,21 +576,27 @@ Page({
 
     // var positionName = 'skillPositionArr['+index+']'
     // var linkName = 'skillLink['+index+']'
+    let skillHurt = parseInt(that.getCritNum(this.data.finalSkillList[index].hurt * (1 - that.data.stakeReduceInjury)))
+    let allHurt = parseInt(that.data.allHurt + skillHurt)
     that.setData({
       // [positionName]: newArr[index],
       skillPositionArr: newArr,
       skillLink: skillLink,
-      // [linkName]: skillLink[index],
-      isShake: true,
       //技能类型 1直伤 2增伤 3增加暴击率 4降低护甲 5降低敌人攻击 6提升对伤害没用的属性 7普攻附带伤害 没想起来的暂时无备注',
-
-      skillHurt: this.data.finalSkillList[index].hurt
     })
-    // console.log(Date.now());
+    this.onHurtCharge(this.data.finalSkillList[index])
 
+  },
+  //获取直接技能伤害
+  getSkillDamage(hurt, is_weapon_hurt){
+    return (that.data.userPower/14) * 2.4 + hurt + (is_weapon_hurt ? this.data.weaponParams[that.data.oc].attackPower : 0)
   },
   //伤害判断逻辑
   onHurtCharge(data){
+    //没有实际数值的技能直接跳过
+    if(data.hurt === 0 && data.second_hurt === 0 && data.every_second_hurt === 0){
+      return;
+    }
     let hurt = data.hurt
     //如果定时执行期间又有同类型的buff，直接停止该定时器
     if(skillTimer.hasOwnProperty('i'+data.ws_id)){
@@ -600,27 +611,31 @@ Page({
           //直接造成伤害
           if(data.keep_time > 0){
             //dot伤害
-            let hurt
             if(data.every_second_hurt > 0){
               //直接伤害
-              hurt = data.every_second_hurt + (data.is_weapon_hurt ? this.data.weaponParams[oc].attackPower : 0)
+              if(data.hurt > 0){
+                hurt = that.getSkillDamage(hurt, data.is_weapon_hurt)
+
+                that.onSetHurt(hurt, 1)
+              }
+              hurt = data.every_second_hurt + (data.is_weapon_hurt ? this.data.weaponParams[that.data.oc].attackPower : 0)
+
             }else{
               //keep_time 下 产生 hurt 伤害
               hurt = parseInt(data.hurt / data.keep_time)
             }
-            that.onSetHurt(data.hurt)
             //造成伤害，后面每秒造成多少伤害
 
             skillTimer['i'+data.ws_id] = setInterval(function(){
-              that.onSetHurt(hurt)
+              that.onSetHurt(hurt, 2)
             }, 1000)
             setTimeout(function(){
               clearInterval(skillTimer['i'+data.ws_id])
             }, data.keep_time)
           }else{
-            //直接伤害
-            let hurt = data.hurt + (data.is_weapon_hurt ? this.data.weaponParams[oc].attackPower : 0)
-            that.onSetHurt(hurt)
+            //直接伤害 = (攻击强度/14)X2.4+常数C
+            hurt = that.getSkillDamage(hurt, data.is_weapon_hurt)
+            that.onSetHurt(hurt, 1)
           }
         break;
       case 2:
@@ -628,12 +643,12 @@ Page({
           if(skillKeepTimer.hasOwnProperty('i'+data.ws_id)){
             //说明已有效果在生效，只重置时间
             hurt = 0
-            clearTimeout(skillKeepTimer['i'+ws_id])
+            clearTimeout(skillKeepTimer['i'+data.ws_id])
           }
           if(data.hurt_unit === 1){
             //固定增加
             that.setData({
-              autoPower: (this.data.userPower + hurt + this.data.weaponParams[oc].attackPower) / 14 * userAttackSpeed,
+              autoPower: (that.data.userPower + hurt + that.data.weaponParams[that.data.oc].attackPower) / 14 * that.data.userAttackSpeed,
             })
           }else{
             //百分比增加
@@ -643,13 +658,14 @@ Page({
           }
           if(data.second_hurt > 0){
             //如果有增属性，并且造成伤害的技能，直接造成伤害
-            that.onSetHurt(data.second_hurt)
+            hurt = that.getSkillDamage(data.second_hurt, data.is_weapon_hurt)
+            that.onSetHurt(hurt, 1)
           }
           if(data.keep_time > 0){
             //重置属性
-            skillKeepTimer['i'+ws_id] = setTimeout(function(){
+            skillKeepTimer['i'+data.ws_id] = setTimeout(function(){
               that.onResetPower()
-              skillKeepTimer['i'+ws_id] = undefined
+              skillKeepTimer['i'+data.ws_id] = undefined
             }, data.keep_time)
           }else{
             //记录技能Id，永久效果只能触发一次
@@ -662,18 +678,18 @@ Page({
           if(skillKeepTimer.hasOwnProperty('i'+data.ws_id)){
             //说明已有效果在生效，只重置时间
             hurt = 0
-            clearTimeout(skillKeepTimer['i'+ws_id])
+            clearTimeout(skillKeepTimer['i'+data.ws_id])
           }
           that.setData({
             userCrit: that.data.userCrit + hurt
           })
           if(data.keep_time > 0){
             //有持续时间
-            skillKeepTimer['i'+ws_id] = setTimeout(function(){
+            skillKeepTimer['i'+data.ws_id] = setTimeout(function(){
               that.setData({
                 userCrit: that.data.userCrit - data.hurt
               })
-              skillKeepTimer['i'+ws_id] = undefined
+              skillKeepTimer['i'+data.ws_id] = undefined
             }, data.keep_time)
 
           }else{
@@ -708,7 +724,7 @@ Page({
             if(skillKeepTimer.hasOwnProperty('i'+data.ws_id)){
               //说明已有效果在生效，只重置时间
               hurt = 0
-              clearTimeout(skillKeepTimer['i'+ws_id])
+              clearTimeout(skillKeepTimer['i'+data.ws_id])
             }
             that.setData({
               stakeArmor: that.data.stakeArmor - hurt
@@ -719,7 +735,7 @@ Page({
                 that.setData({
                   stakeArmor: that.data.stakeArmor + data.hurt
                 })
-                skillKeepTimer['i'+ws_id] = undefined
+                skillKeepTimer['i'+data.ws_id] = undefined
 
               }, data.keep_time)
 
@@ -740,23 +756,24 @@ Page({
             if(skillKeepTimer.hasOwnProperty('i'+data.ws_id)){
               //说明已有效果在生效，只重置时间
               hurt = 0
-              clearTimeout(skillKeepTimer['i'+ws_id])
+              clearTimeout(skillKeepTimer['i'+data.ws_id])
             }
             that.setData({
               autoPower: that.data.autoPower + hurt
             })
             //有持续时间
-            skillResetTimer['i'+data.ws_id] = setTimeout(function(){
+            skillKeepTimer['i'+data.ws_id] = setTimeout(function(){
               that.setData({
                 autoPower: that.data.autoPower - hurt
               })
-              skillKeepTimer['i'+ws_id] = undefined
+              skillKeepTimer['i'+data.ws_id] = undefined
 
             }, data.keep_time)
 
           }
           if(data.second_hurt > 0){
-            that.onSetHurt(data.second_hurt)
+            hurt = that.getSkillDamage(data.second_hurt, data.is_weapon_hurt)
+            that.onSetHurt(hurt, 1)
           }
         break;
       case 8:
@@ -765,17 +782,17 @@ Page({
             if(skillKeepTimer.hasOwnProperty('i'+data.ws_id)){
               //说明已有效果在生效，只重置时间
               hurt = 0
-              clearTimeout(skillKeepTimer['i'+ws_id])
+              clearTimeout(skillKeepTimer['i'+data.ws_id])
             }
             that.setData({
               userBoost: that.data.userBoost + hurt
             })
             //有持续时间
-            skillResetTimer['i'+data.ws_id] = setTimeout(function(){
+            skillKeepTimer['i'+data.ws_id] = setTimeout(function(){
               that.setData({
                 userBoost: that.data.userBoost - hurt
               })
-              skillKeepTimer['i'+ws_id] = undefined
+              skillKeepTimer['i'+data.ws_id] = undefined
 
             }, data.keep_time)
           }else{
@@ -788,23 +805,65 @@ Page({
         break;
       case 9:
         //回能量
+          if(data.keep_time > 0){
+            if(skillKeepTimer.hasOwnProperty('i'+data.ws_id)){
+              //重置回复能量效果，并且刷新时间
+              clearTimeout(skillKeepTimer['i'+data.ws_id])
+            }
+            let everyEnergy = parseInt(hurt / data.keep_time)
+            skillTimer['i'+data.ws_id] = setInterval(function(){
+              var temp = that.data.energy + everyEnergy
+              that.setData({
+                energy: temp > 100 ? 100 : temp
+              })
+            }, 1000)
+            //有持续时间
+            skillKeepTimer['i'+data.ws_id] = setTimeout(function(){
+              clearInterval(skillTimer['i'+data.ws_id])
+            }, data.keep_time)
+          }else{
+            var temp = that.data.energy + hurt
+            if(temp > 100){
+              temp = 100
+            }
+            that.setData({
+              energy: temp
+            })
+          }
         break;
     }
   },
   onResetPower(){
     this.setData({
-      autoPower: (this.data.userPower + this.data.weaponParams[oc].attackPower) / 14 * userAttackSpeed,
+      autoPower: (this.data.userPower + this.data.weaponParams[this.data.oc].attackPower) / 14 * that.data.userAttackSpeed,
     })
   },
   //技能伤害计算
-  onSetHurt(hurt){
-    let skillHurt = that.getCritNum(hurt * (1 - that.data.stakeReduceInjury))
-    let allHurt = that.data.allHurt + skillHurt
-    that.setData({
-      autoHurt: parseInt(skillHurt),
-      allHurt: parseInt(allHurt),
-      averageHurt: parseInt(skillHurt / ((Date.now() - that.data.beginTime) / 1000))
-    })
+  onSetHurt(hurt, type){
+    let skillHurt = parseInt(that.getCritNum(hurt * (1 - that.data.stakeReduceInjury)))
+    let allHurt = parseInt(that.data.allHurt + skillHurt)
+    let object = {
+      allHurt: allHurt,
+      averageHurt: parseInt(allHurt / ((Date.now() - that.data.beginTime) / 1000))
+    }
+    switch(type){
+      case 1:
+        //直接技能伤害
+          object.isShake = true
+          object.skillHurt = skillHurt
+        break;
+      case 2:
+        //dot伤害
+        object.dotHurt = skillHurt
+        object.dotShake = true
+        break;
+      case 3:
+        //宠物伤害
+        object.petHurt = skillHurt
+        object.petShake = true
+        break;
+    }
+    that.setData(object)
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

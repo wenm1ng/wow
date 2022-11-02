@@ -1,5 +1,7 @@
 <!--pages/stake-1/index.wxml-->
 <view class="{{isShake ? 'shake' : ''}}" style="height:100rpx;opacity: 0;">{{skillHurt}}</view>
+<view class="{{dotShake ? 'shake' : ''}}" style="height:100rpx;opacity: 0;">{{dotHurt}}</view>
+<view class="{{petShake ? 'shake' : ''}}" style="height:100rpx;opacity: 0;">{{petHurt}}</view>
 <view class="{{autoHurt > 0 ? 'shake' : ''}}" style="height:100rpx;opacity: 0;">{{autoHurt}}</view>
 <view>总伤：{{allHurt}}</view>
 <view>秒伤：{{averageHurt}}</view>
