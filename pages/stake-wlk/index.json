@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "l-progress":"/miniprogram_npm/lin-ui/progress/index",
+    "WxDragImg": "wx-drag-img"
+  }
+}

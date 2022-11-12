@@ -1,0 +1,120 @@
+<!--pages/stake-1/index.wxml-->
+<view class="out-view">
+    <view style="max-width:250rpx;font-size: 50rpx;" hover-class="click-shake" bindtap="versionModalShow"><text>{{versionName}}</text><l-icon name='sanjiaoxing' l-class='icon-sanjiaoxing' size="30" /></view>
+    <view style="max-width:300rpx;font-size: 50rpx;" hover-class="click-shake" bindtap="ocModalShow"><text>{{weaponParams[oc].name}}</text><l-icon name='sanjiaoxing' l-class='icon-sanjiaoxing' size="30" /></view>
+    <view style="max-width:250rpx;font-size: 50rpx;margin-left:40rpx;" hover-class="click-shake" bindtap="stageModalShow"><text>{{stage_name}}</text><l-icon name='sanjiaoxing' l-class='icon-sanjiaoxing' size="30" /></view>
+</view>
+
+<!--<view class="{{isShake ? 'shake' : ''}}" style="height:100rpx;opacity: 0;">{{skillHurt}}</view>-->
+<!--<view class="{{dotShake ? 'shake' : ''}}" style="height:100rpx;opacity: 0;">{{dotHurt}}</view>-->
+<!--<view class="{{petShake ? 'shake' : ''}}" style="height:100rpx;opacity: 0;">{{petHurt}}</view>-->
+<!--<view class="{{autoHurt > 0 ? 'shake' : ''}}" style="height:100rpx;opacity: 0;">{{autoHurt}}</view>-->
+<view style="padding: 20rpx;">
+    <view class="out-view">
+        <text style="width:50%">总伤：{{allHurt}}</text>
+        <text style="width:50%">秒伤：{{averageHurt}}</text>
+    </view>
+    <view class="out-view">
+        <text style="width:50%;">直伤：<text class="{{isShake ? 'shake' : ''}}" style="opacity: 0;">{{skillHurt}}</text></text>
+        <text style="width:50%;">dot：<text class="{{dotShake ? 'shake' : ''}}" style="opacity: 0;">{{dotHurt}}</text></text>
+    </view>
+    <view class="out-view">
+        <text style="width:50%;">召唤物伤害：<text class="{{petShake ? 'shake' : ''}}" style="opacity: 0;">{{petHurt}}</text></text>
+        <text style="width:50%;">自动攻击：<text class="{{autoHurt > 0 ? 'shake' : ''}}" style="opacity: 0;">{{autoHurt}}</text></text>
+    </view>
+</view>
+
+<view style="padding-left:10px" wx:if="{{!stakeShow}}">
+    <WxDragImg
+            defaultImgList="{{imgList}}"
+            bind:updateImageList="updateImageList" bind:getImageInfo="getImageInfo" maxCount="1" previewSize="{{pixelWidth/2}}" columns="5" gap="10"
+    >
+<!--        <view slot="delete" >...</view>-->
+<!--        <view slot="upload" >...</view>-->
+    </WxDragImg>
+    <l-button bindtap="confirmSkill">开始打木桩</l-button>
+    <l-button bindtap="resetSkill">重置</l-button>
+</view>
+
+<view style="width:100%;" wx:if="{{stakeShow}}">
+    <view>
+        <l-progress percent="{{energy}}" stroke-width='50' show-info interval="0" active-color="#C7B85B" background-color="#FFF" duration="1" active l-text-class="center"></l-progress>
+<!--        <l-button bindtap="test">点我</l-button>-->
+    </view>
+    <view wx:if="{{showActionBar}}" class="action-bar">
+        <l-progress percent="{{actionBar}}" stroke-width='50' interval="0" active-color="#C7B85B" background-color="#FFF" duration="1" active l-text-class="center"></l-progress>
+    </view>
+    <view class="divBox" style="float:left;margin-left:20rpx;margin-top:10rpx;" wx:for="{{skillPositionArr}}">
+        <image class="divBGPic {{finalSkillList[index].consume + energy >= 0 ? '' : 'notEnergy'}}" src="https://mingtongct.com/images/wlk_skill/{{finalSkillList[index].icon}}.jpg" data-index="{{index}}" bindtap="handleMouseDown" style="left: {{pixelLeft}}rpx; top: {{pixelTop}}rpx; width: {{pixelWidth}}rpx; height: {{pixelHeight}}rpx;" />
+        <view wx:for="{{item}}" wx:for-item="child" wx:for-index="childIndex" class="mask layer0-{{childIndex}}" style="margin:10rpx; display: {{child.display}}; width:{{child.width}}rpx; height:{{child.height}}rpx; {{child.borderLeftWidth >= 0 ? 'border-left-width:'+child.borderLeftWidth+'rpx;' : ''}} {{child.borderTopWidth >= 0 ? 'border-top-width:'+child.borderTopWidth+'rpx;' : ''}} {{child.borderRightWidth >= 0 ? 'border-right-width:'+child.borderRightWidth+'rpx;' : ''}} {{child.borderBottomWidth >= 0 ? 'border-bottom-width:'+child.borderBottomWidth+'rpx;' : ''}}"></view>
+    </view>
+    <view class="divBox" style="width:12rpx;float:left"></view>
+</view>
+
+<l-popup show="{{modalShow}}"  locked="{{false}}" animation="{{true}}">
+    <view class="modal" style="min-height:{{modalHeight}}rpx;" bindtap="closeModal">
+        <view style="font-size: 30rpx">{{skillList[nowInfoIndex].skill_name}}</view>
+        <view>{{skillList[nowInfoIndex].cost_text}}</view>
+        <view>{{skillList[nowInfoIndex].spell_text}}</view>
+        <view style="color:#E9C069">{{skillList[nowInfoIndex].skill_desc}}</view>
+    </view>
+
+</l-popup>
+<l-popup show="{{showActionBar}}"  locked="{{false}}" >
+
+</l-popup>
+
+<l-popup show="{{showOcModal}}"  locked="{{false}}" z-index="111" animation="{{true}}">
+    <view style="width:700rpx;height:550rpx;background-color: #fff;border-radius:15rpx">
+        <view bindtap="ocModalClose" class="close-icon">
+            <l-icon name="close"/>
+        </view>
+        <view style="text-align: center;font-size: 50rpx;margin-bottom: 20rpx;">选择职业</view>
+        <view style="height:350rpx;;margin-left:15rpx;">
+            <view wx:for="{{ocList}}" class="oc-view {{item.is_checked ? 'oc-hover' : ''}}" bindtap="selectOc" data-oc="{{item.occupation}}" data-index="{{index}}">
+                <image src="{{item.image_url}}" style="height:40rpx;width:40rpx;float:left;margin-top:20rpx;"></image>
+                <text style="display:block;float:left;font-size: 25rpx;margin-left:5rpx;">{{item.name}}</text>
+            </view>
+        </view>
+        <view>
+            <l-button size="medium" l-class="share" width="200" bg-color="#337559" bindtap="submitOc">确定</l-button>
+            <l-button size="medium"  bg-color="white" width="200" l-class="btn-back" lang="zh_CN" bindtap="ocModalClose">取消</l-button>
+        </view>
+    </view>
+</l-popup>
+
+<l-popup show="{{showVersionModal}}"  locked="{{false}}" z-index="111" animation="{{true}}">
+    <view style="width:700rpx;height:400rpx;background-color: #fff;border-radius:15rpx">
+        <view bindtap="versionModalClose" class="close-icon">
+            <l-icon name="close"/>
+        </view>
+        <view style="text-align: center;font-size: 50rpx;margin-top: 30rpx;">选择版本</view>
+        <view style="height:200rpx;;margin-left:15rpx;">
+            <view wx:for="{{versionList}}" class="version-view {{item.is_checked ? 'oc-hover' : ''}} {{item.status === 0 ? 'view-status' : ''}}" bindtap="selectVersion" data-version="{{item.version}}" data-status="{{item.status}}">
+                <text style="display:block;float:left;font-size: 25rpx;text-align: center;padding-top:15rpx;" class="{{item.status === 0 ? 'text-status' : ''}}">{{item.name}}<text wx:if="{{item.status === 0}}" style="font-size:20rpx">\n敬请期待</text></text>
+            </view>
+        </view>
+        <view>
+            <l-button size="medium" l-class="share" width="200" bg-color="#337559" bindtap="submitVersion">确定</l-button>
+            <l-button size="medium"  bg-color="white" width="200" l-class="btn-back" lang="zh_CN" bindtap="versionModalClose">取消</l-button>
+        </view>
+    </view>
+</l-popup>
+
+<l-popup show="{{showStageModal}}"  locked="{{false}}" z-index="111" animation="{{true}}">
+    <view style="width:700rpx;height:400rpx;background-color: #fff;border-radius:15rpx">
+        <view bindtap="stageModalClose" class="close-icon">
+            <l-icon name="close"/>
+        </view>
+        <view style="text-align: center;font-size: 50rpx;margin-top: 30rpx;">选择阶段</view>
+        <view style="height:200rpx;;margin-left:15rpx;">
+            <view wx:for="{{stageList}}" class="stage-view {{item.is_checked ? 'oc-hover' : ''}} {{item.status === 0 ? 'view-status' : ''}}" bindtap="selectStage" data-stage="{{item.stage_name}}">
+                <text style="display:block;float:left;font-size: 25rpx;text-align: center;padding-top:15rpx;">{{item.stage_name}}</text>
+            </view>
+        </view>
+        <view>
+            <l-button size="medium" l-class="share" width="200" bg-color="#337559" bindtap="submitStage">确定</l-button>
+            <l-button size="medium"  bg-color="white" width="200" l-class="btn-back" lang="zh_CN" bindtap="stageModalClose">取消</l-button>
+        </view>
+    </view>
+</l-popup>

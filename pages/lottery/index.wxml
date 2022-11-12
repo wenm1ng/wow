@@ -49,7 +49,7 @@
 </view>
 <!--        background-image: linear-gradient(45deg, #f43f3b, #ec008c)-->
 <!--        {{really != index+1 && surplus && implement > 2?'background-image: linear-gradient(45deg, #39b54a, #8dc63f);':''}}-->
-<l-popup show="{{modalShow}}"  locked="{{false}}" >
+<l-popup show="{{modalShow}}"  locked="{{false}}" animation="{{true}}">
     <view style="width:600rpx;height:{{modalHeight}}rpx;background-color: #fff;" bindtap="closeModal">
         <view style="width: 600rpx;height:150rpx;text-align: center">
             <text style="font-size:80rpx;">坐骑出炉!</text>

@@ -40,7 +40,8 @@
     "pages/macro/hand/index",
     "pages/macro/my/index",
     "pages/stake-2/index",
-    "pages/stake/index"
+    "pages/stake/index",
+    "pages/stake-wlk/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -62,7 +63,7 @@
         "selectedIconPath": "images/icon_tab/index_hl.png"
       },
       {
-        "pagePath": "pages/stake/index",
+        "pagePath": "pages/stake-wlk/index",
         "text": "打木桩",
         "iconPath": "images/icon_tab/help.png",
         "selectedIconPath": "images/icon_tab/help_hl.png"

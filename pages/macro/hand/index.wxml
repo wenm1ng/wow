@@ -96,7 +96,7 @@
 </l-form>
 
 <!--modal层-->
-<l-popup show="{{modalMyShow}}"  locked="{{false}}" >
+<l-popup show="{{modalMyShow}}"  locked="{{false}}" animation="{{true}}">
     <view style="width:550rpx;height:300rpx;background-color: #fff;">
         <view bindtap="closeMyModal" class="close-my-icon">
             <l-icon name="close"/>
@@ -115,7 +115,7 @@
     </view>
 </l-popup>
 
-<l-popup show="{{modalShow}}"  locked="{{false}}" z-index="111">
+<l-popup show="{{modalShow}}"  locked="{{false}}" z-index="111" animation="{{true}}">
     <view style="width:600rpx;height:{{modalHeight}}rpx;background-color: #fff;">
         <view bindtap="closeModal" class="close-icon">
             <l-icon name="close"/>
