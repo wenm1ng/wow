@@ -292,3 +292,8 @@
 .out-view view {
     margin: 0 20rpx;
 }
+
+.middle-button{
+    margin-top:30rpx;
+    margin-left:280rpx;
+}

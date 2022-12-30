@@ -22,6 +22,9 @@
         <text style="width:50%;">召唤物伤害：<text class="{{petShake ? 'shake' : ''}}" style="opacity: 0;">{{petHurt}}</text></text>
         <text style="width:50%;">自动攻击：<text class="{{autoHurt > 0 ? 'shake' : ''}}" style="opacity: 0;">{{autoHurt}}</text></text>
     </view>
+<!--    <view class="out-view">-->
+<!--        <l-button size="medium" l-class="share" width="200" bg-color="#337559" bindtap="confirmSkill">结束</l-button>-->
+<!--    </view>-->
 </view>
 
 <view style="padding-left:10px" wx:if="{{!stakeShow}}">
@@ -32,8 +35,8 @@
 <!--        <view slot="delete" >...</view>-->
 <!--        <view slot="upload" >...</view>-->
     </WxDragImg>
-    <l-button bindtap="confirmSkill">开始打木桩</l-button>
-    <l-button bindtap="resetSkill">重置</l-button>
+    <l-button size="medium" l-class="share" width="200" bg-color="#337559" bindtap="confirmSkill">开始打木桩</l-button>
+    <l-button size="medium"  bg-color="white" width="200" l-class="btn-back" lang="zh_CN" bindtap="resetSkill">重置</l-button>
 </view>
 
 <view style="width:100%;" wx:if="{{stakeShow}}">
@@ -49,6 +52,7 @@
         <view wx:for="{{item}}" wx:for-item="child" wx:for-index="childIndex" class="mask layer0-{{childIndex}}" style="margin:10rpx; display: {{child.display}}; width:{{child.width}}rpx; height:{{child.height}}rpx; {{child.borderLeftWidth >= 0 ? 'border-left-width:'+child.borderLeftWidth+'rpx;' : ''}} {{child.borderTopWidth >= 0 ? 'border-top-width:'+child.borderTopWidth+'rpx;' : ''}} {{child.borderRightWidth >= 0 ? 'border-right-width:'+child.borderRightWidth+'rpx;' : ''}} {{child.borderBottomWidth >= 0 ? 'border-bottom-width:'+child.borderBottomWidth+'rpx;' : ''}}"></view>
     </view>
     <view class="divBox" style="width:12rpx;float:left"></view>
+    <l-button size="medium" l-class="middle-button" width="200" bg-color="#337559" bindtap="endSkill">结束</l-button>
 </view>
 
 <l-popup show="{{modalShow}}"  locked="{{false}}" animation="{{true}}">

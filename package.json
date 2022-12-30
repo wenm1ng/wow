@@ -18,6 +18,7 @@
   "homepage": "https://github.com/wenm1ng/wow#readme",
   "dependencies": {
     "lin-ui": "^0.7.6",
-    "wx-drag-img": "^0.1.2"
+    "wx-drag-img": "^0.1.2",
+    "zl_calculator_zl": "^1.0.4"
   }
 }
