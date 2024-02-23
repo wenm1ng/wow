@@ -1,0 +1,20 @@
+<view data-weui-theme="{{theme}}">
+  <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+    <image class="avatar" src="{{avatarUrl}}"></image>
+  </button> 
+  <mp-form>
+    <mp-cells>
+      <mp-cell title="昵称">
+        <input type="nickname" maxlength="20" class="weui-input" placeholder="请输入昵称" value="{{nickName}}" bindchange="onEditNickname"/>
+      </mp-cell>
+    </mp-cells>
+  </mp-form>
+</view>
+
+<view class="add-button-view" bindtap="gotoAddAnswer">
+  <l-button bg-color="white" width="480" l-class="btn-back" lang="zh_CN" bindtap="goBack"
+          bindgetuserprofile="auth">返回</l-button>
+</view>
+
+<!-- 消息提示 -->
+<l-message />

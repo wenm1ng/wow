@@ -4,18 +4,25 @@
         <image class='btnImg' bindtap="gotoMacro" src='https://mingtongct.com/images/bg/bg_macro.jpg'></image>
         <view class="quick-entry">
             <view class="quick-left" bindtap="gotoMount">
-                <view style="width:200rpx;float:left;text-align: center">
+                <view style="width:180rpx;float:left;text-align: center">
                     <text style="display: block;height:80rpx;line-height: 80rpx;font-weight:bold;">模拟刷坐骑</text>
                     <text style="display: block;font-size:20rpx;height:30rpx;line-height: 30rpx;color:rgb(58, 123, 221);">没有难刷的坐骑</text>
                 </view>
                 <image class="entryImg" src="https://mingtongct.com/images/bg/mount.jpg"></image>
             </view>
-            <view class="quick-right" bindtap="gotoHelp">
+            <view class="quick-mid" bindtap="gotoHelp">
                 <view style="width:175rpx;float:left;text-align: right">
                     <text style="display: block;height:80rpx;line-height: 80rpx;font-weight:bold;">找不到WA?</text>
                     <text style="display: block;font-size:20rpx;height:30rpx;line-height: 30rpx;color:rgb(58, 123, 221);text-align: center">找人帮帮忙</text>
                 </view>
-                <image class="entryImg" src="https://mingtongct.com/images/bg/yilidan.webp" style="width:165rpx;height:100rpx;margin-top:20rpx;"></image>
+                <image class="entryImgMid" src="https://mingtongct.com/images/bg/yilidan.webp"></image>
+            </view>
+            <view class="quick-right" bindtap="gotoHelp">
+                <view style="width:130rpx;float:left;text-align: right">
+                    <text style="display: block;height:80rpx;line-height: 80rpx;font-weight:bold;">一键WA</text>
+                    <text style="font-size:20rpx;height:30rpx;line-height: 30rpx;color:rgb(58, 123, 221);text-align: center">快速生成</text>
+                    <image class="entryImgRight" src="https://mingtongct.com/images/bg/fire.png"></image>
+                </view>
             </view>
         </view>
     </view>

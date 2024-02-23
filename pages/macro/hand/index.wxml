@@ -83,6 +83,7 @@
     <l-form-item wx:if="{{inputType !== 0 && inputType !== 5}}" label="*{{enums[inputType - 1]}}" l-form-label-class="red" l-form-item-class="form-item" name="content" label-width="180rpx">
         <l-input  id="content" width="540" hide-label l-class="bg-white" value="{{content}}"/>
     </l-form-item>
+    
 
     <view slot="submit" class="left">
         <l-button bg-color="#337559">提交组合</l-button>

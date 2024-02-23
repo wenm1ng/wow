@@ -44,7 +44,8 @@
     "useStaticServer": true,
     "showES6CompileOption": false,
     "useCompilerPlugins": false,
-    "lazyloadPlaceholderEnable": false
+    "lazyloadPlaceholderEnable": false,
+    "condition": false
   },
   "compileType": "miniprogram",
   "libVersion": "2.24.4",

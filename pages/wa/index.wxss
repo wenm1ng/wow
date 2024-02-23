@@ -109,24 +109,45 @@
   }
 
   .entryImg{
-      height:130rpx;
-      width:130rpx;
+      height:100rpx;
+      width:100rpx;
       float:right;
       border-radius: 20rpx;
   }
 
+  .entryImgMid{
+      float:right;
+      border-radius: 20rpx;
+      width:100rpx;height:80rpx;margin-top:10rpx;
+  }
+
+    .entryImgRight{
+        float:right;
+        border-radius: 5rpx;
+        width:40rpx;height:40rpx;
+    }
+
   .quick-left{
       float:left;
-      width:48%;
-      margin-right:1%;
+      width:38%;
+      margin-left:1%;
       background-color: #D8DDD5;
       border-radius: 20rpx;
       height:130rpx;
   }
 
+    .quick-mid{
+        float:left;
+        width:38%;
+        margin-left:1%;
+        border-radius: 20rpx;
+        background-color: #D8DDD5;
+        height:130rpx;
+    }
+
     .quick-right{
         float:left;
-        width:48%;
+        width:20%;
         margin-left:1%;
         border-radius: 20rpx;
         background-color: #D8DDD5;

@@ -32,26 +32,35 @@ Page({
 
       wxutil.request.post(url, data).then((res) => {
         if (res.data.code == 200) {
+          //判断是否是新用户登录
+          let response = res.data.data
           // 缓存用户详细信息
-          wxutil.setStorage("userDetail", res.data.data, 172800)
-          // app.getUserDetailNew() = res.data.data
-          // console.log(app.getUserDetailNew())
-          wx.lin.showMessage({
-            type: "success",
-            content: "授权成功！",
-            success() {
-              // let pages = getCurrentPages();
-              // let prevPage = pages[pages.length - 2];
-              // let lastPage = prevPage.route
-              // if(lastPage === 'pages/profile/index'){
-              //   prevPage.getUser();
-              //   prevPage.getNum();
-              // }
-              //将消息未读数量显示
-              app.showMessageNum()
-              wx.navigateBack()
-            }
-          })
+          wxutil.setStorage("userDetail", response, response.expire_time)
+          if(response.is_new_user){
+            //新用户，跳转到设置头像、昵称页面
+            wx.navigateTo({
+              url: "/pages/user-avatar-nickname/index"
+            })
+          }else{
+            // app.getUserDetailNew() = res.data.data
+            // console.log(app.getUserDetailNew())
+            wx.lin.showMessage({
+              type: "success",
+              content: "授权成功！",
+              success() {
+                // let pages = getCurrentPages();
+                // let prevPage = pages[pages.length - 2];
+                // let lastPage = prevPage.route
+                // if(lastPage === 'pages/profile/index'){
+                //   prevPage.getUser();
+                //   prevPage.getNum();
+                // }
+                //将消息未读数量显示
+                app.showMessageNum()
+                wx.navigateBack()
+              }
+            })
+          }
         } else {
           wx.lin.showMessage({
             type: "error",

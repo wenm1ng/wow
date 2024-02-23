@@ -1,0 +1,33 @@
+.avatar-wrapper {
+  padding: 0;
+  width: 56px !important;
+  border-radius: 8px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.avatar {
+  display: block;
+  width: 56px;
+  height: 56px;
+}
+
+.container {
+  display: flex;
+}
+
+.add-button-view{
+  position: absolute;
+  top:92%;
+  left:20%;
+  z-index: 999;
+  width:50%;
+  height:100rpx;
+}
+
+.btn-back{
+  margin-top: 20rpx;
+  background-color:white !important;
+  color:#0f6945 !important;
+  border:1rpx #0f6945 solid;
+}

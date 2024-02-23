@@ -28,7 +28,7 @@
 				</navigator>
 			</view>
 		</view>
-		<text wx:if="{{user.nickName}}" class="nick-name">{{tabsFixed ? '' : user.nickName}}</text>
+		<text wx:if="{{user.nickName}}" class="nick-name" style="{{user.nickName.length == 2 ? 'margin-left:40rpx':''}}{{user.nickName.length == 1 ? 'margin-left:60rpx':''}}">{{tabsFixed ? '' : user.nickName}}</text>
 		<text wx:else class="nick-name" bindtap="gotoAuth">点击登录</text>
 <!--		<open-data wx:else class="nick-name" type="userNickName"></open-data>-->
 <!--		<text class="signature">{{user.signature ? user.signature : '这家伙很懒，什么都没有留下'}}</text>-->

@@ -406,6 +406,15 @@ const getStorage = key => {
   return res ? res : null
 }
 
+const getStorageTime = key => {
+  const dtime = '_deadtime'
+  const deadtime = parseInt(wx.getStorageSync(key + dtime))
+  if (deadtime && Date.parse(new Date()) / 1000 > parseInt(deadtime)) {
+    return null
+  }
+  return parseInt(deadtime) - Date.parse(new Date()) / 1000
+}
+
 /**
  * getLocation用法：
  * getLocation().then((data) => {})
@@ -743,6 +752,7 @@ module.exports = {
   setStorage: setStorage,
   clearStorage: clearStorage,
   getStorage: getStorage,
+  getStorageTime: getStorageTime,
   getLocation: getLocation,
   getUserInfo: getUserInfo,
   requestPayment: requestPayment,

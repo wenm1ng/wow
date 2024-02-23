@@ -38,7 +38,8 @@
     "pages/macro/index",
     "pages/macro/group/index",
     "pages/macro/hand/index",
-    "pages/macro/my/index"
+    "pages/macro/my/index",
+    "pages/user-avatar-nickname/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

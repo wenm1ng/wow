@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/wenm1ng/wow#readme",
   "dependencies": {
-    "lin-ui": "^0.7.6"
+    "lin-ui": "^0.7.6",
+    "weui-miniprogram": "^1.3.1"
   }
 }
