@@ -79,6 +79,23 @@
   border: 4rpx #fff solid;
 }
 
+.uploadAvatar{
+  position: relative;
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 50%;
+  border: 4rpx #fff solid;
+}
+
+.uploadButton{
+  position: relative !important;
+  padding: 0 !important;
+  width:156rpx !important;
+  border-radius: 50% !important;
+  margin-top:-100rpx !important;
+  /*border: 1rpx #fff solid !important;*/
+}
+
 .gender-box {
   display: flex;
   justify-content: center;
@@ -138,6 +155,28 @@
   color: #333;
   font-weight: bold;
   height: 48rpx;
+}
+
+.header .icon{
+  width: 20rpx;
+  display: inline;
+  font-size: 28rpx;
+  margin-left:7rpx;
+  color:#333;
+}
+
+.nickname-input{
+  height:200rpx;
+  background-color: white;
+}
+
+.mp view{
+  border-color: white;
+}
+
+.submit{
+  margin-left:40%;
+  margin-top:20rpx;
 }
 
 .header .signature {

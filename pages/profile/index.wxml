@@ -10,7 +10,16 @@
 <!--			<view wx:if="{{!user.avatar}}" class="avatar-box">-->
 <!--				<open-data class="avatar" type="userAvatarUrl"></open-data>-->
 <!--			</view>-->
-			<image wx:if="{{!user.avatarUrl}}" class="avatar" src="../../images/icon/circle.png" bindtap="gotoAuth" mode="aspectFill" />
+
+			<view style="width:50rpx" wx:if="{{user.is_save_avatar == 0 && user.avatarUrl}}">
+<!--				<image  class="avatar" src="../../images/icon/circle.png" bindtap="gotoAuth" mode="aspectFill" />-->
+				<button   class="uploadButton" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+					<image class="uploadAvatar" src="{{user.avatarUrl}}"></image>
+				</button>
+
+			</view>
+
+			<image wx:elif="{{!user.avatarUrl}}" class="avatar" src="../../images/icon/circle.png" bindtap="gotoAuth" mode="aspectFill" />
 <!--			<l-avatar wx:if="{{!user.avatar}}" size="80" icon="user" />-->
 			<image wx:else class="avatar" src="{{user.avatarUrl}}" bindtap="gotoAuth" mode="aspectFill" />
 <!--			<view wx:if="{{user.gender && user.gender != 0}}" class="gender-box {{user.gender == 1 ? 'male' : 'female'}}">-->
@@ -28,9 +37,13 @@
 				</navigator>
 			</view>
 		</view>
-		<text wx:if="{{user.nickName}}" class="nick-name" style="{{user.nickName.length == 2 ? 'margin-left:40rpx':''}}{{user.nickName.length == 1 ? 'margin-left:60rpx':''}}">{{tabsFixed ? '' : user.nickName}}</text>
-		<text wx:else class="nick-name" bindtap="gotoAuth">点击登录</text>
-<!--		<open-data wx:else class="nick-name" type="userNickName"></open-data>-->
+		<view class="nick-name" bindtap="{{user.is_save_nickname == 0 ? 'showNickName' : !user.nickName ? 'gotoAuth' : ''}}">
+			<text wx:if="{{user.nickName}}" style="{{user.nickName.length == 2 ? 'margin-left:40rpx':''}}{{user.nickName.length == 1 ? 'margin-left:60rpx':''}}">{{tabsFixed ? '' : user.nickName}}</text>
+			<text wx:else class="nick-name" >点击登录</text>
+			<l-icon wx:if="{{user.is_save_nickname == 0}}" name="edit" l-class="icon"/>
+		</view>
+
+		<!--		<open-data wx:else class="nick-name" type="userNickName"></open-data>-->
 <!--		<text class="signature">{{user.signature ? user.signature : '这家伙很懒，什么都没有留下'}}</text>-->
 		<view class="follow-box">
 			<view class="follow follower">
@@ -154,6 +167,7 @@
 			<l-loadmore show="{{answer_list.length !== 0 && isEndAnswer}}" line type="end"/>
 		</scroll-view>
 	</l-tabpanel>
+
 <!--	</scroll-view>-->
 </l-tabs>
 		<!-- 加载数据提示 -->
@@ -163,3 +177,19 @@
 
 <!-- 消息对话框 -->
 <l-dialog />
+
+<l-popup show="{{showNickName}}" content-align="bottom" >
+	<view class="nickname-input">
+		<l-input label="用户名" type="nickname"  maxlength="20" placeholder="请输入昵称" value="{{nickName}}" bind:linblur="onEditNickname"/>
+		<view class="submit">
+			<l-button type="default" shape="semicircle" size="mini" loading="{{nicknameLoading}}" bindtap="saveNickName" >提交</l-button>
+		</view>
+<!--		<mp-form>-->
+<!--			<mp-cells>-->
+<!--				<mp-cell title="昵称" class="mp">-->
+<!--					<input type="nickname" maxlength="20" class="weui-input" placeholder="请输入昵称" value="{{nickName}}" bindchange="onEditNickname"/>-->
+<!--				</mp-cell>-->
+<!--			</mp-cells>-->
+<!--		</mp-form>-->
+	</view>
+</l-popup>

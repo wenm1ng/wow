@@ -7,6 +7,17 @@ const pageSizeComment = 7 //评论列表每页条数
 Page({
   data: {
     user: {},
+    showNickName: false,
+    nicknameLoading: false,
+    nickName: '',
+    nicknameForm:{
+      nickName:'',
+      // noEmptyRule:{
+      //   required: true,
+      //   message:'请填写昵称',
+      //   trigger: 'blur'
+      // },
+    },
     topics: [],
     comments: [],
     wa_list: [],
@@ -417,6 +428,45 @@ Page({
     })
   },
 
+  //上传头像
+  onChooseAvatar(e) {
+    const { avatarUrl } = e.detail
+    console.log(avatarUrl)
+
+    const url = api.userAPI + "save_head_image"
+    let that = this
+    return new Promise(function (resolve, reject) {
+      wxutil.file.upload({
+        url: url,
+        fileKey: "file",
+        filePath: avatarUrl,
+      }).then((res) => {
+        const data = JSON.parse(res.data);
+        let userDetail = wxutil.getStorage("userDetail")
+        if (data.code === 200) {
+          userDetail.avatarUrl = data.data.avatarUrl
+          userDetail.is_save_avatar = 1
+          wxutil.setStorage('userDetail', userDetail, wxutil.getStorageTime('userDetail'))
+          that.setData({
+            'user.avatarUrl': avatarUrl,
+            'user.is_save_avatar': 1
+          })
+          wx.lin.showMessage({
+            type: "success",
+            content: "保存成功！"
+          })
+        }else{
+          wx.lin.showMessage({
+            type: "error",
+            content: "保存失败！"
+          })
+        }
+      }).catch((error) => {
+        reject(error)
+      })
+    })
+  },
+
   /**
    * 跳转到编辑资料页面
    */
@@ -742,5 +792,63 @@ Page({
       title: "个人中心",
       path: "/pages/profile/index"
     }
+  },
+
+  showNickName(){
+    this.setData({
+      showNickName: true
+    })
+  },
+
+  onEditNickname(e) {
+    if(e.detail.value != this.data.nickName){
+      this.setData({
+        nickName: e.detail.value
+      })
+    }
+  },
+  changeNicknameLoading(bool){
+    this.setData({
+      nicknameLoading: bool
+    })
+  },
+  //保存昵称
+  saveNickName(){
+    this.changeNicknameLoading(true)
+    if(this.data.nickName.length < 1){
+      wx.showToast({
+        title: '请填写昵称',
+        icon: 'error',
+        duration: 2000//持续的时间
+      })
+      this.changeNicknameLoading(false)
+      return;
+    }
+    let userDetail = wxutil.getStorage("userDetail")
+    let url = api.userAPI + 'save_nickname'
+    let data = {nickname:this.data.nickName}
+    wxutil.request.post(url, data).then((res) => {
+      if (res.data.code == 200) {
+        userDetail.nickName = this.data.nickName
+        userDetail.is_save_nickname = 1
+        wxutil.setStorage('userDetail', userDetail, wxutil.getStorageTime('userDetail'))
+        this.setData({
+          showNickName: false,
+          'user.nickName':this.data.nickName,
+          nicknameLoading: false
+        })
+        wx.lin.showMessage({
+          type: "success",
+          content: "保存成功！"
+        })
+      } else {
+        this.changeNicknameLoading(false)
+
+        wx.lin.showMessage({
+          type: "error",
+          content: "保存失败！"
+        })
+      }
+    })
   }
 })

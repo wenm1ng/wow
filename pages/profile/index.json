@@ -1,4 +1,11 @@
 {
+  "usingComponents": {
+    "mp-form-page": "weui-miniprogram/form-page/form-page",
+    "mp-form": "weui-miniprogram/form/form",
+    "mp-cells": "weui-miniprogram/cells/cells",
+    "mp-cell": "weui-miniprogram/cell/cell"
+  },
+  "pageOrientation": "auto",
   "navigationBarTitleText": "个人中心",
   "navigationStyle": "custom"
 }

@@ -34,6 +34,7 @@ Page({
         let userDetail = wxutil.getStorage("userDetail")
         if (data.code === 200) {
           userDetail.avatarUrl = data.data.avatarUrl
+          userDetail.is_save_avatar = 1
           wxutil.setStorage('userDetail', userDetail, wxutil.getStorageTime('userDetail'))
         }else{
           wx.lin.showMessage({
@@ -59,6 +60,7 @@ Page({
     wxutil.request.post(url, data).then((res) => {
       if (res.data.code == 200) {
         userDetail.nickName = nickName
+        userDetail.is_save_nickname = 1
         wxutil.setStorage('userDetail', userDetail, wxutil.getStorageTime('userDetail'))
       } else {
         wx.lin.showMessage({
