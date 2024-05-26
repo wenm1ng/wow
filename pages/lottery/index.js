@@ -2,9 +2,14 @@
 const app = getApp()
 const api = app.api
 const wxutil = app.wxutil
+// 在页面中定义激励视频广告
+let videoAd = null
 
 Page({
   data: {
+    isplay:false,//是否观看广告
+    adLotteryTimes: 0,
+    nowLotteryTimes: 0,
     whether: false,
     flop:'点击开刷',
     really:'',
@@ -14,18 +19,22 @@ Page({
     id: [],
     mountId: [],
     name:[],
+    times: 0,
     labelIndex: '-1',
     is_all: 0,
     origin_is_all: 0,
     type: 0,
     lotteryList: [],
     modalShow: false,
+    lotteryModalShow: false,
     nowImageUrl: 'https://mingtongct.com/images/mount/argusfelstalkermountred.jpg',
     nowName: '奥利瑟拉佐尔的烈焰之爪',
     one: 0,
     // bingoList: [{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"},{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"},{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"},{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"},{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"},{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"},{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"},{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"},{name:"奥利瑟拉佐尔的烈焰之爪",image_url:"https://mingtongct.com/images/mount/argusfelstalkermountred.jpg"}],
     bingoList: [],
     lengths: 0,
+    lotteryModalHeight: 650,
+    lotteryModalScrollHeight: 500,
     modalHeight: 650,
     mountView: 200,
     mountWidth: 150,
@@ -35,6 +44,7 @@ Page({
     showConfirm: false, //confirm框
     height: 600,
     scrollTop: 0,
+    lotteryScrollTop: 0,
     luckyCoin: '', //幸运币
   },
   onLoad(options) {
@@ -42,16 +52,49 @@ Page({
     this.setData({
       id:options.id ? JSON.parse(options.id) : [],
       name:options.name ? JSON.parse(options.name) : [],
+      adLotteryTimes: options.times ? options.times : 3,
       is_all: options.is_all ? options.is_all : 1,
       origin_is_all: options.is_all? options.is_all: 1
     })
+    if(this.data.id.length === 1){
+      this.setData({
+        labelIndex: 0
+      })
+    }
     this.getScrollHeight()
+    // 在页面onLoad回调事件中创建激励视频广告实例
+    var n = this;
+    if (wx.createRewardedVideoAd) {
+      videoAd = wx.createRewardedVideoAd({
+        adUnitId: 'adunit-6d89ff8493103856'
+      })
+      videoAd.onLoad(() => {})
+      videoAd.onError((err) => {
+        console.error('激励视频光告加载失败', err)
+      })
+      videoAd.onClose((res) => {
+        if(res && res.isEnded){
+          // 正常播放结束，可以下发游戏奖励
+          n.setData({
+            isplay: true,
+            nowLotteryTimes: n.data.adLotteryTimes
+          })
+          n.howManyTimesLottery()
+        }
+      })
+      // 用户点击了【关闭广告】按钮
+    }
     // this.getLuckyCoin()
   },
   //记录标签modal滚动位置
   onRecordTop(e){
     this.setData({
       scrollTop: e.detail.scrollTop
+    })
+  },
+  onLotteryRecordTop(e){
+    this.setData({
+      lotteryScrollTop: e.detail.scrollTop
     })
   },
   gotoTransformCoin(){
@@ -112,10 +155,30 @@ Page({
       is_all: isAll,
     })
   },
+  //选择一个坐骑进行必中刷坐骑
+  onChoseLottery(event){
+    const index = event.currentTarget.dataset.index;
+    this.setData({
+      labelIndex: index,
+      lotteryModalShow: false
+    })
+    this.howManyTimesLottery()
+  },
   //关闭弹窗
   closeModal(){
     this.setData({
-      modalShow: false
+      modalShow: false,
+      times: 0
+    })
+  },
+  closeLotteryModal(){
+    this.setData({
+      lotteryModalShow: false
+    })
+  },
+  openLotteryModal(){
+    this.setData({
+      lotteryModalShow: true
     })
   },
   gotoLotteryLog(){
@@ -129,6 +192,147 @@ Page({
       url: "/pages/lottery-log/index"
     })
   },
+  //刷出坐骑需要多少次
+  howManyTimesLottery(){
+    if(!app.checkUserDetailGoAuth()){
+      return;
+    }
+    let that = this
+    if(that.data.isLotterying){
+      return;
+    }
+
+    const url = api.mountAPI + 'brushed_lottery';
+    const index = parseInt(this.data.labelIndex);
+
+    if(index === -1){
+      //有多个坐骑，选择一个坐骑
+      this.openLotteryModal()
+      return;
+    }
+    if (this.data.isplay && this.data.nowLotteryTimes > 0) {
+      const data = {
+        id: [this.data.id[index]]
+      }
+      that.setData({
+        isLotterying: true,
+      })
+      wx.showLoading({
+        title: '刷坐骑中...',
+      });
+      wxutil.request.post(url, data).then((res) => {
+        if (res.data.code === 200) {
+          const length = res.data.data['list'].length
+          that.setData({
+            lotteryList: res.data.data['list'],
+            type: res.data.data['type'],
+            one: 1,
+            lengths: length,
+            times: res.data.data['times'],
+            nowLotteryTimes: that.data.nowLotteryTimes - 1
+          })
+          let bingoList = [];
+          for (let i = 0;i < length; i++){
+            if(res.data.data['list'][i].is_bingo === 1){
+              bingoList.push(res.data.data['list'][i])
+            }
+          }
+          let mountView
+          let mountWidth
+          let mountHeight
+          let bingoLength = bingoList.length
+          let modalHeight = 650
+          if(bingoLength === 1){
+            mountView = 600
+            mountWidth = 300
+            mountHeight = 300
+          } else if(bingoLength === 2 ){
+            mountView = 300
+            mountWidth = 300
+            mountHeight = 300
+          } else if(bingoLength === 3 ){
+            mountView = 200
+            mountWidth = 150
+            mountHeight = 150
+            modalHeight = 500
+          }else if(bingoLength <= 6){
+            mountView = 200
+            mountWidth = 150
+            mountHeight = 150
+            modalHeight = 700
+          }else{
+            mountView = 200
+            mountWidth = 150
+            mountHeight = 150
+            modalHeight = 900
+          }
+          that.setData({
+            bingoList: bingoList,
+            mountView: mountView,
+            mountWidth: mountWidth,
+            mountHeight: mountHeight,
+            modalHeight: modalHeight,
+            // luckyCoin: this.data.luckyCoin - res.data.data['lucky_coin']
+          })
+
+          //一键十连刷
+          setTimeout(function(){
+            for (let i = 0;i < length; i++){
+              that.turnOver(i)
+              if(res.data.data['list'][i].is_bingo === 1){
+                bingoList.push(res.data.data['list'][i])
+              }
+            }
+          },200)
+
+        }else if(res.data.code === 40001){
+          wx.showToast({
+            title: res.data.msg,
+            icon: 'error',
+            duration: 2000//持续的时间
+          })
+          that.setData({
+            isLotterying: false,
+          })
+        }else{
+          wx.showToast({
+            title: '操作失败',
+            icon: 'error',
+            duration: 2000//持续的时间
+          })
+          that.setData({
+            isLotterying: false,
+          })
+        }
+        wx.hideLoading()
+      })
+    } else {
+      const _this = this;
+      wx.showModal({
+        title: '温馨提示',
+        content: '看激励视频广告发放奖励，谢谢支持',
+        success(res) {
+          if (res.confirm) {
+            // 用户触发广告后，显示激励视频广告
+            if (videoAd) {
+              videoAd.show().catch(() => {
+                // 失败重试
+                videoAd.load()
+                    .then(() => videoAd.show())
+                    .catch(err => {
+                      console.error('激励视频 广告显示失败', err)
+                    })
+              })
+            }
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      })
+    }
+
+  },
+  //刷坐骑
   doLottery(event){
     if(!app.checkUserDetailGoAuth()){
       return;

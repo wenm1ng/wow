@@ -21,6 +21,7 @@
     <l-button size="medium" l-class="button-one left" width="200"  bindtap="doLottery" bg-color="#337559" data-type="1" data-one="1">一键单刷</l-button>
     <l-button size="medium" l-class="button-one mid" width="200" bg-color="#A81818" bindtap="doLottery" data-type="2" data-one="1">一键九连刷</l-button>
     <l-button size="medium" l-class="button-one right" width="200" bindtap="gotoLotteryLog">坐骑记录</l-button>
+    <l-button size="medium" l-class="button-two" width="200" bg-color="#A81818" bindtap="howManyTimesLottery" data-type="2" data-one="1">测测刷出坐骑需要多少次</l-button>
 </view>
 
 <view class="btn-popup" bindtap="togglePopup">
@@ -37,6 +38,22 @@
                data-index="{{index}}">#{{item}}</l-tag>
     </scroll-view>
 </l-popup>
+<!--一键刷出坐骑选坐骑弹框-->
+<l-popup show="{{lotteryModalShow}}"  locked="{{false}}" >
+    <view style="width:600rpx;height:{{lotteryModalHeight}}rpx;background-color: #fff;">
+        <scroll-view class="popup" scroll-y="{{true}}" style="height:{{lotteryModalScrollHeight}}rpx !important;" scroll-top="{{lotteryScrollTop}}" enhanced binddragend="onLotteryRecordTop">
+            <view style="width: 600rpx;height:70rpx;text-align: center">
+                <text style="font-size:30rpx;">请选择你要刷的坐骑</text>
+            </view>
+            <l-tag wx:for="{{name}}" wx:key="item" l-class="mount-tag" plain="{{labelIndex !== index}}" shape="circle"
+                   bg-color="#337559" font-color="{{labelIndex === index ? '#fff' : '#337559'}}" bind:lintap="onChoseLottery"
+                   data-index="{{index}}">#{{item}}</l-tag>
+        </scroll-view>
+        <view style="margin-top: 30rpx;float:left">
+            <l-button size="medium"  bg-color="white" width="200" l-class="btn-back close-mid" lang="zh_CN" bindtap="closeLotteryModal">关闭</l-button>
+        </view>
+    </view>
+</l-popup>
 <!--<view class="button" bindtap="again">重新翻牌</view>-->
 <!--<l-button plain="{{true}}" l-class="button" bg-color="fadbd9">重新翻牌</l-button>-->
 <view class="curin-index">
@@ -52,7 +69,12 @@
 <l-popup show="{{modalShow}}"  locked="{{false}}" >
     <view style="width:600rpx;height:{{modalHeight}}rpx;background-color: #fff;" bindtap="closeModal">
         <view style="width: 600rpx;height:150rpx;text-align: center">
-            <text style="font-size:80rpx;">坐骑出炉!</text>
+            <view>
+                <text style="font-size:40rpx;">坐骑出炉!</text>
+            </view>
+            <view wx:if="{{times > 0}}">
+                <text>您刷了<text style="color:red">{{times}}</text>次出了坐骑</text>
+            </view>
         </view>
         <view wx:for="{{bingoList}}" class="mount-view" style="width:{{mountView}}rpx;">
             <image src="{{item.image_url}}" style="width:{{mountWidth}}rpx;height:{{mountHeight}}rpx;margin:0 auto;"/>

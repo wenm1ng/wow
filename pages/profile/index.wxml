@@ -178,7 +178,7 @@
 <!-- 消息对话框 -->
 <l-dialog />
 
-<l-popup show="{{showNickName}}" content-align="bottom" >
+<l-popup show="{{showNickNames}}" content-align="bottom" >
 	<view class="nickname-input">
 		<l-input label="用户名" type="nickname"  maxlength="20" placeholder="请输入昵称" value="{{nickName}}" bind:linblur="onEditNickname"/>
 		<view class="submit">

@@ -35,6 +35,16 @@ Page({
       url: this.data.toolList[e.detail.index].page_path + '?id=' + this.data.toolList[e.detail.index].id
     })
   },
+  // js文件，广告事件监听
+  adLoad() {
+    console.log('Banner 广告加载成功')
+  },
+  adError(err) {
+    console.error('Banner 广告加载失败', err)
+  },
+  adClose() {
+    console.log('Banner 广告关闭')
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

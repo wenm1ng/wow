@@ -15,6 +15,8 @@ Page({
     height: 200,
     mountId: [],
     mountName: [],
+    times: 0,
+    rates: [],
     isAll: 0
   },
 
@@ -36,6 +38,7 @@ Page({
       if (res.data.code === 200) {
         this.setData({
           mountList: res.data.data.list,
+          times: res.data.data.times
         })
       }
     })
@@ -60,7 +63,7 @@ Page({
   },
   nowGoLottery(){
     wx.navigateTo({
-      url: "/pages/lottery/index?id="+ JSON.stringify(this.data.mountId) + '&name=' + JSON.stringify(this.data.mountName) + '&is_all=' + this.data.isAll
+      url: "/pages/lottery/index?id="+ JSON.stringify(this.data.mountId) + '&name=' + JSON.stringify(this.data.mountName)+ '&times=' + this.data.times + '&is_all=' + this.data.isAll
     })
   },
   selectAll(event, type = 'reset'){
@@ -71,12 +74,14 @@ Page({
     const length = mountList.length
     var mountId = [];
     var mountName = [];
+    var rates = []
     let isAll;
     if(type === 'all'){
       for (var i = 0; i < length; i++){
         mountList[i].is_checked = true
         mountId.push(mountList[i].id)
         mountName.push(mountList[i].name)
+        rates.push(mountList[i].rate)
       }
       isAll = 1;
     }else{
@@ -85,11 +90,13 @@ Page({
       }
       mountId = [];
       mountName = [];
+      rates = []
       isAll = 0;
     }
     this.setData({
       mountId: mountId,
       mountName: mountName,
+      rates: rates,
       mountList: mountList,
       isAll: isAll
     })

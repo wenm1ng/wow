@@ -7,7 +7,7 @@ const pageSizeComment = 7 //评论列表每页条数
 Page({
   data: {
     user: {},
-    showNickName: false,
+    showNickNames: false,
     nicknameLoading: false,
     nickName: '',
     nicknameForm:{
@@ -796,7 +796,7 @@ Page({
 
   showNickName(){
     this.setData({
-      showNickName: true
+      showNickNames: true
     })
   },
 
@@ -833,7 +833,7 @@ Page({
         userDetail.is_save_nickname = 1
         wxutil.setStorage('userDetail', userDetail, wxutil.getStorageTime('userDetail'))
         this.setData({
-          showNickName: false,
+          showNickNames: false,
           'user.nickName':this.data.nickName,
           nicknameLoading: false
         })

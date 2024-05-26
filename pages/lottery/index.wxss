@@ -33,6 +33,17 @@ view{
     float: left;
     position: relative;
 }
+.button-two{
+    width: 90%;
+    height: 80rpx;
+    line-height: 80rpx;
+    text-align: center;
+    border-radius: 10rpx;
+    margin-top:30rpx;
+    margin-left:5%;
+    float: left;
+    position: relative;
+}
 .left{
     margin-left:5%
 }
@@ -288,4 +299,7 @@ page{
     border:1rpx #0f6945 solid;
     float:left;
     margin-left:100rpx;
+}
+.close-mid{
+    margin-left: 100%
 }

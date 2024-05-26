@@ -12,3 +12,6 @@
 <!--    <image class="github-logo" src="/images/logo/logo.png"/>-->
 <!--    <text class="github-uri">WOW WA仓库</text>-->
 <!--</view>-->
+<view class="adContainer">
+    <ad unit-id="adunit-c8cdc008b244f4bd" bindload="adLoad" binderror="adError" bindclose="adClose" ad-intervals="30"></ad>
+</view>
