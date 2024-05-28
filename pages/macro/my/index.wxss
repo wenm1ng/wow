@@ -352,7 +352,7 @@ page{
     width:400rpx !important;
     /*margin-left:0 !important;*/
     font-size:30rpx;
-    height:300rpx !important;
+    height:600rpx !important;
     /*margin-left:100rpx;*/
     margin-top:20rpx;
     margin-right:300rpx;
@@ -360,5 +360,5 @@ page{
 .right{
     position: absolute;
     right:110rpx;
-    bottom:450rpx;
+    bottom:350rpx;
 }

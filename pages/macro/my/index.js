@@ -23,7 +23,7 @@ Page({
     isLoading:false,
     name: '', //搜索名称
     modalShow: false,
-    modalHeight: 600,
+    modalHeight: 850,
     scrollHeight:450,
     id: '',
     macroName: '',
