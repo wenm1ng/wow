@@ -48,14 +48,18 @@ Page({
   },
   //复制宏
   copyStr(){
+    let that = this
     wx.setClipboardData({
-      data:this.data.macroStr,//要复制的数据
+      data:that.data.macroStr,//要复制的数据
       success (res) {
         wx.showToast({
           title: '复制成功',
           icon: 'success',
           duration: 2000//持续的时间
         })
+      },
+      error (res){
+        console.log(res)
       }
     })
   },

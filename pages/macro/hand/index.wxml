@@ -133,6 +133,7 @@
             <l-button size="medium" l-class="share" width="200" bg-color="#337559" bindtap="copyStr">复制宏</l-button>
             <l-button size="medium"  bg-color="white" width="200" l-class="btn-back" lang="zh_CN" bindtap="showMyModal">保存到我的宏</l-button>
         </view>
+        <ad-custom unit-id="adunit-a835dcb98ecbca00" bindload="adLoad" binderror="adError" bindclose="adClose"></ad-custom>
     </view>
 </l-popup>
 <!--<l-toast-->

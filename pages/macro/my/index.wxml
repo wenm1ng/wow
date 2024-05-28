@@ -42,14 +42,18 @@
         </view>
         <l-form name="macro" bind:linsubmit="saveMacro" l-form-btn-class="l-form-btn-class">
 <!--        <scroll-view class="tab-content profile-scroll" scroll-y="{{true}}" style="height:{{scrollHeight}}rpx !important;padding-top:30rpx;" scroll-top="0">-->
-            <view style="height:130rpx;">
-                <l-form-item label="宏名称："  l-form-item-class="form-item" name="name" label-width="130rpx">
-                    <l-input  id="name" width="400" hide-label l-class="bg-white" value="{{macroName}}"/>
-                </l-form-item>
-                <l-form-item label="宏内容："  l-form-item-class="form-item" name="content" label-width="130rpx">
-                    <l-textarea indicator="{{false}}" maxlength="-1" l-class="textarea" value="{{macroStr}}" id="content"/>
-                </l-form-item>
-            </view>
+            <scroll-view scroll-y="{{true}}" enable-back-to-top lower-threshold="40" class="topic-scroll"
+                         style="height:600rpx" scroll-top="0">
+                <view style="height:130rpx;">
+                    <l-form-item label="宏名称："  l-form-item-class="form-item" name="name" label-width="130rpx">
+                        <l-input  id="name" width="400" hide-label l-class="bg-white" value="{{macroName}}"/>
+                    </l-form-item>
+                    <l-form-item label="宏内容："  l-form-item-class="form-item" name="content" label-width="130rpx">
+                        <l-textarea indicator="{{false}}" maxlength="-1" l-class="textarea" value="{{macroStr}}" id="content"/>
+                    </l-form-item>
+                </view>
+            </scroll-view>
+
             <view slot="submit" class="right">
                 <!--                        <l-button size="medium" l-class="my-button" width="200" bg-color="#337559">保存</l-button>-->
                 <l-button size="medium"  width="150" l-class="btn-back" lang="zh_CN">修改</l-button>
@@ -66,5 +70,8 @@
 <!--            <l-button size="medium"  width="200" l-class="btn-back" lang="zh_CN" bindtap="showMyModal">修改</l-button>-->
 <!--            <l-button size="medium" bg-color="#C22020" width="200" l-class="btn-back" lang="zh_CN" bindtap="delMacro">删除</l-button>-->
 <!--        </view>-->
+        <view style="margin-top:600rpx">
+            <ad-custom unit-id="adunit-a835dcb98ecbca00" bindload="adLoad" binderror="adError" bindclose="adClose"></ad-custom>
+        </view>
     </view>
 </l-popup>

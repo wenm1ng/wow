@@ -6,3 +6,8 @@
         <view class="text">{{item.name}}</view>
     </l-grid-item>
 </l-grid>
+
+<!--广告位-->
+<view class="adContainer">
+    <ad unit-id="adunit-c8cdc008b244f4bd" bindload="adLoad" binderror="adError" bindclose="adClose" ad-intervals="30"></ad>
+</view>

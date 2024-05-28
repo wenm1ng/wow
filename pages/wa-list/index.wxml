@@ -79,7 +79,9 @@
 	bindscrolltolower="scrollToLower" style="height:{{height}}rpx" scroll-top="{{scrollTop}}">
 	<l-card type="avatar" l-class="card {{cardIndex === 0 ? 'card-top' : ''}}" l-title-class="card-title-anon"
 		wx:for="{{wa_list}}" l-img-class="l-img" wx:key="item" wx:for-index="cardIndex" title="{{item.title}}" describe="{{item.create_at}} 由 {{item.user_name}} 上传">
-
+		<view wx:if="{{cardIndex % 5 === 0}}">
+			<ad-custom unit-id="adunit-a835dcb98ecbca00" bindload="adLoad" binderror="adError" bindclose="adClose"></ad-custom>
+		</view>
 		<view class="{{item.description.length >= 50 && !item.flod ? 'content-close' : 'avater-content'}}"
 			data-id="{{item.id}}" bindtap="gotoDetail" data-indexs="{{cardIndex}}">{{item.description}}</view>
 		<view wx:if="{{item.description.length >= 50}}" data-index="{{cardIndex}}" class="text-flod" bindtap="onFlodTap">
@@ -126,6 +128,7 @@
 <!--		<l-icon l-class="ellipsis" slot="more" name="ellipsis" color="#777" size="32" data-index="{{cardIndex}}"-->
 <!--			bindtap="onMoreTap" />-->
 	</l-card>
+
 	<l-loadmore wx:if="{{!isEnd}}" show="{{loading}}" line l-class="loading" />
 	<l-loadmore show="{{isEnd && page != 1}}" line l-class="loading" type="end" />
 </scroll-view>
